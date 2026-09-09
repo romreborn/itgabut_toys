@@ -248,7 +248,7 @@ export default function CheckoutClient() {
           </div>
 
           <aside
-            className="card"
+            className="card sticky-aside"
             style={{ flex: "0 1 320px", minWidth: 270, position: "sticky", top: 92, borderRadius: 20, boxShadow: "6px 6px 0 var(--orange)", padding: 22 }}
           >
             <div className="font-display" style={{ fontSize: 20, fontWeight: 800, marginBottom: 16 }}>

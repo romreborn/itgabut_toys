@@ -220,3 +220,76 @@ img {
     display: flex !important;
   }
 }
+
+/*
+ * `.sticky-aside` — the filter sidebar (catalog) and order-summary panels
+ * (cart/checkout) are meant to sit *beside* their main content and stick
+ * while that column scrolls. On narrow viewports they wrap to stack
+ * *above/below* the main content instead (flex-wrap), but a plain inline
+ * `position: sticky` doesn't know that — it keeps trying to pin itself near
+ * the top of the viewport while the (now full-width, stacked-below) content
+ * scrolls past underneath it, which reads as the sidebar floating on top of
+ * / overlapping the page. Turning it back into a normal static block below
+ * this breakpoint (in the same place flex-wrap already stacks it) fixes
+ * that without touching each component's layout logic.
+ */
+@media (max-width: 900px) {
+  .sticky-aside {
+    position: static !important;
+    top: auto !important;
+    /* These sidebars are fixed-basis (e.g. `flex: 0 1 252px`) so they read
+       as a comfortable side column next to the main content on desktop.
+       Once flex-wrap stacks them onto their own full-width row on mobile,
+       that same fixed basis would leave them a narrow, oddly wrong-looking
+       box with dead space beside it — stretch to fill the row instead. */
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+}
+
+/*
+ * The catalog filter panel (`.catalog-filter`) is collapsed behind a
+ * "Filter" toggle button (`.catalog-filter-toggle`) on narrow viewports,
+ * so it never competes for space with the product grid below it — open,
+ * it renders as a plain full-width block *above* the grid (same stacking
+ * `.sticky-aside` already gives it); closed, it's removed from layout
+ * entirely instead of shrinking down beside the grid.
+ */
+.catalog-filter-toggle,
+.catalog-filter-apply {
+  display: none;
+}
+@media (max-width: 900px) {
+  .catalog-filter-toggle {
+    display: flex !important;
+  }
+  .catalog-filter-apply {
+    display: block !important;
+  }
+  .catalog-filter {
+    display: none;
+  }
+  .catalog-filter.is-open {
+    display: block;
+  }
+}
+
+/* Defensive floor for small phones (~360px and under): tighten container
+   padding and a few oversized display sizes that otherwise eat into content
+   width or force a horizontal scrollbar. */
+@media (max-width: 400px) {
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
+
+html,
+body {
+  /* Belt-and-suspenders: nothing in this layout is meant to be wider than
+     the viewport. If something miscalculates anyway, clip instead of
+     producing a horizontal scrollbar (the classic mobile "tumpang tindih"
+     symptom when a fixed/sticky-positioned element is wider than expected). */
+  overflow-x: hidden;
+}

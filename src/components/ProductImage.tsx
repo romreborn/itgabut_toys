@@ -17,13 +17,6 @@ function hashStr(s: string): number {
   return Math.abs(h);
 }
 
-function initials(name: string): string {
-  const words = name.trim().split(/\s+/).filter(Boolean);
-  if (words.length === 0) return "?";
-  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
-  return (words[0][0] + words[1][0]).toUpperCase();
-}
-
 interface ProductImageProps {
   name: string;
   seed?: string;
@@ -76,7 +69,11 @@ export default function ProductImage({
   return <PlaceholderTile name={name} seed={seed} className={className} style={style} />;
 }
 
-/** Photo-less placeholder: a colored tile with the product's initials. */
+/**
+ * Photo-less placeholder: a colored "coming soon" tile — a picture-frame
+ * icon with a clock badge, built entirely from shapes (no text/font) so it
+ * reads the same regardless of locale or font-loading state.
+ */
 function PlaceholderTile({
   name,
   seed,
@@ -91,34 +88,20 @@ function PlaceholderTile({
       className={className}
       style={{ display: "block", width: "100%", height: "100%", ...style }}
       role="img"
-      aria-label={name}
+      aria-label={`${name} — foto segera hadir`}
     >
       <rect width="200" height="200" fill={bg} />
-      <circle cx="100" cy="86" r="46" fill={fg} opacity="0.14" />
-      <text
-        x="100"
-        y="100"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fontFamily="'Baloo 2', cursive"
-        fontWeight="800"
-        fontSize="46"
-        fill={fg}
-      >
-        {initials(name)}
-      </text>
-      <text
-        x="100"
-        y="150"
-        textAnchor="middle"
-        fontFamily="system-ui, sans-serif"
-        fontWeight="700"
-        fontSize="11"
-        fill={fg}
-        opacity="0.75"
-      >
-        FOTO SEGERA
-      </text>
+      <circle cx="100" cy="93" r="52" fill={fg} opacity="0.1" />
+
+      {/* picture frame */}
+      <rect x="55" y="60" width="90" height="66" rx="10" fill="none" stroke={fg} strokeWidth="6" opacity="0.85" />
+      <circle cx="80" cy="82" r="7" fill={fg} opacity="0.85" />
+      <path d="M62,120 L85,95 L100,110 L118,88 L138,120 Z" fill={fg} opacity="0.85" />
+
+      {/* coming-soon clock badge */}
+      <circle cx="144" cy="128" r="21" fill={bg} stroke={fg} strokeWidth="4.5" opacity="0.95" />
+      <line x1="144" y1="128" x2="144" y2="115" stroke={fg} strokeWidth="3.5" strokeLinecap="round" />
+      <line x1="144" y1="128" x2="154" y2="128" stroke={fg} strokeWidth="3.5" strokeLinecap="round" />
     </svg>
   );
 }

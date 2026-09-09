@@ -26,6 +26,7 @@ function toggleValue<T>(list: T[], v: T): T[] {
 export default function CatalogClient({ products }: { products: Product[] }) {
   const { t } = useLanguage();
   const [state, setState] = useState<FilterState>(INITIAL);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const matches = (p: Product, skip?: keyof FilterState) => {
     const q = state.q.trim().toLowerCase();
@@ -165,9 +166,69 @@ export default function CatalogClient({ products }: { products: Product[] }) {
         </div>
       </div>
 
+      <button
+        onClick={() => setFiltersOpen((o) => !o)}
+        aria-expanded={filtersOpen}
+        className="catalog-filter-toggle"
+        style={{
+          width: "100%",
+          marginBottom: 16,
+          padding: "13px 16px",
+          border: "2px solid var(--ink)",
+          borderRadius: 12,
+          background: filtersOpen ? "var(--orange)" : "#fff",
+          color: filtersOpen ? "#fff" : "var(--ink)",
+          fontSize: 14,
+          fontWeight: 700,
+          cursor: "pointer",
+          alignItems: "center",
+          justifyContent: "space-between",
+          boxShadow: "3px 3px 0 var(--ink)",
+        }}
+      >
+        <span style={{ display: "flex", alignItems: "center", gap: 9 }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.3} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 6h16M7 12h10M10 18h4" />
+          </svg>
+          {t.filterToggle}
+          {chips.length > 0 && (
+            <span
+              style={{
+                display: "inline-flex",
+                minWidth: 19,
+                height: 19,
+                padding: "0 5px",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 999,
+                background: filtersOpen ? "#fff" : "var(--orange)",
+                color: filtersOpen ? "var(--orange-dark)" : "#fff",
+                fontSize: 11,
+                fontWeight: 800,
+              }}
+            >
+              {chips.length}
+            </span>
+          )}
+        </span>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ transform: filtersOpen ? "rotate(180deg)" : "none", transition: "transform .2s ease" }}
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+
       <div style={{ display: "flex", flexWrap: "wrap", gap: 24, alignItems: "flex-start" }}>
         <aside
-          className="card"
+          className={`card sticky-aside catalog-filter${filtersOpen ? " is-open" : ""}`}
           style={{
             flex: "0 1 252px",
             minWidth: 236,
@@ -285,6 +346,26 @@ export default function CatalogClient({ products }: { products: Product[] }) {
             }}
           >
             {t.resetAll}
+          </button>
+
+          <button
+            onClick={() => setFiltersOpen(false)}
+            className="catalog-filter-apply"
+            style={{
+              width: "100%",
+              marginTop: 9,
+              padding: 12,
+              border: "2px solid var(--ink)",
+              borderRadius: 12,
+              background: "var(--orange)",
+              color: "#fff",
+              fontSize: 13.5,
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "3px 3px 0 var(--ink)",
+            }}
+          >
+            {t.filterApply}
           </button>
         </aside>
 

@@ -70,7 +70,7 @@ export async function getAllProducts(): Promise<Product[]> {
     .from("products")
     .select(PRODUCT_COLUMNS)
     .eq("isActive", true)
-    .order("createdAt", { ascending: false });
+    .order("sortOrder", { ascending: false });
   if (error) {
     console.error("getAllProducts:", error.message);
     return [];
