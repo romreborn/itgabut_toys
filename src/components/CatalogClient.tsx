@@ -17,7 +17,7 @@ interface FilterState {
   page: number;
 }
 
-const INITIAL: FilterState = { q: "", ips: [], types: [], prices: [], sort: "relevan", page: 1 };
+const INITIAL: FilterState = { q: "", ips: [], types: [], prices: [], sort: "terbaru", page: 1 };
 
 function toggleValue<T>(list: T[], v: T): T[] {
   return list.includes(v) ? list.filter((x) => x !== v) : list.concat([v]);
@@ -86,6 +86,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
 
   const sorted = useMemo(() => {
     const cmp: Record<string, (a: Product, b: Product) => number> = {
+      terbaru: (a, b) => b.sortOrder - a.sortOrder,
       best: (a, b) => Number(b.tag === "best") - Number(a.tag === "best") || a.price - b.price,
       murah: (a, b) => a.price - b.price,
       mahal: (a, b) => b.price - a.price,

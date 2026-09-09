@@ -17,10 +17,16 @@ function hashStr(s: string): number {
   return Math.abs(h);
 }
 
+/**
+ * Stand-in photo shown for products that don't have their own photo yet,
+ * used in place of the plain "coming soon" tile.
+ */
+const DEFAULT_IMAGE_URL = "https://cdn.shopify.com/s/files/1/0024/8617/3749/files/BLO-75809-1.jpg?v=1788143885";
+
 interface ProductImageProps {
   name: string;
   seed?: string;
-  /** Real product photo URL. Falls back to the placeholder tile when absent or broken. */
+  /** Real product photo URL. Falls back to the default stand-in photo when absent or broken. */
   imageUrl?: string | null;
   className?: string;
   style?: React.CSSProperties;
@@ -30,8 +36,9 @@ interface ProductImageProps {
 
 /**
  * Product photo with lazy-loading + a shimmering skeleton while it loads,
- * falling back to a deterministic colored placeholder tile when there's no
- * photo yet (or its URL turns out to be broken).
+ * falling back to a stand-in "coming soon" photo when there's no photo yet
+ * (or its URL turns out to be broken) — and to a plain placeholder tile if
+ * even that stand-in fails to load.
  */
 export default function ProductImage({
   name,
@@ -43,8 +50,12 @@ export default function ProductImage({
 }: ProductImageProps) {
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
+  const [defaultErrored, setDefaultErrored] = useState(false);
 
-  if (imageUrl && !errored) {
+  const hasRealPhoto = !!imageUrl && !errored;
+  const src = hasRealPhoto ? imageUrl! : !defaultErrored ? DEFAULT_IMAGE_URL : null;
+
+  if (src) {
     return (
       <div
         className={className}
@@ -52,7 +63,7 @@ export default function ProductImage({
       >
         {!loaded && <div className="img-skeleton" aria-hidden />}
         <Image
-          src={imageUrl}
+          src={src}
           alt={name}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1200px) 25vw, 300px"
@@ -60,13 +71,32 @@ export default function ProductImage({
           loading={priority ? "eager" : "lazy"}
           priority={priority}
           onLoad={() => setLoaded(true)}
-          onError={() => setErrored(true)}
+          onError={() => (hasRealPhoto ? setErrored(true) : setDefaultErrored(true))}
         />
+        {!hasRealPhoto && <ComingSoonBadge />}
       </div>
     );
   }
 
   return <PlaceholderTile name={name} seed={seed} className={className} style={style} />;
+}
+
+/** Small icon-only "coming soon" corner badge — no text, so it reads the same in any locale. */
+function ComingSoonBadge() {
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      width={30}
+      height={30}
+      role="img"
+      aria-label="Foto segera hadir"
+      style={{ position: "absolute", top: 8, right: 8, filter: "drop-shadow(0 1px 3px rgba(0,0,0,.35))" }}
+    >
+      <circle cx="20" cy="20" r="17" fill="#fff" stroke="#2E1A10" strokeWidth="2.5" />
+      <line x1="20" y1="20" x2="20" y2="11" stroke="#2E1A10" strokeWidth="2.6" strokeLinecap="round" />
+      <line x1="20" y1="20" x2="27" y2="20" stroke="#2E1A10" strokeWidth="2.6" strokeLinecap="round" />
+    </svg>
+  );
 }
 
 /**

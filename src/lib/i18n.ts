@@ -76,6 +76,7 @@ export const T = {
     footerArea:
       "Melayani Citra Raya, Cikupa, Panongan, Alam Sutera, Gading Serpong, BSD, dan pengiriman nasional.",
     sorts: [
+      ["terbaru", "Paling baru"],
       ["relevan", "Paling relevan"],
       ["best", "Best seller dulu"],
       ["murah", "Harga termurah"],
@@ -240,6 +241,7 @@ export const T = {
     footerArea:
       "Serving Citra Raya, Cikupa, Panongan, Alam Sutera, Gading Serpong, BSD, and nationwide shipping.",
     sorts: [
+      ["terbaru", "Newest"],
       ["relevan", "Most relevant"],
       ["best", "Best sellers first"],
       ["murah", "Lowest price"],

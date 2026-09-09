@@ -20,6 +20,8 @@ export interface Product {
   year: number | null;
   /** Real product photo URL, if one's been sourced/uploaded yet. */
   imageUrl: string | null;
+  /** Catalog insertion order — higher means added more recently. */
+  sortOrder: number;
 }
 
 /** Raw shape of a row in Supabase's `products` table. */
@@ -39,10 +41,11 @@ interface ProductRow {
   oldPrice: number;
   year: number | null;
   imageUrl: string | null;
+  sortOrder: number;
 }
 
 const PRODUCT_COLUMNS =
-  "slug,name,ip,type,battery,pack,condition,period,periodIndex,availability,tag,price,oldPrice,year,imageUrl";
+  "slug,name,ip,type,battery,pack,condition,period,periodIndex,availability,tag,price,oldPrice,year,imageUrl,sortOrder";
 
 function fromRow(r: ProductRow): Product {
   return {
@@ -61,6 +64,7 @@ function fromRow(r: ProductRow): Product {
     oldPrice: r.oldPrice,
     year: r.year,
     imageUrl: r.imageUrl,
+    sortOrder: r.sortOrder,
   };
 }
 
