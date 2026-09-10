@@ -6,6 +6,7 @@ import { CartProvider } from "@/context/CartContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Toast from "@/components/Toast";
+import DisableRightClick from "@/components/DisableRightClick";
 import { SITE_URL } from "@/lib/constants";
 
 const baloo = Baloo_2({
@@ -93,6 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main" className="skip-link">
           Langsung ke konten
         </a>
+        <DisableRightClick />
         <LanguageProvider>
           <CartProvider>
             <Header />
