@@ -24,9 +24,14 @@ export default async function AdminProductsPage({
     <div style={s.page}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 20 }}>
         <h1 style={s.h1}>Produk ({products?.length ?? 0})</h1>
-        <Link href="/admin/products/new" style={{ ...s.button, textDecoration: "none", display: "inline-block" }}>
-          + Produk baru
-        </Link>
+        <div style={{ display: "flex", gap: 10 }}>
+          <Link href="/admin/products/import" style={{ ...s.buttonGhost, textDecoration: "none", display: "inline-block" }}>
+            Import Excel
+          </Link>
+          <Link href="/admin/products/new" style={{ ...s.button, textDecoration: "none", display: "inline-block" }}>
+            + Produk baru
+          </Link>
+        </div>
       </div>
 
       <form style={{ marginBottom: 16 }}>

@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    // Default 1MB is too small for the Excel restock sheets uploaded via
+    // the /admin/products/import Server Action.
+    serverActions: { bodySizeLimit: "10mb" },
+  },
   images: {
     remotePatterns: [
       // Product photos sourced from the official Blokees storefront.
