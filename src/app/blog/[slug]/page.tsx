@@ -22,6 +22,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return {};
+  const imageUrl = post.coverImageUrl
+    ? post.coverImageUrl.startsWith("http")
+      ? post.coverImageUrl
+      : `${SITE_URL}${post.coverImageUrl}`
+    : undefined;
   return {
     title: post.title,
     description: post.excerpt,
@@ -31,6 +36,7 @@ export async function generateMetadata({
       description: post.excerpt,
       url: `${SITE_URL}/blog/${post.slug}`,
       type: "article",
+      images: imageUrl ? [{ url: imageUrl }] : undefined,
     },
   };
 }
@@ -51,6 +57,9 @@ export default async function PostPage({
     description: post.excerpt,
     datePublished: post.date,
     author: { "@type": "Organization", name: "ITGabut Toys" },
+    ...(post.coverImageUrl && {
+      image: post.coverImageUrl.startsWith("http") ? post.coverImageUrl : `${SITE_URL}${post.coverImageUrl}`,
+    }),
   };
 
   return (
@@ -102,7 +111,7 @@ export default async function PostPage({
         </h1>
         <div className="card" style={{ borderRadius: 20, overflow: "hidden", boxShadow: "6px 6px 0 var(--orange)", marginBottom: 30 }}>
           <div style={{ aspectRatio: "16/9" }}>
-            <ProductImage name={post.title} seed={"blog-cover-" + post.slug} />
+            <ProductImage name={post.title} seed={"blog-cover-" + post.slug} imageUrl={post.coverImageUrl} priority />
           </div>
         </div>
 

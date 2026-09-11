@@ -10,7 +10,7 @@ export default function BlogCard({ post }: { post: Post }) {
         style={{ borderRadius: 18, overflow: "hidden", display: "flex", flexDirection: "column" }}
       >
         <div style={{ aspectRatio: "16/9", borderBottom: "2px solid var(--ink)" }}>
-          <ProductImage name={post.title} seed={"blog-cover-" + post.slug} />
+          <ProductImage name={post.title} seed={"blog-cover-" + post.slug} imageUrl={post.coverImageUrl} />
         </div>
         <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
           <div style={{ display: "flex", gap: 8, alignItems: "center", fontSize: 10.5, fontWeight: 800, letterSpacing: ".5px", textTransform: "uppercase" }}>

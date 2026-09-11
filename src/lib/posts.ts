@@ -16,6 +16,8 @@ export interface Post {
   title: string;
   excerpt: string;
   body: PostBlock[];
+  /** Cover photo shown on blog cards (homepage teaser + /blog listing). */
+  coverImageUrl: string | null;
 }
 
 interface PostRow {
@@ -26,9 +28,10 @@ interface PostRow {
   title: string;
   excerpt: string;
   body: PostBlock[];
+  coverImageUrl: string | null;
 }
 
-const POST_COLUMNS = "slug,category,dateLabel,readTime,title,excerpt,body";
+const POST_COLUMNS = "slug,category,dateLabel,readTime,title,excerpt,body,coverImageUrl";
 
 function fromRow(r: PostRow): Post {
   return {
@@ -39,6 +42,7 @@ function fromRow(r: PostRow): Post {
     title: r.title,
     excerpt: r.excerpt,
     body: r.body,
+    coverImageUrl: r.coverImageUrl,
   };
 }
 
