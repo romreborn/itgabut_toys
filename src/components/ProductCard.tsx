@@ -21,7 +21,7 @@ export default function ProductCard({ p }: { p: DecoratedProduct }) {
         transition: "transform .12s, box-shadow .12s",
       }}
     >
-      <Link href={`/produk/${p.slug}`} style={{ display: "contents" }}>
+      <Link href={`/produk/${p.slug}`} target="_blank" rel="noopener noreferrer" style={{ display: "contents" }}>
         <div style={{ position: "relative", aspectRatio: "1", borderBottom: "2px solid var(--ink)" }}>
           <ProductImage name={p.name} seed={`prod-${p.slug}`} imageUrl={p.imageUrl} />
           {p.hasTag && (

@@ -26,6 +26,8 @@ async function ProductsBlock({ label, productSlugs }: { label: string; productSl
           <Link
             key={p.slug}
             href={`/produk/${p.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               display: "flex",
               alignItems: "center",
