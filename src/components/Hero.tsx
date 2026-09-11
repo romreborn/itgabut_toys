@@ -84,12 +84,12 @@ export default function Hero() {
         </div>
         <div className="card" style={{ overflow: "hidden" }}>
           <div style={{ aspectRatio: "1" }}>
-            <ProductImage name="Figure Blokees" seed="hero-2" />
+            <ProductImage name="Koleksi asli ITGabut Toys" seed="hero-2" imageUrl="/wukong.jpg" />
           </div>
         </div>
         <div className="card" style={{ boxShadow: "4px 4px 0 var(--green)", overflow: "hidden" }}>
           <div style={{ aspectRatio: "1" }}>
-            <ProductImage name="Blind Box Blokees" seed="hero-3" />
+            <ProductImage name="Koleksi asli ITGabut Toys" seed="hero-3" imageUrl="/ts.jpg" />
           </div>
         </div>
       </div>
