@@ -78,7 +78,10 @@ export default async function PostBody({ blocks }: { blocks: PostBlock[] }) {
           }
           if (b.t === "p") {
             return (
-              <p key={n} style={{ margin: "0 0 22px", fontSize: 16.5, lineHeight: 1.78, color: "#3F2A1D" }}>
+              <p
+                key={n}
+                style={{ margin: "0 0 22px", fontSize: 16.5, lineHeight: 1.78, color: "#3F2A1D", whiteSpace: "pre-line" }}
+              >
                 {b.text}
               </p>
             );
