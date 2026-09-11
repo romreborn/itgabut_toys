@@ -74,7 +74,12 @@ export default function Hero() {
           style={{ gridColumn: "span 2", boxShadow: "6px 6px 0 var(--orange)", overflow: "hidden" }}
         >
           <div style={{ aspectRatio: "16/10" }}>
-            <ProductImage name="Rak Blokees ITGabut Toys" seed="hero-1" />
+            <ProductImage
+              name="Blokees Transformers Prime Optimus Prime — Legend Series"
+              seed="hero-1"
+              imageUrl="https://news.tfw2005.com/wp-content/uploads/sites/10/2026/05/Blokees-Action-Edition-Transformers-Prime-Optimus-Prime-8.jpg"
+              priority
+            />
           </div>
         </div>
         <div className="card" style={{ overflow: "hidden" }}>
