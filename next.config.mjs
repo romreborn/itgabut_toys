@@ -16,8 +16,6 @@ const nextConfig = {
       // no longer listed on the official storefront).
       { protocol: "https", hostname: "actionfigurehq.com", pathname: "/**" },
       { protocol: "https", hostname: "product.hstatic.net", pathname: "/**" },
-      // Homepage hero key art sourced from toy-news coverage.
-      { protocol: "https", hostname: "news.tfw2005.com", pathname: "/**" },
       // Admin-uploaded product photos, once the frontend reads imageUrl from
       // the backend API instead of its bundled static data.
       { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },

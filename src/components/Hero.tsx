@@ -77,7 +77,7 @@ export default function Hero() {
             <ProductImage
               name="Blokees Transformers Prime Optimus Prime — Legend Series"
               seed="hero-1"
-              imageUrl="https://news.tfw2005.com/wp-content/uploads/sites/10/2026/05/Blokees-Action-Edition-Transformers-Prime-Optimus-Prime-8.jpg"
+              imageUrl="/tf-ae.jpg"
               priority
             />
           </div>
