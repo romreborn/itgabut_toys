@@ -76,7 +76,8 @@ export default function BlogForm({
       </label>
 
       <label style={s.label}>
-        Body (array blok JSON — {"{"}"t":"p"|"h"|"img"|"products"|"link", ...{"}"})
+        Body (array blok JSON — {"{"}"t":"p"|"h"|"img"|"gallery"|"products"|"link", ...{"}"}). "img" bisa
+        pakai "url" (foto asli, opsional). "gallery" pakai "images": [{"{"}"url","alt"{"}"}, ...].
       </label>
       <textarea
         name="body"

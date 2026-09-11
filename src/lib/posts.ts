@@ -3,7 +3,8 @@ import { supabase } from "@/lib/supabaseClient";
 export type PostBlock =
   | { t: "p"; text: string }
   | { t: "h"; text: string }
-  | { t: "img"; id: string; caption: string }
+  | { t: "img"; id: string; caption: string; url?: string }
+  | { t: "gallery"; caption?: string; images: { url: string; alt: string }[] }
   | { t: "products"; label: string; productSlugs: string[] }
   | { t: "link"; url: string; label: string };
 

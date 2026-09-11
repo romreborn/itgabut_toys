@@ -88,12 +88,42 @@ export default async function PostBody({ blocks }: { blocks: PostBlock[] }) {
               <figure key={n} style={{ margin: "0 0 22px" }}>
                 <div className="card" style={{ borderRadius: 16, overflow: "hidden", boxShadow: "4px 4px 0 var(--ink)" }}>
                   <div style={{ aspectRatio: "16/9" }}>
-                    <ProductImage name={b.caption} seed={b.id} />
+                    <ProductImage name={b.caption} seed={b.id} imageUrl={b.url ?? null} />
                   </div>
                 </div>
                 <figcaption style={{ marginTop: 9, fontSize: 12.5, fontWeight: 600, color: "var(--muted-3)" }}>
                   {b.caption}
                 </figcaption>
+              </figure>
+            );
+          }
+          if (b.t === "gallery") {
+            return (
+              <figure key={n} style={{ margin: "0 0 22px" }}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                    gap: 12,
+                  }}
+                >
+                  {b.images.map((img, i) => (
+                    <div
+                      key={i}
+                      className="card"
+                      style={{ borderRadius: 16, overflow: "hidden", boxShadow: "4px 4px 0 var(--ink)" }}
+                    >
+                      <div style={{ aspectRatio: "4/5" }}>
+                        <ProductImage name={img.alt} seed={`gallery-${n}-${i}`} imageUrl={img.url} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {b.caption && (
+                  <figcaption style={{ marginTop: 9, fontSize: 12.5, fontWeight: 600, color: "var(--muted-3)" }}>
+                    {b.caption}
+                  </figcaption>
+                )}
               </figure>
             );
           }
