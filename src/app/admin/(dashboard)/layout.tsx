@@ -38,6 +38,9 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
           <Link href="/admin/blog" style={{ padding: "8px 12px", borderRadius: 9, fontSize: 13.5, fontWeight: 600, color: "#2E1A10" }}>
             Blog
           </Link>
+          <Link href="/admin/orders" style={{ padding: "8px 12px", borderRadius: 9, fontSize: 13.5, fontWeight: 600, color: "#2E1A10" }}>
+            Pesanan
+          </Link>
         </nav>
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
           <span style={{ fontSize: 12.5, color: "#8A7263" }}>{session.email}</span>

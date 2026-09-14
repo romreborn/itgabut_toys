@@ -6,6 +6,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useCartLines } from "@/lib/useCartLines";
 import { rupiah } from "@/lib/format";
 import { MALLS, waLink } from "@/lib/constants";
+import { supabase } from "@/lib/supabaseClient";
 
 type Method = "" | "pickup" | "cod" | "ship";
 type ContactForm = { name: string; phone: string; prov: string; city: string; addr: string };
@@ -80,7 +81,53 @@ export default function CheckoutClient() {
 
   const link = waLink(waMsg);
 
+  const methodDb = method === "pickup" ? "PICKUP" : method === "cod" ? "COD" : "SHIP";
+
+  /**
+   * Best-effort: records the order in Supabase so it shows up in the admin
+   * panel, but never blocks or fails checkout on it — WhatsApp is still the
+   * actual order channel. Two sequential inserts (no client transactions
+   * over REST): the order row first, then its line items, since order_items
+   * has a foreign key to orders.id.
+   */
+  const saveOrderRecord = async () => {
+    const orderId = crypto.randomUUID();
+    const nowIso = new Date().toISOString();
+    const { error: orderErr } = await supabase.from("orders").insert({
+      id: orderId,
+      method: methodDb,
+      mall: method === "cod" ? mall : null,
+      recipientName: form.name,
+      recipientPhone: form.phone,
+      province: method === "ship" ? form.prov : null,
+      city: method === "ship" ? form.city : null,
+      address: method === "ship" ? form.addr : null,
+      subtotal,
+      discount,
+      total: grand,
+      waMessage: waMsg,
+      updatedAt: nowIso,
+    });
+    if (orderErr) throw orderErr;
+
+    if (lines.length > 0) {
+      const { error: itemsErr } = await supabase.from("order_items").insert(
+        lines.map((l) => ({
+          id: crypto.randomUUID(),
+          orderId,
+          nameSnapshot: l.name,
+          priceSnapshot: l.price,
+          qty: parseInt(l.qty, 10) || 0,
+          variant: l.variant === "set" ? "SET" : "SINGLE",
+          lineTotal: l.lineTotal,
+        }))
+      );
+      if (itemsErr) throw itemsErr;
+    }
+  };
+
   const sendOrder = () => {
+    saveOrderRecord().catch((err) => console.error("saveOrderRecord:", err));
     window.open(link, "_blank");
     setConfirm(false);
   };
