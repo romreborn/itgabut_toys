@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { useCartLines } from "@/lib/useCartLines";
@@ -8,14 +8,41 @@ import { rupiah } from "@/lib/format";
 import { MALLS, waLink } from "@/lib/constants";
 
 type Method = "" | "pickup" | "cod" | "ship";
+type ContactForm = { name: string; phone: string; prov: string; city: string; addr: string };
+
+const EMPTY_FORM: ContactForm = { name: "", phone: "", prov: "", city: "", addr: "" };
+/** Remembers name/phone/address on this device so guest checkout (no login) doesn't retype it every order. */
+const SAVED_INFO_KEY = "itgabut-checkout-info";
 
 export default function CheckoutClient() {
   const { t } = useLanguage();
   const { lines, subtotal, discount, grand, cartReady } = useCartLines();
   const [method, setMethod] = useState<Method>("");
   const [mall, setMall] = useState("");
-  const [form, setForm] = useState({ name: "", phone: "", prov: "", city: "", addr: "" });
+  const [form, setForm] = useState<ContactForm>(EMPTY_FORM);
   const [confirm, setConfirm] = useState(false);
+  const [restoredInfo, setRestoredInfo] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(SAVED_INFO_KEY) || "null");
+      if (saved && typeof saved === "object") {
+        setForm((f) => ({ ...f, ...saved }));
+        setRestoredInfo(true);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  useEffect(() => {
+    if (form.name === "" && form.phone === "" && form.prov === "" && form.city === "" && form.addr === "") return;
+    try {
+      localStorage.setItem(SAVED_INFO_KEY, JSON.stringify(form));
+    } catch {
+      /* ignore */
+    }
+  }, [form]);
 
   const contactOk = form.name.trim() !== "" && form.phone.trim() !== "";
   const shipOk = contactOk && form.prov.trim() !== "" && form.city.trim() !== "" && form.addr.trim() !== "";
@@ -183,6 +210,39 @@ export default function CheckoutClient() {
                   gap: 14,
                 }}
               >
+                {restoredInfo && (
+                  <div
+                    style={{
+                      gridColumn: "1/-1",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: 10,
+                      flexWrap: "wrap",
+                      margin: "-2px 0 2px",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: "var(--muted-2)",
+                    }}
+                  >
+                    <span>{t.coAutofillNote}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setForm(EMPTY_FORM);
+                        setRestoredInfo(false);
+                        try {
+                          localStorage.removeItem(SAVED_INFO_KEY);
+                        } catch {
+                          /* ignore */
+                        }
+                      }}
+                      style={{ border: 0, background: "none", padding: 0, fontSize: 12, fontWeight: 700, color: "var(--orange)", cursor: "pointer", textDecoration: "underline" }}
+                    >
+                      {t.coAutofillClear}
+                    </button>
+                  </div>
+                )}
                 <label style={{ display: "block" }}>
                   <span style={{ display: "block", fontSize: 12, fontWeight: 700, color: "var(--muted-2)", marginBottom: 6 }}>{t.fName}</span>
                   <input
