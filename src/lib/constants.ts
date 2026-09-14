@@ -5,6 +5,7 @@ export const INSTAGRAM_HANDLE = "@itgabut.hobby";
 export const SHOPEE_URL = "https://shopee.co.id/itgabut";
 export const SITE_NAME = "ITGabut Toys";
 export const SITE_URL = "https://itgabuttoys.com";
+export const GA_MEASUREMENT_ID = "G-SC2KRC6E9F";
 export const MALLS = [
   "Mall Alam Sutera",
   "Mall Living World",

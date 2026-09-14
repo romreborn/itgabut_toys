@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Baloo_2, Plus_Jakarta_Sans } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -9,7 +10,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Toast from "@/components/Toast";
 import DisableRightClick from "@/components/DisableRightClick";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_URL, GA_MEASUREMENT_ID } from "@/lib/constants";
 
 const baloo = Baloo_2({
   subsets: ["latin"],
@@ -109,6 +110,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </LanguageProvider>
         <Analytics />
         <SpeedInsights />
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );
