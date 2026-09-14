@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Baloo_2, Plus_Jakarta_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { CartProvider } from "@/context/CartContext";
@@ -105,6 +107,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Toast />
           </CartProvider>
         </LanguageProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
