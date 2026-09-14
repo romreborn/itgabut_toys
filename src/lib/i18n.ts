@@ -6,7 +6,7 @@ export const T = {
     navLocation: "Lokasi",
     navAbout: "Tentang",
     navBlog: "Blog",
-    heroBadge: "Reseller Blokees · Citra Raya, Tangerang",
+    heroBadge: "Jual Blokees · Citra Raya, Tangerang",
     h1a: "Jual Blokees & action figure di ",
     h1b: "Citra Raya, Alam Sutera & Gading Serpong.",
     lead: "ITGabut Toys menjual figure dan building block figure — mostly Blokees. Transformers, Marvel, Ultraman, Pokemon, Saint Seiya, Star Wars, Evangelion, sampai Blokees Wheels blind box. Cek stok dan harga terbaru di katalog, ambil langsung di Perumahan Citra Raya atau COD di Alam Sutera dan Gading Serpong.",
@@ -22,7 +22,7 @@ export const T = {
     usp2kicker: "AMBIL & COD",
     usp2title: "Citra Raya, Alam Sutera, Gading Serpong",
     usp2body:
-      "Toko di Perumahan Citra Raya. COD Alam Sutera dan Gading Serpong by appointment, kirim ke seluruh Indonesia.",
+      "Toko di Perumahan Citra Raya. COD Alam Sutera dan Gading Serpong by appointment, kirim ke seluruh Indonesia sampai luar pulau — packing aman dus tebal + bubble wrap.",
     usp3kicker: "HARGA JELAS",
     usp3title: "Harga mengikuti list terbaru",
     usp3body:
@@ -53,7 +53,7 @@ export const T = {
     orderWa: "Pesan via WhatsApp",
     buyShopee: "Beli di Shopee",
     detailPickup:
-      "Bisa ambil di Perumahan Citra Raya, Tangerang, COD Alam Sutera dan Gading Serpong by appointment, atau dikirim dengan packing dobel bubble wrap.",
+      "Bisa ambil di Perumahan Citra Raya, Tangerang, COD Alam Sutera dan Gading Serpong by appointment, atau dikirim ke seluruh Indonesia termasuk luar pulau dengan packing aman — dus tebal + bubble wrap.",
     locTitle: "Ambil barang di 3 area",
     locSub:
       "Toko utama di Citra Raya, plus COD rutin di Alam Sutera dan Gading Serpong.",
@@ -69,7 +69,7 @@ export const T = {
     aboutBody2:
       "Semua barang segel, dikirim aman, dan bisa diambil langsung. Tanya stok, titip hunting, atau nego halus lewat WhatsApp.",
     footerAbout:
-      "Reseller Blokees dan action figure di Tangerang. Melayani Citra Raya, Alam Sutera, dan Gading Serpong.",
+      "Jual Blokees dan action figure di Tangerang. Melayani Citra Raya, Alam Sutera, Gading Serpong, dan pengiriman aman ke seluruh Indonesia termasuk luar pulau.",
     footerShop: "Toko online",
     footerCat: "Kategori populer",
     footerVisit: "Kunjungi",
@@ -174,7 +174,7 @@ export const T = {
     navLocation: "Locations",
     navAbout: "About",
     navBlog: "Blog",
-    heroBadge: "Blokees reseller · Citra Raya, Tangerang",
+    heroBadge: "Blokees Store · Citra Raya, Tangerang",
     h1a: "Blokees & action figures in ",
     h1b: "Citra Raya, Alam Sutera & Gading Serpong.",
     lead: "ITGabut Toys sells figures and building block figures — mostly Blokees. Transformers, Marvel, Ultraman, Pokemon, Saint Seiya, Star Wars, Evangelion, plus Blokees Wheels blind boxes. Check stock and current prices in the catalog, pick up at Perumahan Citra Raya, or meet up in Alam Sutera and Gading Serpong.",
@@ -190,7 +190,7 @@ export const T = {
     usp2kicker: "PICKUP & COD",
     usp2title: "Citra Raya, Alam Sutera, Gading Serpong",
     usp2body:
-      "Store at Perumahan Citra Raya. COD in Alam Sutera and Gading Serpong by appointment, shipping nationwide.",
+      "Store at Perumahan Citra Raya. COD in Alam Sutera and Gading Serpong by appointment, shipping nationwide including outer islands — packed safely with thick boxes + bubble wrap.",
     usp3kicker: "CLEAR PRICING",
     usp3title: "Prices follow the latest list",
     usp3body:
@@ -220,7 +220,7 @@ export const T = {
     orderWa: "Order on WhatsApp",
     buyShopee: "Buy on Shopee",
     detailPickup:
-      "Pick up at Perumahan Citra Raya, Tangerang, COD in Alam Sutera and Gading Serpong by appointment, or shipped with double bubble wrap.",
+      "Pick up at Perumahan Citra Raya, Tangerang, COD in Alam Sutera and Gading Serpong by appointment, or shipped nationwide including outer islands with safe packing — thick box + bubble wrap.",
     locTitle: "Pick up in 3 areas",
     locSub: "Main store in Citra Raya, plus regular COD in Alam Sutera and Gading Serpong.",
     locMain: "MAIN STORE",
@@ -233,7 +233,7 @@ export const T = {
     aboutBody2:
       "Everything is sealed, packed safely, and available for pickup. Ask about stock, request a hunt, or negotiate over WhatsApp.",
     footerAbout:
-      "Blokees and action figure reseller in Tangerang. Serving Citra Raya, Alam Sutera, and Gading Serpong.",
+      "Blokees and action figure store in Tangerang. Serving Citra Raya, Alam Sutera, Gading Serpong, and safe nationwide shipping including outer islands.",
     footerShop: "Online stores",
     footerCat: "Popular categories",
     footerVisit: "Visit",

@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | ITGabut Toys",
   },
   description:
-    "ITGabut Toys: reseller Blokees di Perumahan Citra Raya, Tangerang. Blokees Transformers, Marvel, Ultraman, Pokemon, Saint Seiya, Star Wars. COD Citra Raya, Alam Sutera, Gading Serpong. WA 085111043518.",
+    "ITGabut Toys: jual Blokees di Perumahan Citra Raya, Tangerang. Kirim aman ke seluruh Indonesia sampai luar pulau — packing dus tebal + bubble wrap. Blokees Transformers, Marvel, Ultraman, Pokemon, Saint Seiya, Star Wars. COD Citra Raya, Alam Sutera, Gading Serpong. WA 085111043518.",
   keywords: [
     "Blokees",
     "jual Blokees",
@@ -39,6 +39,7 @@ export const metadata: Metadata = {
     "action figure Alam Sutera",
     "action figure Gading Serpong",
     "blind box Tangerang",
+    "kirim Blokees luar pulau",
     "ITGabut Toys",
   ],
   openGraph: {
@@ -47,13 +48,13 @@ export const metadata: Metadata = {
     siteName: "ITGabut Toys",
     title: "ITGabut Toys — Jual Blokees, Action Figure & Blind Box",
     description:
-      "Reseller Blokees dan action figure di Citra Raya, Tangerang. COD Alam Sutera dan Gading Serpong.",
+      "Jual Blokees dan action figure di Citra Raya, Tangerang. Kirim aman ke seluruh Indonesia sampai luar pulau, COD Alam Sutera dan Gading Serpong.",
     url: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",
     title: "ITGabut Toys — Jual Blokees, Action Figure & Blind Box",
-    description: "Reseller Blokees dan action figure di Citra Raya, Tangerang.",
+    description: "Jual Blokees dan action figure di Citra Raya, Tangerang. Kirim aman ke seluruh Indonesia sampai luar pulau.",
   },
   alternates: {
     canonical: "/",
@@ -68,7 +69,8 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ToyStore",
   name: "ITGabut Toys",
-  description: "Reseller Blokees dan action figure. COD Citra Raya, Alam Sutera, Gading Serpong.",
+  description:
+    "Jual Blokees dan action figure. Kirim aman ke seluruh Indonesia termasuk luar pulau dengan packing dus tebal + bubble wrap. COD Citra Raya, Alam Sutera, Gading Serpong.",
   telephone: "+6285111043518",
   address: {
     "@type": "PostalAddress",
@@ -77,7 +79,7 @@ const jsonLd = {
     addressRegion: "Banten",
     addressCountry: "ID",
   },
-  areaServed: ["Citra Raya", "Alam Sutera", "Gading Serpong", "Tangerang"],
+  areaServed: ["Citra Raya", "Alam Sutera", "Gading Serpong", "Tangerang", "Indonesia"],
   sameAs: ["https://instagram.com/itgabut.hobby", "https://shopee.co.id/itgabut"],
 };
 
