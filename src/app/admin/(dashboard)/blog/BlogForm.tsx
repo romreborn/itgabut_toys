@@ -76,8 +76,9 @@ export default function BlogForm({
       </label>
 
       <label style={s.label}>
-        Body (array blok JSON — {"{"}"t":"p"|"h"|"img"|"gallery"|"products"|"link", ...{"}"}). "img" bisa
-        pakai "url" (foto asli, opsional). "gallery" pakai "images": [{"{"}"url","alt"{"}"}, ...].
+        Body (array blok JSON — {"{"}"t":"p"|"h"|"img"|"gallery"|"products"|"link"|"faq", ...{"}"}). "img" bisa
+        pakai "url" (foto asli, opsional). "gallery" pakai "images": [{"{"}"url","alt"{"}"}, ...]. "faq" pakai
+        "items": [{"{"}"q","a"{"}"}, ...] — otomatis jadi FAQPage schema untuk SEO.
       </label>
       <textarea
         name="body"

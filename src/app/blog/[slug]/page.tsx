@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, collectFaqItems } from "@/lib/posts";
 import { SITE_URL } from "@/lib/constants";
 import ProductImage from "@/components/ProductImage";
 import PostBody from "@/components/PostBody";
@@ -62,9 +62,26 @@ export default async function PostPage({
     }),
   };
 
+  const faqItems = collectFaqItems(post.body);
+  const faqJsonLd =
+    faqItems.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqItems.map((item) => ({
+            "@type": "Question",
+            name: item.q,
+            acceptedAnswer: { "@type": "Answer", text: item.a },
+          })),
+        }
+      : null;
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {faqJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      )}
       <article className="container" style={{ maxWidth: 820, padding: "30px 20px 60px" }}>
         <Link
           href="/blog"

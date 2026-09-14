@@ -147,6 +147,34 @@ export default async function PostBody({ blocks }: { blocks: PostBlock[] }) {
               </a>
             );
           }
+          if (b.t === "faq") {
+            return (
+              <div key={n} style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 22 }}>
+                {b.items.map((item, i) => (
+                  <details
+                    key={i}
+                    className="card"
+                    style={{ borderRadius: 14, padding: "14px 16px" }}
+                  >
+                    <summary
+                      style={{
+                        cursor: "pointer",
+                        fontWeight: 700,
+                        fontSize: 15.5,
+                        color: "var(--ink)",
+                        listStyle: "none",
+                      }}
+                    >
+                      {item.q}
+                    </summary>
+                    <p style={{ margin: "10px 0 0", fontSize: 15, lineHeight: 1.7, color: "#3F2A1D", whiteSpace: "pre-line" }}>
+                      {item.a}
+                    </p>
+                  </details>
+                ))}
+              </div>
+            );
+          }
           return null;
         })
       )}

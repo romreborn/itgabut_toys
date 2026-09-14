@@ -6,7 +6,13 @@ export type PostBlock =
   | { t: "img"; id: string; caption: string; url?: string }
   | { t: "gallery"; caption?: string; images: { url: string; alt: string }[] }
   | { t: "products"; label: string; productSlugs: string[] }
-  | { t: "link"; url: string; label: string };
+  | { t: "link"; url: string; label: string }
+  | { t: "faq"; items: { q: string; a: string }[] };
+
+/** Pulls out every FAQ item across all "faq" blocks in a post, for FAQPage JSON-LD. */
+export function collectFaqItems(body: PostBlock[]): { q: string; a: string }[] {
+  return body.filter((b): b is Extract<PostBlock, { t: "faq" }> => b.t === "faq").flatMap((b) => b.items);
+}
 
 export interface Post {
   slug: string;
