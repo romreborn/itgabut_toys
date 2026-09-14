@@ -83,11 +83,11 @@ export const T = {
       ["az", "Nama A–Z"],
     ] as [string, string][],
     price: [
-      ["<50", "Di bawah Rp50.000"],
-      ["50-150", "Rp50.000 – Rp150.000"],
-      ["150-300", "Rp150.000 – Rp300.000"],
-      ["300-500", "Rp300.000 – Rp500.000"],
-      [">500", "Di atas Rp500.000"],
+      ["<50", "Di bawah 50k"],
+      ["50-150", "50k – 150k"],
+      ["150-300", "150k – 300k"],
+      ["300-500", "300k – 500k"],
+      [">500", "Di atas 500k"],
     ] as [string, string][],
     types: [
       ["Blind Box", "Blind Box"],
@@ -247,11 +247,11 @@ export const T = {
       ["az", "Name A–Z"],
     ] as [string, string][],
     price: [
-      ["<50", "Under Rp50,000"],
-      ["50-150", "Rp50,000 – Rp150,000"],
-      ["150-300", "Rp150,000 – Rp300,000"],
-      ["300-500", "Rp300,000 – Rp500,000"],
-      [">500", "Above Rp500,000"],
+      ["<50", "Under 50k"],
+      ["50-150", "50k – 150k"],
+      ["150-300", "150k – 300k"],
+      ["300-500", "300k – 500k"],
+      [">500", "Above 500k"],
     ] as [string, string][],
     types: [
       ["Blind Box", "Blind Box"],
