@@ -71,10 +71,18 @@ export default function ProductDetail({ product, related }: { product: Product; 
               <span style={{ fontWeight: 600, color: "var(--muted-2)", flex: "0 0 auto" }}>{t.specType}</span>
               <span style={{ fontWeight: 700, textAlign: "right", flex: "1 1 auto", minWidth: 0 }}>{p.typeLabel}</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 14, padding: "12px 16px", fontSize: 13.5 }}>
-              <span style={{ fontWeight: 600, color: "var(--muted-2)", flex: "0 0 auto" }}>{t.specPack}</span>
-              <span style={{ fontWeight: 700, textAlign: "right", flex: "1 1 auto", minWidth: 0 }}>{p.pack}</span>
-            </div>
+            {!p.isBlind && (
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 14, padding: "12px 16px", fontSize: 13.5 }}>
+                <span style={{ fontWeight: 600, color: "var(--muted-2)", flex: "0 0 auto" }}>{t.specPack}</span>
+                <span style={{ fontWeight: 700, textAlign: "right", flex: "1 1 auto", minWidth: 0 }}>{p.pack}</span>
+              </div>
+            )}
+            {p.isBlind && p.setSizeLabel && (
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 14, padding: "12px 16px", fontSize: 13.5 }}>
+                <span style={{ fontWeight: 600, color: "var(--muted-2)", flex: "0 0 auto" }}>{t.specPack}</span>
+                <span style={{ fontWeight: 700, textAlign: "right", flex: "1 1 auto", minWidth: 0 }}>{p.setSizeLabel}</span>
+              </div>
+            )}
           </div>
 
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 18 }}>

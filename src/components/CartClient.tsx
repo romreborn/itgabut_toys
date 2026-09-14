@@ -75,7 +75,9 @@ export default function CartClient() {
                     {l.name}
                   </div>
                   <div style={{ fontSize: 13, fontWeight: 600, color: "var(--muted-2)", marginBottom: 12 }}>
-                    {l.priceLabel} / {t.qtyUnit}
+                    {l.variant === "set" && l.setSize
+                      ? `${l.priceLabel} × ${l.setSize} ${t.qtyUnit} / ${t.vSet.toLowerCase()}`
+                      : `${l.priceLabel} / ${t.qtyUnit}`}
                   </div>
 
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "flex-end" }}>
@@ -121,7 +123,7 @@ export default function CartClient() {
                         >
                           {t.vSingle}
                         </button>
-                        {l.isBlind && (
+                        {l.isBlind && l.setSize && (
                           <button
                             onClick={() => patchLine(l.slug, { variant: "set" })}
                             style={{
@@ -135,7 +137,7 @@ export default function CartClient() {
                               color: l.variant === "set" ? "#fff" : "var(--ink)",
                             }}
                           >
-                            {t.vSet}
+                            {t.vSet} ({l.setSize} {t.qtyUnit})
                           </button>
                         )}
                       </div>

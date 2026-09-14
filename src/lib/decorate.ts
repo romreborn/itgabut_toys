@@ -15,12 +15,23 @@ export interface DecoratedProduct extends Product {
   typeLabel: string;
   isBlind: boolean;
   waOrderLink: string;
+  /** Pieces per whole set, parsed from `pack` (e.g. "6PDQ/CTN (1PDQ = 6 PCS)" -> 6). Null when unparseable. */
+  setSize: number | null;
+  /** "1 Whole Set = 6 pcs" — only meaningful (and only ever shown) for blind box products. */
+  setSizeLabel: string;
+}
+
+/** Distributor packaging strings all end in "...= N PCS" regardless of PDQ/CTN wording. */
+export function parseSetSize(pack: string): number | null {
+  const m = pack.match(/=\s*(\d+)\s*PCS/i);
+  return m ? parseInt(m[1], 10) : null;
 }
 
 export function decorate(p: Product, t: Dict): DecoratedProduct {
   const typeLabel =
     (t.types.find((x) => x[0] === p.type)?.[1] ?? p.type) +
     (p.battery ? " · Battery" : "");
+  const setSize = parseSetSize(p.pack);
   return {
     ...p,
     priceLabel: rupiah(p.price),
@@ -34,5 +45,7 @@ export function decorate(p: Product, t: Dict): DecoratedProduct {
     typeLabel,
     isBlind: p.type === "Blind Box",
     waOrderLink: waLink(t.waText + p.name + " (" + rupiah(p.price) + ")"),
+    setSize,
+    setSizeLabel: setSize ? `1 ${t.vSet} = ${setSize} ${t.qtyUnit}` : "",
   };
 }

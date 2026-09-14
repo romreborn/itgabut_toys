@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { getProductsBySlugs, Product } from "@/lib/products";
+import { parseSetSize } from "@/lib/decorate";
 import { rupiah } from "@/lib/format";
 
 export interface CartLineView {
@@ -11,6 +12,8 @@ export interface CartLineView {
   imageUrl?: string | null;
   price: number;
   isBlind: boolean;
+  /** Pieces per whole set (from `pack`), or null when a set price multiplier doesn't apply. */
+  setSize: number | null;
   priceLabel: string;
   qty: string;
   variant: "single" | "set";
@@ -56,11 +59,15 @@ export function useCartLines() {
         price: 0,
         ip: "",
         type: "Non Blind Box" as const,
+        pack: "",
         imageUrl: null,
       } as Product);
       const qty = num(l.qty);
       const variant: "single" | "set" =
         l.variant === "set" && p.type !== "Blind Box" ? "single" : l.variant || "single";
+      const setSize = parseSetSize(p.pack);
+      const multiplier = variant === "set" && setSize ? setSize : 1;
+      const unitPrice = p.price * multiplier;
       return {
         slug: l.slug,
         name: p.name,
@@ -68,12 +75,13 @@ export function useCartLines() {
         imageUrl: p.imageUrl,
         price: p.price,
         isBlind: p.type === "Blind Box",
+        setSize,
         priceLabel: rupiah(p.price),
         qty: l.qty,
         variant,
         variantLabel: variant === "set" ? t.vSet : t.vSingle,
-        lineLabel: rupiah(p.price * qty),
-        lineTotal: p.price * qty,
+        lineLabel: rupiah(unitPrice * qty),
+        lineTotal: unitPrice * qty,
       };
     });
   }, [cart, products, t]);
