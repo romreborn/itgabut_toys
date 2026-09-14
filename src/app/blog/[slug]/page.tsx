@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug, collectFaqItems } from "@/lib/posts";
 import { SITE_URL } from "@/lib/constants";
 import ProductImage from "@/components/ProductImage";
+import GalleryImage from "@/components/GalleryImage";
+import { LightboxProvider } from "@/components/Lightbox";
 import PostBody from "@/components/PostBody";
 
 export const revalidate = 60;
@@ -128,7 +130,13 @@ export default async function PostPage({
         </h1>
         <div className="card" style={{ borderRadius: 20, overflow: "hidden", boxShadow: "6px 6px 0 var(--orange)", marginBottom: 30 }}>
           <div style={{ aspectRatio: "16/9" }}>
-            <ProductImage name={post.title} seed={"blog-cover-" + post.slug} imageUrl={post.coverImageUrl} priority />
+            {post.coverImageUrl ? (
+              <LightboxProvider images={[{ url: post.coverImageUrl, alt: post.title }]}>
+                <GalleryImage index={0} name={post.title} seed={"blog-cover-" + post.slug} imageUrl={post.coverImageUrl} priority />
+              </LightboxProvider>
+            ) : (
+              <ProductImage name={post.title} seed={"blog-cover-" + post.slug} imageUrl={null} priority />
+            )}
           </div>
         </div>
 
