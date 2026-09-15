@@ -46,7 +46,7 @@ export const T = {
     emptyBody: "Coba kata kunci lain atau longgarkan filternya.",
     back: "Kembali ke katalog",
     related: "Produk sejenis",
-    priceNote: "Harga terbaru per list distributor. Nego halus? Chat aja.",
+    priceNote: "Harga terbaru per list distributor. Dapatkan harga grosir dengan menghubungi kami.",
     specIp: "IP / Seri",
     specType: "Tipe",
     specPack: "Kemasan",
@@ -67,7 +67,7 @@ export const T = {
     aboutBody1:
       "ITGabut Toys adalah toko yang jual Blokees dan jual figure Tangerang, fokus pada building block figure. Mulai dari hobi ngoleksi, sekarang jadi tempat kolektor cari stok yang jelas dan harga yang wajar.",
     aboutBody2:
-      "Semua barang segel, dikirim aman, dan bisa diambil langsung. Tanya stok, titip hunting, atau nego halus lewat WhatsApp.",
+      "Semua barang segel, dikirim aman, dan bisa diambil langsung. Tanya stok, titip hunting, atau dapatkan harga grosir dengan menghubungi kami lewat WhatsApp.",
     footerAbout:
       "Jual Blokees dan action figure di Tangerang. Melayani Citra Raya, Alam Sutera, Gading Serpong, dan pengiriman aman ke seluruh Indonesia termasuk luar pulau.",
     footerShop: "Toko online",
