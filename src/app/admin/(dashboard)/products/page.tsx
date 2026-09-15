@@ -1,43 +1,88 @@
 import Link from "next/link";
+import Image from "next/image";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { adminStyles as s } from "../../adminStyles";
-import ProductImage from "@/components/ProductImage";
 import AvailabilityToggle from "./AvailabilityToggle";
 
 export const dynamic = "force-dynamic";
 
+const PAGE_SIZE = 50;
 const TAG_LABEL: Record<string, string> = { BEST: "Best Seller", NEW: "Baru", MOVIE: "Movie" };
+
+/**
+ * Hosts configured in next.config.mjs. A product's imageUrl is free-text in the
+ * admin form, so an unlisted host would otherwise crash this whole page when
+ * next/image renders it server-side.
+ */
+const OPTIMIZED_HOSTS = ["cdn.shopify.com", "static.wikia.nocookie.net", "actionfigurehq.com", "product.hstatic.net"];
+
+function canOptimize(url: string): boolean {
+  if (url.startsWith("/")) return true;
+  try {
+    const { host } = new URL(url);
+    return OPTIMIZED_HOSTS.includes(host) || host.endsWith(".supabase.co");
+  } catch {
+    return false;
+  }
+}
+
+const THUMB: React.CSSProperties = {
+  width: 40,
+  height: 40,
+  borderRadius: 8,
+  border: "1px solid #EFE6DE",
+  objectFit: "cover",
+  display: "block",
+  background: "#F6EFE8",
+};
+
+function Thumb({ url, name }: { url: string | null; name: string }) {
+  if (!url) return <div style={THUMB} aria-label={`${name} — belum ada foto`} />;
+  if (!canOptimize(url)) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={url} alt="" width={40} height={40} loading="lazy" decoding="async" style={THUMB} />;
+  }
+  return <Image src={url} alt="" width={40} height={40} style={THUMB} />;
+}
 
 export default async function AdminProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; page?: string }>;
 }) {
-  const { q } = await searchParams;
+  const { q, page } = await searchParams;
+  const currentPage = Math.max(1, Number(page) || 1);
+  const from = (currentPage - 1) * PAGE_SIZE;
+
   let query = supabaseAdmin
     .from("products")
-    .select("slug,name,ip,type,price,availability,tag,isActive,sortOrder,imageUrl")
+    .select("slug,name,ip,type,price,availability,tag,isActive,sortOrder,imageUrl", { count: "exact" })
     .order("sortOrder", { ascending: false })
-    .limit(300);
+    .range(from, from + PAGE_SIZE - 1);
 
   if (q) query = query.or(`name.ilike.%${q}%,ip.ilike.%${q}%,slug.ilike.%${q}%`);
 
-  const { data: products, error } = await query;
+  const { data: products, error, count } = await query;
+  const total = count ?? 0;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+  const pageHref = (n: number) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (n > 1) params.set("page", String(n));
+    const qs = params.toString();
+    return qs ? `/admin/products?${qs}` : "/admin/products";
+  };
 
   return (
     <div style={s.page}>
       <style>{`
         .admin-products-row:hover { background: #FBF6EF; }
-        .admin-products-table thead th {
-          position: sticky;
-          top: 0;
-          background: #fff;
-          z-index: 1;
-        }
+        .admin-products-table thead th { position: sticky; top: 0; background: #fff; z-index: 1; }
       `}</style>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 20 }}>
-        <h1 style={s.h1}>Produk ({products?.length ?? 0})</h1>
+        <h1 style={s.h1}>Produk ({total})</h1>
         <div style={{ display: "flex", gap: 10 }}>
           <Link href="/admin/products/import" style={{ ...s.buttonGhost, textDecoration: "none", display: "inline-block" }}>
             Import Excel
@@ -48,7 +93,7 @@ export default async function AdminProductsPage({
         </div>
       </div>
 
-      <form style={{ marginBottom: 16 }}>
+      <form style={{ marginBottom: 16, display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
         <input
           type="search"
           name="q"
@@ -56,6 +101,19 @@ export default async function AdminProductsPage({
           placeholder="Cari nama, IP, atau slug…"
           style={{ ...s.input, marginBottom: 0, maxWidth: 340 }}
         />
+        <button type="submit" style={s.button}>
+          Cari
+        </button>
+        {q && (
+          <Link href="/admin/products" style={{ ...s.buttonGhost, textDecoration: "none", display: "inline-block" }}>
+            Reset
+          </Link>
+        )}
+        {q && (
+          <span style={{ fontSize: 12.5, color: "#8A7263" }}>
+            {total} hasil untuk “{q}”
+          </span>
+        )}
       </form>
 
       {error && <p style={{ color: "#C9490F" }}>Gagal memuat: {error.message}</p>}
@@ -90,9 +148,7 @@ export default async function AdminProductsPage({
             {(products || []).map((p) => (
               <tr key={p.slug} className="admin-products-row">
                 <td style={{ ...s.td, padding: "8px 10px" }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 8, overflow: "hidden", border: "1px solid #EFE6DE", flexShrink: 0 }}>
-                    <ProductImage name={p.name} seed={p.slug} imageUrl={p.imageUrl} />
-                  </div>
+                  <Thumb url={p.imageUrl} name={p.name} />
                 </td>
                 <td style={s.td}>
                   <div style={{ fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={p.name}>
@@ -149,13 +205,35 @@ export default async function AdminProductsPage({
             {!products?.length && (
               <tr>
                 <td style={s.td} colSpan={9}>
-                  Tidak ada produk.
+                  {q ? `Tidak ada produk cocok dengan “${q}”.` : "Tidak ada produk."}
                 </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
+
+      {totalPages > 1 && (
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
+          {currentPage > 1 ? (
+            <Link href={pageHref(currentPage - 1)} style={{ ...s.buttonGhost, textDecoration: "none", display: "inline-block" }}>
+              ← Sebelumnya
+            </Link>
+          ) : (
+            <span style={{ ...s.buttonGhost, opacity: 0.4, cursor: "default" }}>← Sebelumnya</span>
+          )}
+          <span style={{ fontSize: 13, color: "#8A7263" }}>
+            Halaman {currentPage} dari {totalPages}
+          </span>
+          {currentPage < totalPages ? (
+            <Link href={pageHref(currentPage + 1)} style={{ ...s.buttonGhost, textDecoration: "none", display: "inline-block" }}>
+              Berikutnya →
+            </Link>
+          ) : (
+            <span style={{ ...s.buttonGhost, opacity: 0.4, cursor: "default" }}>Berikutnya →</span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
