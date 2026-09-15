@@ -54,15 +54,19 @@ export const T = {
     buyShopee: "Beli di Shopee",
     detailPickup:
       "Bisa ambil di Perumahan Citra Raya, Tangerang, COD Alam Sutera dan Gading Serpong by appointment, atau dikirim ke seluruh Indonesia termasuk luar pulau dengan packing aman — dus tebal + bubble wrap.",
-    locTitle: "Ambil barang di 3 area",
+    locTitle: "Cara ambil atau kirim barang",
     locSub:
-      "Toko utama di Citra Raya, plus COD rutin di Alam Sutera dan Gading Serpong.",
+      "Ambil langsung di toko utama, COD di mall sekitar Tangerang, atau kami kirim ke seluruh Indonesia lewat kurir partner.",
     locMain: "TOKO UTAMA",
     locCitra:
       "Ambil langsung, cek kondisi box di tempat. Chat dulu sebelum datang biar barang disiapkan.",
-    locAlam:
-      "COD by appointment di area Alam Sutera. Jadwal menyesuaikan, konfirmasi via WhatsApp.",
-    locGading: "COD by appointment di area Gading Serpong dan sekitarnya.",
+    locCodTitle: "COD Tangerang",
+    locCod:
+      "COD by appointment di Mall Alam Sutera, Mall Summarecon Serpong, dan mall lain di Tangerang. Jadwal menyesuaikan, konfirmasi via WhatsApp.",
+    locShipBadge: "KIRIM",
+    locShipTitle: "Kirim Paket",
+    locShip:
+      "Dikirim ke seluruh Indonesia termasuk luar pulau lewat JNE, J&T, atau Lion Parcel — packing aman dus tebal + bubble wrap.",
     aboutTitle: "Tentang ITGabut Toys",
     aboutBody1:
       "ITGabut Toys adalah toko yang jual Blokees dan jual figure Tangerang, fokus pada building block figure. Mulai dari hobi ngoleksi, sekarang jadi tempat kolektor cari stok yang jelas dan harga yang wajar.",
@@ -223,12 +227,15 @@ export const T = {
     buyShopee: "Buy on Shopee",
     detailPickup:
       "Pick up at Perumahan Citra Raya, Tangerang, COD in Alam Sutera and Gading Serpong by appointment, or shipped nationwide including outer islands with safe packing — thick box + bubble wrap.",
-    locTitle: "Pick up in 3 areas",
-    locSub: "Main store in Citra Raya, plus regular COD in Alam Sutera and Gading Serpong.",
+    locTitle: "How to pick up or get it shipped",
+    locSub: "Pick up at our main store, COD around Tangerang malls, or we ship nationwide through courier partners.",
     locMain: "MAIN STORE",
     locCitra: "Pick up and inspect the box on the spot. Message us first so the item is ready.",
-    locAlam: "COD by appointment around Alam Sutera. Schedule confirmed over WhatsApp.",
-    locGading: "COD by appointment around Gading Serpong and nearby.",
+    locCodTitle: "COD Tangerang",
+    locCod: "COD by appointment at Mall Alam Sutera, Mall Summarecon Serpong, and other malls around Tangerang. Schedule confirmed over WhatsApp.",
+    locShipBadge: "SHIP",
+    locShipTitle: "Ship Nationwide",
+    locShip: "Shipped across Indonesia, including outer islands, via JNE, J&T, or Lion Parcel — packed safely with a thick box and bubble wrap.",
     aboutTitle: "About ITGabut Toys",
     aboutBody1:
       "ITGabut Toys is a Tangerang-based figure seller focused on Blokees and building block figures. It started as a collecting habit and became the place collectors go for honest stock and fair prices.",

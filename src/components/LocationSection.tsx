@@ -32,18 +32,18 @@ export default function LocationSection() {
             COD
           </div>
           <h3 className="font-display" style={{ fontSize: 22, fontWeight: 800, margin: "0 0 8px" }}>
-            Alam Sutera
+            {t.locCodTitle}
           </h3>
-          <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: "var(--muted)" }}>{t.locAlam}</p>
+          <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: "var(--muted)" }}>{t.locCod}</p>
         </div>
         <div className="card" style={{ padding: 24, boxShadow: "5px 5px 0 var(--green)" }}>
           <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "1.2px", color: "var(--muted-2)", marginBottom: 6 }}>
-            COD
+            {t.locShipBadge}
           </div>
           <h3 className="font-display" style={{ fontSize: 22, fontWeight: 800, margin: "0 0 8px" }}>
-            Gading Serpong
+            {t.locShipTitle}
           </h3>
-          <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: "var(--muted)" }}>{t.locGading}</p>
+          <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: "var(--muted)" }}>{t.locShip}</p>
         </div>
       </div>
     </section>
