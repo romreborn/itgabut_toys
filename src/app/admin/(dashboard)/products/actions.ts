@@ -86,6 +86,14 @@ export async function updateProductAction(slug: string, formData: FormData) {
   redirect("/admin/products");
 }
 
+export async function updateAvailabilityAction(slug: string, availability: "READY" | "PREORDER" | "SOLD") {
+  const { error } = await supabaseAdmin.from("products").update({ availability }).eq("slug", slug);
+  if (error) throw new Error(`Gagal mengubah status: ${error.message}`);
+
+  revalidatePath("/", "layout");
+  revalidatePath("/admin/products");
+}
+
 export async function deleteProductAction(slug: string) {
   const { error } = await supabaseAdmin.from("products").delete().eq("slug", slug);
   if (error) throw new Error(`Gagal menghapus produk: ${error.message}`);
