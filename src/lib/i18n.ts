@@ -7,7 +7,7 @@ export const T = {
     navAbout: "Tentang",
     navBlog: "Blog",
     heroBadge: "Jual Blokees · Citra Raya, Tangerang",
-    h1a: "Jual Blokees & action figure di ",
+    h1a: "Jual Blokees & figure Tangerang di ",
     h1b: "Citra Raya, Alam Sutera & Gading Serpong.",
     lead: "ITGabut Toys menjual figure dan building block figure — mostly Blokees. Transformers, Marvel, Ultraman, Pokemon, Saint Seiya, Star Wars, Evangelion, sampai Blokees Wheels blind box. Cek stok dan harga terbaru di katalog, ambil langsung di Perumahan Citra Raya atau COD di Alam Sutera dan Gading Serpong.",
     ctaCatalog: "Lihat katalog",
@@ -65,7 +65,7 @@ export const T = {
     locGading: "COD by appointment di area Gading Serpong dan sekitarnya.",
     aboutTitle: "Tentang ITGabut Toys",
     aboutBody1:
-      "ITGabut Toys adalah seller figure asal Tangerang yang fokus pada Blokees dan building block figure. Mulai dari hobi ngoleksi, sekarang jadi tempat kolektor cari stok yang jelas dan harga yang wajar.",
+      "ITGabut Toys adalah toko yang jual Blokees dan jual figure Tangerang, fokus pada building block figure. Mulai dari hobi ngoleksi, sekarang jadi tempat kolektor cari stok yang jelas dan harga yang wajar.",
     aboutBody2:
       "Semua barang segel, dikirim aman, dan bisa diambil langsung. Tanya stok, titip hunting, atau nego halus lewat WhatsApp.",
     footerAbout:
