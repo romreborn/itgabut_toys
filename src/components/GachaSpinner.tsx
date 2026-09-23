@@ -323,18 +323,30 @@ export default function GachaSpinner() {
                   </svg>
                 </div>
 
-                <div style={{ position: "absolute", inset: 0, borderRadius: "50%", boxShadow: "6px 6px 0 var(--ink)" }} />
+                {/* Hard drop shadow. Sized to the wheel exactly and offset, so it reads as
+                    one clean shadow instead of a dark ring around the whole circle. */}
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    zIndex: 0,
+                    borderRadius: "50%",
+                    background: "var(--ink)",
+                    transform: "translate(6px,6px)",
+                  }}
+                />
 
                 <div
                   style={{
                     position: "absolute",
                     inset: 0,
+                    zIndex: 1,
                     transform: `rotate(${s.rot}deg)`,
                     transition: s.busy ? `transform ${SPIN_SECONDS}s cubic-bezier(.12,.72,.12,1)` : "none",
                   }}
                 >
                   <svg viewBox="0 0 300 300" width="100%" height="100%" style={{ display: "block" }}>
-                    <circle cx={150} cy={150} r={146} fill="#2E1A10" />
+                    <circle cx={150} cy={150} r={150} fill="#2E1A10" />
                     {segments.map((sg) => (
                       <g key={sg.key}>
                         <path d={sg.d} fill={sg.fill} stroke="#2E1A10" strokeWidth={2} />
@@ -402,32 +414,60 @@ export default function GachaSpinner() {
                   </div>
                 )}
 
+                {/* Hub. Explicit width AND height — a percentage width plus aspect-ratio
+                    is unreliable on a <button>, which collapsed it to a sliver. */}
                 <button
                   onClick={spin}
-                  disabled={s.busy}
+                  disabled={s.busy || needNames}
                   className="gacha-spin-btn font-display"
                   aria-label="Putar roda"
                   style={{
                     position: "absolute",
                     left: "50%",
                     top: "50%",
-                    zIndex: 2,
-                    width: "25%",
-                    aspectRatio: "1",
+                    zIndex: 3,
+                    width: "26%",
+                    height: "26%",
+                    padding: 0,
                     transform: "translate(-50%,-50%)",
                     border: "3px solid var(--ink)",
                     borderRadius: "50%",
                     background: "var(--yellow)",
-                    fontSize: "clamp(15px,2.6vw,21px)",
+                    fontSize: "clamp(13px,2.4vw,19px)",
                     fontWeight: 800,
                     color: "var(--ink)",
-                    cursor: s.busy ? "default" : "pointer",
+                    cursor: s.busy || needNames ? "default" : "pointer",
                     boxShadow: "0 4px 0 var(--ink)",
+                    lineHeight: 1,
                   }}
                 >
                   {s.busy ? "…" : "SPIN"}
                 </button>
               </div>
+
+              <button
+                onClick={spin}
+                disabled={s.busy || needNames}
+                className="gacha-shuffle-btn font-display"
+                style={{
+                  padding: "16px 40px",
+                  border: "2px solid var(--ink)",
+                  borderRadius: 16,
+                  background: s.busy || needNames ? "var(--line)" : "var(--yellow)",
+                  fontSize: 20,
+                  fontWeight: 800,
+                  color: "var(--ink)",
+                  cursor: s.busy || needNames ? "default" : "pointer",
+                  boxShadow: "4px 4px 0 var(--ink)",
+                  transition: "transform .12s, box-shadow .12s, background .12s",
+                }}
+              >
+                {s.busy ? "Memutar…" : "Putar roda"}
+              </button>
+
+              <p style={{ margin: 0, fontSize: 12.5, fontWeight: 600, color: "var(--muted-2)" }}>
+                {needNames ? "Butuh minimal 2 nama." : `${pool.length} pilihan siap diputar.`}
+              </p>
             </div>
           ) : (
             <div
@@ -478,23 +518,27 @@ export default function GachaSpinner() {
               </div>
               <button
                 onClick={shuffle}
-                disabled={s.busy}
+                disabled={s.busy || pool.length === 0}
                 className="gacha-shuffle-btn font-display"
                 style={{
-                  padding: "16px 34px",
+                  padding: "16px 40px",
                   border: "2px solid var(--ink)",
                   borderRadius: 16,
-                  background: "var(--yellow)",
+                  background: s.busy || pool.length === 0 ? "var(--line)" : "var(--yellow)",
                   fontSize: 20,
                   fontWeight: 800,
                   color: "var(--ink)",
-                  cursor: s.busy ? "default" : "pointer",
+                  cursor: s.busy || pool.length === 0 ? "default" : "pointer",
                   boxShadow: "4px 4px 0 var(--ink)",
-                  transition: "transform .12s, box-shadow .12s",
+                  transition: "transform .12s, box-shadow .12s, background .12s",
                 }}
               >
                 {s.busy ? "Mengacak…" : "Acak kotak"}
               </button>
+
+              <p style={{ margin: 0, fontSize: 12.5, fontWeight: 600, color: "var(--muted-2)" }}>
+                {pool.length === 0 ? "Semua kotak sudah keluar." : `${pool.length} kotak tersisa.`}
+              </p>
             </div>
           )}
         </div>
