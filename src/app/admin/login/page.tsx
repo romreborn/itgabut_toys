@@ -3,10 +3,12 @@ import { loginAction } from "./actions";
 export default async function AdminLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; next?: string }>;
+  searchParams: Promise<{ error?: string; wait?: string; next?: string }>;
 }) {
   const sp = await searchParams;
   const next = sp.next && sp.next.startsWith("/admin") ? sp.next : "/admin";
+  const isLocked = sp.error === "locked";
+  const waitMinutes = Math.max(1, Number(sp.wait) || 15);
 
   return (
     <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: 20 }}>
@@ -38,7 +40,9 @@ export default async function AdminLoginPage({
               fontWeight: 600,
             }}
           >
-            Email atau password salah.
+            {isLocked
+              ? `Terlalu banyak percobaan gagal. Coba lagi dalam ${waitMinutes} menit.`
+              : "Email atau password salah."}
           </div>
         )}
 

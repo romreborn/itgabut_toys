@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { signAdminSession, ADMIN_SESSION_COOKIE } from "@/lib/adminSession";
+import { clientIp, lockRemainingSeconds, registerFailure, clearAttempts } from "@/lib/loginThrottle";
 
 export async function loginAction(formData: FormData) {
   const email = String(formData.get("email") || "").trim().toLowerCase();
@@ -16,6 +17,15 @@ export async function loginAction(formData: FormData) {
     redirect(`/admin/login?error=1&next=${encodeURIComponent(next)}`);
   }
 
+  // Throttle per IP rather than per email: an attacker hammering the form gets
+  // locked out, but can't lock the real owner out of their own panel.
+  const identifier = `ip:${await clientIp()}`;
+  const locked = await lockRemainingSeconds(identifier);
+  if (locked > 0) {
+    const wait = Math.ceil(locked / 60);
+    redirect(`/admin/login?error=locked&wait=${wait}&next=${encodeURIComponent(next)}`);
+  }
+
   const { data: admin } = await supabaseAdmin
     .from("admin_users")
     .select("id,email,name,passwordHash")
@@ -24,8 +34,11 @@ export async function loginAction(formData: FormData) {
 
   const valid = admin ? await bcrypt.compare(password, admin.passwordHash) : false;
   if (!admin || !valid) {
+    await registerFailure(identifier);
     redirect(`/admin/login?error=1&next=${encodeURIComponent(next)}`);
   }
+
+  await clearAttempts(identifier);
 
   const token = await signAdminSession({ sub: admin.id, email: admin.email, name: admin.name });
   const cookieStore = await cookies();
