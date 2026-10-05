@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Toast from "@/components/Toast";
 import DisableRightClick from "@/components/DisableRightClick";
+import PageViewTracker from "@/components/PageViewTracker";
 import { SITE_URL, GA_MEASUREMENT_ID } from "@/lib/constants";
 
 const baloo = Baloo_2({
@@ -102,6 +103,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Langsung ke konten
         </a>
         <DisableRightClick />
+        <PageViewTracker />
         <LanguageProvider>
           <CartProvider>
             <Header />
