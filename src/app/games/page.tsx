@@ -86,13 +86,6 @@ const h2: React.CSSProperties = {
   margin: "0 0 12px",
 };
 
-const body: React.CSSProperties = {
-  margin: "0 0 14px",
-  fontSize: 15.5,
-  lineHeight: 1.75,
-  color: "var(--muted)",
-};
-
 export default function GamesPage() {
   return (
     <section className="container" style={{ padding: "30px 20px 60px" }}>
@@ -106,52 +99,13 @@ export default function GamesPage() {
         Spinner Wheel Gratis &amp; Tools Undian Online
       </h1>
       <p style={{ margin: "0 0 26px", fontSize: 16, lineHeight: 1.7, color: "var(--muted)", maxWidth: "66ch" }}>
-        Butuh cara cepat buat menentukan pemenang? Putar spinner wheel berisi angka atau nama, atau acak kotak.
-        Gratis, tanpa daftar akun, tanpa install — langsung jalan di browser HP maupun laptop.
+        Putar roda berisi angka atau nama, atau acak kotak. Gratis dan langsung jalan di browser.
       </p>
 
       <GachaSpinner />
 
       <div style={{ maxWidth: "72ch", marginTop: 56 }}>
         <h2 className="font-display" style={h2}>
-          Bisa dipakai untuk apa saja?
-        </h2>
-        <p style={body}>
-          Tools undian ini sengaja dibikin umum, jadi nggak terbatas buat satu keperluan:
-        </p>
-        <p style={{ ...body, whiteSpace: "pre-line" }}>
-          {"• Undian giveaway Instagram atau TikTok — tinggal tempel daftar nama pemenang kandidat\n" +
-            "• Doorprize acara kantor, arisan, atau reuni\n" +
-            "• Menentukan giliran atau kelompok di kelas dan rapat\n" +
-            "• Memilih siapa yang traktir, siapa yang jalan duluan, siapa yang piket\n" +
-            "• Buat kolektor: menentukan blind box mana yang dibuka duluan"}
-        </p>
-
-        <h2 className="font-display" style={{ ...h2, marginTop: 34 }}>
-          Cara pakai
-        </h2>
-        <p style={{ ...body, whiteSpace: "pre-line" }}>
-          {"1. Pilih mode: Spinner (roda putar) atau Kotak (petak acak).\n" +
-            "2. Di mode Spinner, tentukan isi roda — Angka (2 sampai 12) atau Nama.\n" +
-            "3. Kalau pakai Nama, ketik satu nama per baris di panel samping. Maksimal 24 nama.\n" +
-            "4. Nyalakan \"Buang angka yang keluar\" kalau pemenang tidak boleh dobel.\n" +
-            "5. Tekan Putar roda, lalu tunggu hasilnya muncul."}
-        </p>
-
-        <h2 className="font-display" style={{ ...h2, marginTop: 34 }}>
-          Kenapa pakai tools undian ini?
-        </h2>
-        <p style={{ ...body, whiteSpace: "pre-line" }}>
-          {"• Gratis tanpa batas putaran, tanpa iklan yang menutupi layar\n" +
-            "• Tanpa daftar akun dan tanpa install aplikasi\n" +
-            "• Dua mode dalam satu halaman: roda putar dan acak kotak\n" +
-            "• Mode nama otomatis memberi nomor urut, jadi gampang diverifikasi peserta\n" +
-            "• Ada riwayat hasil, jadi kelihatan siapa saja yang sudah keluar\n" +
-            "• Opsi buang hasil yang sudah keluar, supaya tidak ada pemenang dobel\n" +
-            "• Jalan lancar di layar HP maupun laptop"}
-        </p>
-
-        <h2 className="font-display" style={{ ...h2, marginTop: 34 }}>
           Pertanyaan yang sering muncul
         </h2>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
