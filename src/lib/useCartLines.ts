@@ -3,7 +3,7 @@ import { useCart } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { getProductsBySlugs, Product } from "@/lib/products";
 import { parseSetSize } from "@/lib/decorate";
-import { rupiah } from "@/lib/format";
+import { rupiah, salePrice } from "@/lib/format";
 
 export interface CartLineView {
   slug: string;
@@ -67,16 +67,18 @@ export function useCartLines() {
         l.variant === "set" && p.type !== "Blind Box" ? "single" : l.variant || "single";
       const setSize = parseSetSize(p.pack);
       const multiplier = variant === "set" && setSize ? setSize : 1;
-      const unitPrice = p.price * multiplier;
+      // Catalog prices are already shown with the store-wide discount, so the cart charges the sale price directly.
+      const sale = salePrice(p.price);
+      const unitPrice = sale * multiplier;
       return {
         slug: l.slug,
         name: p.name,
         ip: p.ip,
         imageUrl: p.imageUrl,
-        price: p.price,
+        price: sale,
         isBlind: p.type === "Blind Box",
         setSize,
-        priceLabel: rupiah(p.price),
+        priceLabel: rupiah(sale),
         qty: l.qty,
         variant,
         variantLabel: variant === "set" ? t.vSet : t.vSingle,
@@ -87,9 +89,8 @@ export function useCartLines() {
   }, [cart, products, t]);
 
   const subtotal = lines.reduce((a, l) => a + l.lineTotal, 0);
-  const discount = Math.round(subtotal * 0.1);
-  const grand = subtotal - discount;
+  const grand = subtotal;
   const cartReady = lines.length > 0 && lines.every((l) => num(l.qty) >= 1 && l.variant);
 
-  return { lines, subtotal, discount, grand, cartReady, patchLine, removeLine };
+  return { lines, subtotal, grand, cartReady, patchLine, removeLine };
 }

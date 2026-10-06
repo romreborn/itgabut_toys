@@ -1,12 +1,16 @@
 import { AVAIL_STYLE, Product } from "@/lib/products";
-import { rupiah } from "@/lib/format";
+import { DISCOUNT_LABEL, rupiah, salePrice } from "@/lib/format";
 import { waLink } from "@/lib/constants";
 import { Dict } from "@/lib/i18n";
 
 export interface DecoratedProduct extends Product {
+  /** What the customer pays after the store-wide discount. */
+  salePrice: number;
+  /** Sale price, formatted. */
   priceLabel: string;
-  oldLabel: string;
-  hasOld: boolean;
+  /** List price before the discount, shown struck through. */
+  listLabel: string;
+  discountLabel: string;
   availLabel: string;
   availBg: string;
   availFg: string;
@@ -32,11 +36,13 @@ export function decorate(p: Product, t: Dict): DecoratedProduct {
     (t.types.find((x) => x[0] === p.type)?.[1] ?? p.type) +
     (p.battery ? " · Battery" : "");
   const setSize = parseSetSize(p.pack);
+  const sale = salePrice(p.price);
   return {
     ...p,
-    priceLabel: rupiah(p.price),
-    oldLabel: p.oldPrice ? rupiah(p.oldPrice) : "",
-    hasOld: !!p.oldPrice,
+    salePrice: sale,
+    priceLabel: rupiah(sale),
+    listLabel: rupiah(p.price),
+    discountLabel: DISCOUNT_LABEL,
     availLabel: t.avail[p.avail],
     availBg: AVAIL_STYLE[p.avail].bg,
     availFg: AVAIL_STYLE[p.avail].fg,
@@ -44,7 +50,7 @@ export function decorate(p: Product, t: Dict): DecoratedProduct {
     tagLabel: p.tag ? t.tags[p.tag as keyof typeof t.tags] : "",
     typeLabel,
     isBlind: p.type === "Blind Box",
-    waOrderLink: waLink(t.waText + p.name + " (" + rupiah(p.price) + ")"),
+    waOrderLink: waLink(t.waText + p.name + " (" + rupiah(sale) + ")"),
     setSize,
     setSizeLabel: setSize ? `1 ${t.vSet} = ${setSize} ${t.qtyUnit}` : "",
   };

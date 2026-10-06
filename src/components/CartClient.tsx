@@ -8,7 +8,7 @@ import { rupiah } from "@/lib/format";
 
 export default function CartClient() {
   const { t } = useLanguage();
-  const { lines, subtotal, discount, grand, cartReady, patchLine, removeLine } = useCartLines();
+  const { lines, subtotal, grand, cartReady, patchLine, removeLine } = useCartLines();
 
   return (
     <section className="container" style={{ padding: "30px 20px 60px" }}>
@@ -178,10 +178,6 @@ export default function CartClient() {
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 14, fontWeight: 600, marginBottom: 9 }}>
               <span style={{ color: "var(--muted-2)" }}>{t.subtotal}</span>
               <span>{rupiah(subtotal)}</span>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 14, fontWeight: 700, marginBottom: 14, color: "var(--green-dark)" }}>
-              <span>{t.discount}</span>
-              <span>-{rupiah(discount)}</span>
             </div>
             <div style={{ borderTop: "2px dashed var(--line)", paddingTop: 14, display: "flex", justifyContent: "space-between", gap: 12, alignItems: "baseline", marginBottom: 8 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: "var(--muted-2)" }}>{t.estTotal}</span>

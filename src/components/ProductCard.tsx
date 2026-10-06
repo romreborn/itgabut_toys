@@ -65,8 +65,25 @@ export default function ProductCard({ p }: { p: DecoratedProduct }) {
             {p.name}
           </h3>
           <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 9, paddingTop: 6 }}>
-            <div className="font-display" style={{ fontSize: 19, fontWeight: 800, lineHeight: 1.25, whiteSpace: "nowrap" }}>
-              {p.priceLabel}
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 600, color: "var(--muted-3)" }}>
+                <s>{p.listLabel}</s>
+                <span
+                  style={{
+                    padding: "1px 6px",
+                    borderRadius: 6,
+                    background: "var(--peach)",
+                    color: "var(--orange-dark)",
+                    fontSize: 11,
+                    fontWeight: 800,
+                  }}
+                >
+                  {p.discountLabel}
+                </span>
+              </div>
+              <div className="font-display" style={{ fontSize: 19, fontWeight: 800, lineHeight: 1.25, whiteSpace: "nowrap", color: "var(--orange-dark)" }}>
+                {p.priceLabel}
+              </div>
             </div>
             <div style={{ display: "flex", gap: 7 }}>
               <div

@@ -17,7 +17,7 @@ const SAVED_INFO_KEY = "itgabut-checkout-info";
 
 export default function CheckoutClient() {
   const { t } = useLanguage();
-  const { lines, subtotal, discount, grand, cartReady } = useCartLines();
+  const { lines, subtotal, grand, cartReady } = useCartLines();
   const [method, setMethod] = useState<Method>("");
   const [mall, setMall] = useState("");
   const [form, setForm] = useState<ContactForm>(EMPTY_FORM);
@@ -75,9 +75,9 @@ export default function CheckoutClient() {
       "\n\n" +
       [`${t.waItems}:`, itemsText].join("\n") +
       "\n\n" +
-      [`${t.subtotal}: ${rupiah(subtotal)}`, `${t.discount}: -${rupiah(discount)}`, `${t.estTotal}: ${rupiah(grand)}`].join("\n")
+      [`${t.subtotal}: ${rupiah(subtotal)}`, `${t.estTotal}: ${rupiah(grand)}`].join("\n")
     );
-  }, [lines, form, method, mall, methodText, subtotal, discount, grand, t]);
+  }, [lines, form, method, mall, methodText, subtotal, grand, t]);
 
   const link = waLink(waMsg);
 
@@ -103,7 +103,7 @@ export default function CheckoutClient() {
       city: method === "ship" ? form.city : null,
       address: method === "ship" ? form.addr : null,
       subtotal,
-      discount,
+      discount: 0,
       total: grand,
       waMessage: waMsg,
       updatedAt: nowIso,
@@ -375,10 +375,6 @@ export default function CheckoutClient() {
               <span style={{ color: "var(--muted-2)" }}>{t.subtotal}</span>
               <span>{rupiah(subtotal)}</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 14, fontWeight: 700, marginBottom: 14, color: "var(--green-dark)" }}>
-              <span>{t.discount}</span>
-              <span>-{rupiah(discount)}</span>
-            </div>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "baseline", marginBottom: 18 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: "var(--muted-2)" }}>{t.estTotal}</span>
               <span className="font-display" style={{ fontSize: 26, fontWeight: 800, color: "var(--orange-dark)", whiteSpace: "nowrap" }}>
@@ -449,10 +445,6 @@ export default function CheckoutClient() {
               <div style={{ display: "flex", justifyContent: "space-between", gap: 12, padding: "12px 15px", fontSize: 13.5, fontWeight: 600, color: "var(--muted)" }}>
                 <span>{t.subtotal}</span>
                 <span>{rupiah(subtotal)}</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, padding: "0 15px 12px", fontSize: 13.5, fontWeight: 700, color: "var(--green-dark)" }}>
-                <span>{t.discount}</span>
-                <span>-{rupiah(discount)}</span>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "baseline", padding: "14px 15px", background: "#FFF3E9", borderTop: "2px dashed var(--line)" }}>
                 <span style={{ fontSize: 13, fontWeight: 700, color: "var(--muted-2)" }}>{t.estTotal}</span>

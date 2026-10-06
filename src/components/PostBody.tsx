@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PostBlock } from "@/lib/posts";
 import { getProductsBySlugs } from "@/lib/products";
-import { rupiah } from "@/lib/format";
+import { rupiah, salePrice } from "@/lib/format";
 import ProductImage from "@/components/ProductImage";
 import GalleryImage from "@/components/GalleryImage";
 import { LightboxProvider, type LightboxImage } from "@/components/Lightbox";
@@ -62,17 +62,11 @@ async function ProductsBlock({ label, productSlugs }: { label: string; productSl
             }}
           >
             <span style={{ minWidth: 0, fontSize: 13.5, fontWeight: 700 }}>{p.name}</span>
-            <span
-              style={{
-                flex: "0 0 auto",
-                fontFamily: "var(--font-display)",
-                fontSize: 15,
-                fontWeight: 800,
-                whiteSpace: "nowrap",
-                color: "var(--orange-dark)",
-              }}
-            >
-              {rupiah(p.price)}
+            <span style={{ flex: "0 0 auto", textAlign: "right", whiteSpace: "nowrap" }}>
+              <s style={{ display: "block", fontSize: 11.5, fontWeight: 600, color: "var(--muted-3)" }}>{rupiah(p.price)}</s>
+              <span style={{ fontFamily: "var(--font-display)", fontSize: 15, fontWeight: 800, color: "var(--orange-dark)" }}>
+                {rupiah(salePrice(p.price))}
+              </span>
             </span>
           </Link>
         ))}

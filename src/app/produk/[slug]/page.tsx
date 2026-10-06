@@ -57,7 +57,7 @@ export default async function ProductPage({
     offers: {
       "@type": "Offer",
       priceCurrency: "IDR",
-      price: product.price,
+      price: p.salePrice,
       availability:
         product.avail === "ready"
           ? "https://schema.org/InStock"

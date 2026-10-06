@@ -52,15 +52,26 @@ export default function ProductDetail({ product, related }: { product: Product; 
           >
             {p.name}
           </h1>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 15, fontWeight: 600, color: "var(--muted-3)", marginBottom: 2 }}>
+            <s>{p.listLabel}</s>
+            <span
+              style={{
+                padding: "2px 8px",
+                border: "2px solid var(--ink)",
+                borderRadius: 8,
+                background: "var(--peach)",
+                color: "var(--orange-dark)",
+                fontSize: 12.5,
+                fontWeight: 800,
+              }}
+            >
+              {p.discountLabel}
+            </span>
+          </div>
           <div className="font-display" style={{ fontSize: 34, fontWeight: 800, lineHeight: 1.2, color: "var(--orange-dark)", whiteSpace: "nowrap", marginBottom: 6 }}>
             {p.priceLabel}
           </div>
-          <p style={{ margin: "0 0 4px", fontSize: 13, color: "var(--muted-2)", fontWeight: 600 }}>{t.priceNote}</p>
-          {p.hasOld && (
-            <p style={{ margin: "0 0 20px", fontSize: 12.5, color: "var(--muted-3)", fontWeight: 600 }}>
-              {t.oldPriceNote} {p.oldLabel}
-            </p>
-          )}
+          <p style={{ margin: "0 0 20px", fontSize: 13, color: "var(--muted-2)", fontWeight: 600 }}>{t.priceNote}</p>
 
           <div className="card" style={{ borderRadius: 16, overflow: "hidden", marginBottom: 22 }}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 14, padding: "12px 16px", borderBottom: "1px solid var(--line)", fontSize: 13.5 }}>

@@ -5,6 +5,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { Product, PRICE_BUCKETS } from "@/lib/products";
 import { decorate } from "@/lib/decorate";
 import ProductCard from "@/components/ProductCard";
+import { salePrice } from "@/lib/format";
 
 const PER_PAGE = 12;
 
@@ -34,7 +35,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
     if (skip !== "ips" && state.ips.length && !state.ips.includes(p.ip)) return false;
     if (skip !== "types" && state.types.length && !state.types.includes(p.type)) return false;
     if (skip !== "prices" && state.prices.length) {
-      const ok = state.prices.some((k) => p.price >= PRICE_BUCKETS[k][0] && p.price < PRICE_BUCKETS[k][1]);
+      const ok = state.prices.some((k) => salePrice(p.price) >= PRICE_BUCKETS[k][0] && salePrice(p.price) < PRICE_BUCKETS[k][1]);
       if (!ok) return false;
     }
     return true;
@@ -73,7 +74,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
         return {
           value: k,
           label,
-          count: products.filter((p) => matches(p, "prices") && p.price >= PRICE_BUCKETS[k][0] && p.price < PRICE_BUCKETS[k][1])
+          count: products.filter((p) => matches(p, "prices") && salePrice(p.price) >= PRICE_BUCKETS[k][0] && salePrice(p.price) < PRICE_BUCKETS[k][1])
             .length,
           checked: state.prices.includes(k),
         };
