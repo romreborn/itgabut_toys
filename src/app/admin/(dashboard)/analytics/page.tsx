@@ -51,7 +51,7 @@ function Table({
           <thead>
             <tr>
               <th style={s.th}>Halaman</th>
-              <th style={{ ...s.th, width: 170 }}>Kunjungan</th>
+              <th style={{ ...s.th, width: 170 }}>Pengunjung unik</th>
             </tr>
           </thead>
           <tbody>
@@ -115,8 +115,15 @@ export default async function AdminAnalyticsPage({
   ]);
 
   const error = summaryRes.error || productsRes.error || blogRes.error || pagesRes.error || dailyRes.error;
-  const summary = (summaryRes.data?.[0] as { total: number; unique_paths: number; product_views: number; blog_views: number }) || {
+  const summary = (summaryRes.data?.[0] as {
+    total: number;
+    unique_visitors: number;
+    unique_paths: number;
+    product_views: number;
+    blog_views: number;
+  }) || {
     total: 0,
+    unique_visitors: 0,
     unique_paths: 0,
     product_views: 0,
     blog_views: 0,
@@ -157,7 +164,8 @@ export default async function AdminAnalyticsPage({
       {error && <p style={{ color: "#C9490F" }}>Gagal memuat: {error.message}</p>}
 
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 26 }}>
-        <Cards label="Total kunjungan" value={Number(summary.total).toLocaleString("id-ID")} />
+        <Cards label="Pengunjung unik" value={Number(summary.unique_visitors).toLocaleString("id-ID")} />
+        <Cards label="Total dibuka (termasuk reload)" value={Number(summary.total).toLocaleString("id-ID")} />
         <Cards label="Halaman unik" value={Number(summary.unique_paths).toLocaleString("id-ID")} />
         <Cards label="Lihat produk" value={Number(summary.product_views).toLocaleString("id-ID")} />
         <Cards label="Baca blog" value={Number(summary.blog_views).toLocaleString("id-ID")} />
@@ -165,7 +173,7 @@ export default async function AdminAnalyticsPage({
 
       {daily.length > 0 && (
         <div style={{ ...s.card, padding: 18, marginBottom: 28 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 800, margin: "0 0 14px" }}>Kunjungan per hari</h2>
+          <h2 style={{ fontSize: 16, fontWeight: 800, margin: "0 0 14px" }}>Pengunjung unik per hari</h2>
           <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 120 }}>
             {daily.map((d) => (
               <div
@@ -198,8 +206,10 @@ export default async function AdminAnalyticsPage({
       <Table title="Halaman lain" rows={pages} emptyText="Belum ada data." />
 
       <p style={{ fontSize: 12.5, color: "#8A7263", lineHeight: 1.7, marginTop: 4 }}>
-        Data dihitung dari pengunjung yang benar-benar membuka halaman di browser, jadi bot dan crawler tidak ikut
-        terhitung. Halaman admin tidak dilacak. Pencatatan dimulai sejak fitur ini dipasang, bukan data lama.
+        Angka dihitung per pengunjung unik (IP + browser): kalau orang yang sama membuka atau me-reload halaman yang
+        sama berkali-kali dalam periode ini, tetap terhitung 1. Hanya &quot;Total dibuka&quot; yang menghitung setiap reload.
+        Bot dan crawler tidak ikut terhitung, dan halaman admin tidak dilacak. Data sebelum 7 Oktober 2026 belum punya
+        info pengunjung, jadi setiap kunjungan lama tetap dihitung satu per satu.
       </p>
     </div>
   );

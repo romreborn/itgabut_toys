@@ -1,3 +1,4 @@
+import { createHmac } from "node:crypto";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
@@ -8,6 +9,19 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
  * browser, so `page_views` needs no anon RLS policy at all — the table stays
  * unreadable and unwritable to everyone except server code.
  */
+/**
+ * Identifies a visitor so a reload or repeat visit counts once. IP alone would lump
+ * together everyone behind one mobile-carrier NAT, so the user agent is mixed in.
+ * Only a keyed hash is stored, never the raw IP.
+ */
+function visitorHash(request: Request): string | null {
+  const secret = process.env.ADMIN_SESSION_SECRET;
+  const ip = (request.headers.get("x-forwarded-for")?.split(",")[0] || request.headers.get("x-real-ip") || "").trim();
+  if (!secret || !ip) return null;
+  const ua = request.headers.get("user-agent") || "";
+  return createHmac("sha256", secret).update(`pageview:${ip}|${ua}`).digest("hex").slice(0, 32);
+}
+
 export async function POST(request: Request) {
   // Always answer 204: this is fire-and-forget telemetry and must never
   // surface an error to a visitor or hold up a navigation.
@@ -36,7 +50,7 @@ export async function POST(request: Request) {
     const referrerRaw = typeof payload.referrer === "string" ? payload.referrer : "";
     const referrer = referrerRaw.slice(0, 300) || null;
 
-    await supabaseAdmin.from("page_views").insert({ path, kind, slug, referrer });
+    await supabaseAdmin.from("page_views").insert({ path, kind, slug, referrer, visitorHash: visitorHash(request) });
   } catch {
     // Malformed body, database hiccup — nothing here is worth failing on.
   }
