@@ -18,6 +18,7 @@ export interface ProductFormValues {
   isActive: boolean;
   sortOrder: number;
   imageUrl: string | null;
+  description: string | null;
 }
 
 const EMPTY: ProductFormValues = {
@@ -38,6 +39,7 @@ const EMPTY: ProductFormValues = {
   isActive: true,
   sortOrder: 0,
   imageUrl: null,
+  description: null,
 };
 
 export default function ProductForm({
@@ -157,6 +159,15 @@ export default function ProductForm({
           </label>
         </div>
       </div>
+
+      <label style={s.label}>Deskripsi produk (opsional, tampil di halaman produk dan dipakai untuk SEO)</label>
+      <textarea
+        name="description"
+        defaultValue={v.description ?? ""}
+        rows={7}
+        placeholder="Lineup, tanggal rilis, isi set, dan info lain. Pisahkan paragraf dengan baris kosong."
+        style={{ ...s.input, resize: "vertical", lineHeight: 1.6 }}
+      />
 
       <div style={s.row}>
         <div style={s.col}>

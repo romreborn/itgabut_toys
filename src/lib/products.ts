@@ -22,6 +22,8 @@ export interface Product {
   imageUrl: string | null;
   /** Catalog insertion order — higher means added more recently. */
   sortOrder: number;
+  /** Optional long-form copy for the product page; paragraphs separated by blank lines. */
+  description: string | null;
 }
 
 /** Raw shape of a row in Supabase's `products` table. */
@@ -42,10 +44,11 @@ interface ProductRow {
   year: number | null;
   imageUrl: string | null;
   sortOrder: number;
+  description: string | null;
 }
 
 const PRODUCT_COLUMNS =
-  "slug,name,ip,type,battery,pack,condition,period,periodIndex,availability,tag,price,oldPrice,year,imageUrl,sortOrder";
+  "slug,name,ip,type,battery,pack,condition,period,periodIndex,availability,tag,price,oldPrice,year,imageUrl,sortOrder,description";
 
 function fromRow(r: ProductRow): Product {
   return {
@@ -65,6 +68,7 @@ function fromRow(r: ProductRow): Product {
     year: r.year,
     imageUrl: r.imageUrl,
     sortOrder: r.sortOrder,
+    description: r.description,
   };
 }
 

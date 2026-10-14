@@ -53,6 +53,7 @@ function buildPayload(fd: FormData) {
     year: numOrNull(fd, "year"),
     isActive: fd.get("isActive") === "on",
     sortOrder: num(fd, "sortOrder"),
+    description: str(fd, "description") || null,
   };
 }
 

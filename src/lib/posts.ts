@@ -65,6 +65,26 @@ export async function getAllPosts(): Promise<Post[]> {
   return (data as PostRow[]).map(fromRow);
 }
 
+/** Published posts whose "products" blocks link this product, for the product page's related-articles list. */
+export async function getPostsMentioningProduct(
+  productSlug: string,
+  limit = 3
+): Promise<{ slug: string; title: string; date: string }[]> {
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select("slug,title,dateLabel")
+    .eq("isPublished", true)
+    // jsonb containment: some block in the body array has productSlugs including this slug.
+    .contains("body", JSON.stringify([{ productSlugs: [productSlug] }]))
+    .order("publishedAt", { ascending: false })
+    .limit(limit);
+  if (error) {
+    console.error("getPostsMentioningProduct:", error.message);
+    return [];
+  }
+  return (data as { slug: string; title: string; dateLabel: string }[]).map((r) => ({ slug: r.slug, title: r.title, date: r.dateLabel }));
+}
+
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   const { data, error } = await supabase
     .from("blog_posts")

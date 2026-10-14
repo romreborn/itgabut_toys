@@ -13,7 +13,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ sl
   const { data: product } = await supabaseAdmin
     .from("products")
     .select(
-      "slug,name,ip,type,battery,pack,condition,period,periodIndex,availability,tag,price,oldPrice,year,isActive,sortOrder,imageUrl"
+      "slug,name,ip,type,battery,pack,condition,period,periodIndex,availability,tag,price,oldPrice,year,isActive,sortOrder,imageUrl,description"
     )
     .eq("slug", slug)
     .maybeSingle();

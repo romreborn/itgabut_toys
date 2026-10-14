@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllProducts, getProductBySlug, getRelatedProducts } from "@/lib/products";
-import { decorate } from "@/lib/decorate";
+import { getPostsMentioningProduct } from "@/lib/posts";
+import { decorate, type DecoratedProduct } from "@/lib/decorate";
+import { DISCOUNT_RATE } from "@/lib/format";
 import { T } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/constants";
 import ProductDetail from "@/components/ProductDetail";
@@ -16,6 +18,30 @@ export async function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
 }
 
+function absoluteImage(url: string | null): string | undefined {
+  if (!url) return undefined;
+  return url.startsWith("http") ? url : `${SITE_URL}${url}`;
+}
+
+function clip(text: string, max: number): string {
+  const flat = text.replace(/\s+/g, " ").trim();
+  if (flat.length <= max) return flat;
+  const cut = flat.slice(0, max);
+  return cut.slice(0, cut.lastIndexOf(" ")).replace(/[,.;:]$/, "") + "…";
+}
+
+/** The product's own copy when it has some, otherwise a sentence built from its catalog fields. */
+function metaDescription(p: DecoratedProduct): string {
+  if (p.description) return clip(p.description, 158);
+  const status = p.avail === "preorder" ? `Pre-order${p.cond ? ` (${p.cond})` : ""}` : p.availLabel;
+  return clip(
+    `Beli ${p.name} (${p.ip}, ${p.typeLabel}) di ITGabut Toys. ${p.priceLabel}, diskon ${Math.round(
+      DISCOUNT_RATE * 100
+    )}% dari ${p.listLabel}. ${status}. Ambil di Citra Raya Tangerang, COD, atau kirim ke seluruh Indonesia.`,
+    158
+  );
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -25,14 +51,16 @@ export async function generateMetadata({
   const product = await getProductBySlug(slug);
   if (!product) return {};
   const p = decorate(product, T.id);
-  const title = `${p.name} — ${p.priceLabel}`;
-  const description = `${p.name} (${p.ip}, ${p.typeLabel}) ${p.priceLabel}. ${T.id.detailPickup}`;
+  const title = `${p.name} — ${p.avail === "preorder" ? "Pre-order " : ""}${p.priceLabel}`;
+  const description = metaDescription(p);
   const url = `${SITE_URL}/produk/${p.slug}`;
+  const image = absoluteImage(p.imageUrl);
   return {
     title,
     description,
     alternates: { canonical: `/produk/${p.slug}` },
-    openGraph: { title, description, url, type: "website" },
+    openGraph: { title, description, url, type: "website", images: image ? [{ url: image, alt: p.name }] : undefined },
+    twitter: { card: image ? "summary_large_image" : "summary", title, description, images: image ? [image] : undefined },
   };
 }
 
@@ -45,33 +73,51 @@ export default async function ProductPage({
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const related = await getRelatedProducts(product, 4);
+  const [related, posts] = await Promise.all([getRelatedProducts(product, 4), getPostsMentioningProduct(product.slug)]);
   const p = decorate(product, T.id);
+  const url = `${SITE_URL}/produk/${p.slug}`;
+  const image = absoluteImage(p.imageUrl);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
+    sku: product.slug,
+    description: metaDescription(p),
+    ...(image && { image: [image] }),
     brand: { "@type": "Brand", name: product.ip },
     category: product.type,
     offers: {
       "@type": "Offer",
       priceCurrency: "IDR",
       price: p.salePrice,
+      itemCondition: "https://schema.org/NewCondition",
       availability:
         product.avail === "ready"
           ? "https://schema.org/InStock"
           : product.avail === "preorder"
           ? "https://schema.org/PreOrder"
           : "https://schema.org/OutOfStock",
-      url: `${SITE_URL}/produk/${p.slug}`,
+      url,
+      seller: { "@type": "Organization", name: "ITGabut Toys", url: SITE_URL },
     },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ITGabut Toys", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: product.ip, item: `${SITE_URL}/#katalog` },
+      { "@type": "ListItem", position: 3, name: product.name, item: url },
+    ],
   };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <ProductDetail product={product} related={related} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <ProductDetail product={product} related={related} posts={posts} />
     </>
   );
 }

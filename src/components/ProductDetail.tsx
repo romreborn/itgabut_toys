@@ -9,11 +9,23 @@ import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
 import { SHOPEE_URL } from "@/lib/constants";
 
-export default function ProductDetail({ product, related }: { product: Product; related: Product[] }) {
+export default function ProductDetail({
+  product,
+  related,
+  posts = [],
+}: {
+  product: Product;
+  related: Product[];
+  /** Blog posts that link this product, shown as "related articles". */
+  posts?: { slug: string; title: string; date: string }[];
+}) {
   const { t } = useLanguage();
   const { addToCart } = useCart();
   const p = decorate(product, t);
   const relatedDecorated = related.map((r) => decorate(r, t));
+  // Pre-orders carry their arrival estimate in `cond`; for ready stock that field is often stale, so it stays hidden.
+  const statusLabel = p.avail === "preorder" && p.cond ? `${p.availLabel} · ${p.cond}` : p.availLabel;
+  const paragraphs = (p.description ?? "").split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
 
   return (
     <section className="container" style={{ padding: "26px 20px 10px" }}>
@@ -75,6 +87,10 @@ export default function ProductDetail({ product, related }: { product: Product; 
 
           <div className="card" style={{ borderRadius: 16, overflow: "hidden", marginBottom: 22 }}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 14, padding: "12px 16px", borderBottom: "1px solid var(--line)", fontSize: 13.5 }}>
+              <span style={{ fontWeight: 600, color: "var(--muted-2)", flex: "0 0 auto" }}>{t.specStatus}</span>
+              <span style={{ fontWeight: 700, textAlign: "right", flex: "1 1 auto", minWidth: 0, color: p.availFg }}>{statusLabel}</span>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 14, padding: "12px 16px", borderBottom: "1px solid var(--line)", fontSize: 13.5 }}>
               <span style={{ fontWeight: 600, color: "var(--muted-2)", flex: "0 0 auto" }}>{t.specIp}</span>
               <span style={{ fontWeight: 700, textAlign: "right", flex: "1 1 auto", minWidth: 0 }}>{p.ip}</span>
             </div>
@@ -119,6 +135,40 @@ export default function ProductDetail({ product, related }: { product: Product; 
           <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.7, color: "var(--muted)" }}>{t.detailPickup}</p>
         </div>
       </div>
+
+      {paragraphs.length > 0 && (
+        <div style={{ marginTop: 46, maxWidth: "72ch" }}>
+          <h2 className="font-display" style={{ fontSize: 24, fontWeight: 800, margin: "0 0 14px" }}>
+            {t.productAboutTitle}
+          </h2>
+          {paragraphs.map((para, i) => (
+            <p key={i} style={{ margin: "0 0 14px", fontSize: 15.5, lineHeight: 1.75, color: "var(--muted)", whiteSpace: "pre-line" }}>
+              {para}
+            </p>
+          ))}
+        </div>
+      )}
+
+      {posts.length > 0 && (
+        <div style={{ marginTop: 40 }}>
+          <h2 className="font-display" style={{ fontSize: 24, fontWeight: 800, margin: "0 0 14px" }}>
+            {t.relatedPosts}
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 720 }}>
+            {posts.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="card"
+                style={{ display: "block", borderRadius: 14, padding: "14px 16px", color: "var(--ink)" }}
+              >
+                <span style={{ display: "block", fontWeight: 700, fontSize: 15, lineHeight: 1.4 }}>{post.title}</span>
+                <span style={{ display: "block", marginTop: 4, fontSize: 12, fontWeight: 600, color: "var(--muted-3)" }}>{post.date}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {relatedDecorated.length > 0 && (
         <div style={{ marginTop: 46 }}>
