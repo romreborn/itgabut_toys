@@ -75,7 +75,7 @@ export default function Hero() {
         >
           <div style={{ aspectRatio: "16/10" }}>
             <ProductImage
-              name="Blokees Transformers Prime Optimus Prime — Legend Series"
+              name="Blokees Transformers Prime Optimus Prime, Legend Series"
               seed="hero-1"
               imageUrl="/tf-ae.jpg"
               priority
@@ -84,12 +84,12 @@ export default function Hero() {
         </div>
         <div className="card" style={{ overflow: "hidden" }}>
           <div style={{ aspectRatio: "1" }}>
-            <ProductImage name="Koleksi asli ITGabut Toys" seed="hero-2" imageUrl="/wukong.jpg" />
+            <ProductImage name="Box Blokees Champion Class Herospire Sun Wukong Mythical Aspect di ITGabut Toys" seed="hero-2" imageUrl="/wukong.jpg" />
           </div>
         </div>
         <div className="card" style={{ boxShadow: "4px 4px 0 var(--green)", overflow: "hidden" }}>
           <div style={{ aspectRatio: "1" }}>
-            <ProductImage name="Koleksi asli ITGabut Toys" seed="hero-3" imageUrl="/ts.jpg" />
+            <ProductImage name="Etalase figure Transformers, Marvel, dan gantungan Toy Story 5 di ITGabut Toys" seed="hero-3" imageUrl="/ts.jpg" />
           </div>
         </div>
       </div>
