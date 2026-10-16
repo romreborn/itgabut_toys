@@ -7,7 +7,7 @@ import { DEFAULT_OG_IMAGE, INSTAGRAM_HANDLE, INSTAGRAM_URL, MALLS, SHOPEE_URL, S
 
 const TITLE = "Tentang & Kontak: Toko Blokees di Tangerang";
 const DESCRIPTION =
-  "Toko Blokees di Perumahan Citra Raya, Tangerang. Cara ambil di toko, COD Alam Sutera dan Gading Serpong, kirim ke seluruh Indonesia, dan kontak WhatsApp.";
+  "Cara beli Blokees online di ITGabut Toys, ambil di toko Citra Raya, COD Alam Sutera dan Gading Serpong, kirim ke seluruh Indonesia, dan kontak WhatsApp.";
 const MAPS_URL = "https://www.google.com/maps/search/?api=1&query=Citra+Raya+Tangerang";
 
 export const metadata: Metadata = {
@@ -80,6 +80,26 @@ export default function AboutPage() {
           Semua harga di <Link href="/#katalog" style={{ fontWeight: 700 }}>katalog</Link> ikut list distributor terbaru dan sudah dipotong
           diskon 10%. Stok kami cek ulang lewat WhatsApp sebelum pesanan diproses. Mau titip hunting barang tertentu atau minta harga grosir,
           chat aja.
+        </p>
+
+        <h2 className="font-display" style={h2}>Bagaimana cara beli Blokees online di ITGabut Toys?</h2>
+        <p style={body}>
+          Kamu bisa beli Blokees online langsung dari katalog tanpa daftar akun, lalu menyelesaikan pesanan lewat WhatsApp:
+        </p>
+        <ol style={list}>
+          <li>
+            Pilih produk di <Link href="/#katalog" style={{ fontWeight: 700 }}>katalog</Link>, lalu tekan Tambah untuk memasukkannya ke keranjang.
+          </li>
+          <li>Di keranjang, isi jumlahnya. Untuk blind box, pilih Single Box atau Whole Set.</li>
+          <li>Lanjut ke pengiriman, lalu pilih ambil di toko, COD di mall, atau kirim ke alamat kamu.</li>
+          <li>Tekan Kirim via WhatsApp. Kami cek stok dan mengonfirmasi total akhir, termasuk ongkir, lewat WhatsApp.</li>
+        </ol>
+        <p style={body}>
+          Lebih nyaman lewat marketplace? Kami juga jual Blokees online di{" "}
+          <a href={SHOPEE_URL} target="_blank" rel="noopener" style={{ fontWeight: 700 }}>
+            toko Shopee ITGabut
+          </a>
+          .
         </p>
 
         <h2 className="font-display" style={h2}>Di mana lokasi toko ITGabut Toys?</h2>

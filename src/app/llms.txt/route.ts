@@ -19,6 +19,7 @@ export async function GET() {
     "- Semua harga di katalog sudah dipotong diskon 10% dari harga list distributor terbaru. Stok dicek ulang lewat WhatsApp sebelum pesanan diproses.",
     `- Ambil di toko: Perumahan Citra Raya, Tangerang (chat dulu sebelum datang). COD by appointment di ${MALLS.join(", ")}.`,
     "- Pengiriman ke seluruh Indonesia termasuk luar pulau lewat JNE, J&T, atau Lion Parcel, dipacking dus tebal dan bubble wrap.",
+    "- Jual Blokees online: pilih produk di katalog, masukkan ke keranjang, lalu kirim pesanan lewat WhatsApp tanpa daftar akun. Toko juga ada di Shopee.",
     `- Rating toko di Shopee ${SHOPEE_RATING.score} dari 5, dari ${SHOPEE_RATING.count} ulasan pembeli (${SHOPEE_RATING.asOf}).`,
     `- Kontak: WhatsApp ${WA_DISPLAY}, Instagram ${INSTAGRAM_HANDLE}, Shopee ${SHOPEE_URL}.`,
     "",

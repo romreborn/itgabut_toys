@@ -34,11 +34,13 @@ export const metadata: Metadata = {
     template: "%s | ITGabut Toys",
   },
   description:
-    "Jual Blokees di Citra Raya, Tangerang: Transformers, Marvel, Ultraman, Star Wars, blind box. Diskon 10%, COD Alam Sutera & Gading Serpong, kirim se-Indonesia.",
+    "Jual Blokees online dan di Citra Raya, Tangerang: Transformers, Marvel, Ultraman, Star Wars. Diskon 10%, COD Alam Sutera & Gading Serpong, kirim se-Indonesia.",
   keywords: [
     "Blokees",
     "jual Blokees",
     "jual Blokees Tangerang",
+    "jual Blokees online",
+    "beli Blokees online",
     "jual figure Blokees Tangerang",
     "Blokees Indonesia",
     "action figure Citra Raya",
@@ -54,14 +56,14 @@ export const metadata: Metadata = {
     siteName: "ITGabut Toys",
     title: "Jual Blokees Tangerang, Figure & Blind Box | ITGabut Toys",
     description:
-      "Toko Blokees di Citra Raya, Tangerang. Ambil di toko, COD Alam Sutera dan Gading Serpong, atau kirim ke seluruh Indonesia sampai luar pulau.",
+      "Jual Blokees online dari Citra Raya, Tangerang. Ambil di toko, COD Alam Sutera dan Gading Serpong, atau kirim ke seluruh Indonesia sampai luar pulau.",
     url: SITE_URL,
     images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: "ITGabut Toys, jual Blokees Tangerang" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Jual Blokees Tangerang, Figure & Blind Box | ITGabut Toys",
-    description: "Toko Blokees di Citra Raya, Tangerang. Ambil di toko, COD Alam Sutera dan Gading Serpong, atau kirim ke seluruh Indonesia.",
+    description: "Jual Blokees online dari Citra Raya, Tangerang. Ambil di toko, COD Alam Sutera dan Gading Serpong, atau kirim ke seluruh Indonesia.",
     images: [DEFAULT_OG_IMAGE],
   },
   alternates: {
@@ -107,7 +109,7 @@ const jsonLd = {
       logo: `${SITE_URL}/logo.png`,
       image: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
       description:
-        "Toko Blokees dan action figure di Citra Raya, Tangerang. Ambil di toko, COD Alam Sutera dan Gading Serpong, atau kirim ke seluruh Indonesia termasuk luar pulau, dipacking dus tebal dan bubble wrap.",
+        "Jual Blokees online dan di toko Citra Raya, Tangerang. Ambil di toko, COD Alam Sutera dan Gading Serpong, atau kirim ke seluruh Indonesia termasuk luar pulau, dipacking dus tebal dan bubble wrap.",
       telephone: "+6285111043518",
       address: {
         "@type": "PostalAddress",
