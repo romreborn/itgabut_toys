@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllProducts, getProductBySlug, getRelatedProducts } from "@/lib/products";
-import { getPostsMentioningProduct } from "@/lib/posts";
+import { getPostSummaries, getPostsMentioningProduct } from "@/lib/posts";
+import { lineOf } from "@/lib/productLines";
 import { decorate, type DecoratedProduct } from "@/lib/decorate";
 import { DISCOUNT_RATE } from "@/lib/format";
 import { T } from "@/lib/i18n";
@@ -74,8 +75,20 @@ export default async function ProductPage({
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const [related, posts] = await Promise.all([getRelatedProducts(product, 4), getPostsMentioningProduct(product.slug)]);
   const p = decorate(product, T.id);
+  const line = lineOf(product.name);
+  // Evergreen guides that fit this product, shown after the posts that link it directly.
+  const guideSlugs = [
+    ...(line === "Champion Class" || line === "Galaxy Version" ? ["champion-class-vs-galaxy-version"] : []),
+    ...(p.isBlind ? ["arti-rasio-secret-blind-box-blokees"] : []),
+    "apa-itu-blokees",
+  ];
+  const [related, mentions, guides] = await Promise.all([
+    getRelatedProducts(product, 4),
+    getPostsMentioningProduct(product.slug),
+    getPostSummaries(guideSlugs),
+  ]);
+  const posts = [...mentions, ...guides.filter((g) => !mentions.some((m) => m.slug === g.slug))];
   const url = `${SITE_URL}/produk/${p.slug}`;
   const image = absoluteImage(p.imageUrl);
 
@@ -88,6 +101,15 @@ export default async function ProductPage({
     ...(image && { image: [image] }),
     brand: { "@type": "Brand", name: product.ip },
     category: product.type,
+    additionalProperty: [
+      { "@type": "PropertyValue", name: "IP / Seri", value: product.ip },
+      { "@type": "PropertyValue", name: "Tipe", value: p.typeLabel },
+      ...(line ? [{ "@type": "PropertyValue", name: "Lini", value: line }] : []),
+      ...(p.isBlind && p.setSize ? [{ "@type": "PropertyValue", name: "Isi whole set", value: `${p.setSize} pcs` }] : []),
+    ],
+    ...(mentions.length > 0 && {
+      subjectOf: mentions.map((m) => ({ "@type": "BlogPosting", headline: m.title, url: `${SITE_URL}/blog/${m.slug}` })),
+    }),
     offers: {
       "@type": "Offer",
       priceCurrency: "IDR",

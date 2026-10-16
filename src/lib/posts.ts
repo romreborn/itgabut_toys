@@ -95,6 +95,18 @@ export async function getPostsMentioningProduct(
   return (data as { slug: string; title: string; dateLabel: string }[]).map((r) => ({ slug: r.slug, title: r.title, date: r.dateLabel }));
 }
 
+/** Title + date for a fixed set of slugs (guide links on product pages), in the given order. */
+export async function getPostSummaries(slugs: string[]): Promise<{ slug: string; title: string; date: string }[]> {
+  if (slugs.length === 0) return [];
+  const { data, error } = await supabase.from("blog_posts").select("slug,title,dateLabel").eq("isPublished", true).in("slug", slugs);
+  if (error) {
+    console.error("getPostSummaries:", error.message);
+    return [];
+  }
+  const rows = (data as { slug: string; title: string; dateLabel: string }[]).map((r) => ({ slug: r.slug, title: r.title, date: r.dateLabel }));
+  return slugs.map((s) => rows.find((r) => r.slug === s)).filter((r): r is NonNullable<typeof r> => !!r);
+}
+
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   const { data, error } = await supabase
     .from("blog_posts")

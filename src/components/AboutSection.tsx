@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { INSTAGRAM_HANDLE, INSTAGRAM_URL, SHOPEE_URL, WA_DISPLAY, WA_NUMBER } from "@/lib/constants";
 
@@ -32,7 +33,10 @@ export default function AboutSection() {
             {t.aboutTitle}
           </h2>
           <p style={{ margin: "0 0 12px", fontSize: 15.5, lineHeight: 1.7, color: "var(--muted)" }}>{t.aboutBody1}</p>
-          <p style={{ margin: "0 0 22px", fontSize: 15.5, lineHeight: 1.7, color: "var(--muted)" }}>{t.aboutBody2}</p>
+          <p style={{ margin: "0 0 12px", fontSize: 15.5, lineHeight: 1.7, color: "var(--muted)" }}>{t.aboutBody2}</p>
+          <p style={{ margin: "0 0 22px", fontSize: 15, fontWeight: 700 }}>
+            <Link href="/tentang">{t.aboutMore} →</Link>
+          </p>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             <a
               href={`https://wa.me/${WA_NUMBER}`}

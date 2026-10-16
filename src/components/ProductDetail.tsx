@@ -8,6 +8,7 @@ import { decorate } from "@/lib/decorate";
 import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
 import { SHOPEE_URL } from "@/lib/constants";
+import { DISCOUNT_RATE, rupiah } from "@/lib/format";
 
 export default function ProductDetail({
   product,
@@ -26,6 +27,30 @@ export default function ProductDetail({
   // Pre-orders carry their arrival estimate in `cond`; for ready stock that field is often stale, so it stays hidden.
   const statusLabel = p.avail === "preorder" && p.cond ? `${p.availLabel} · ${p.cond}` : p.availLabel;
   const paragraphs = (p.description ?? "").split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
+
+  // Buying info answered from the product's own catalog fields, so every product page gets
+  // question-led, product-specific text without hand-written copy.
+  const fill = (tpl: string, v: Record<string, string | number>) =>
+    Object.entries(v).reduce((acc, [k, val]) => acc.split(`{${k}}`).join(String(val)), tpl);
+  const setSize = p.isBlind ? p.setSize : null;
+  const priceAnswer = [
+    fill(t.aPrice, { name: p.name, sale: p.priceLabel, pct: Math.round(DISCOUNT_RATE * 100), list: p.listLabel }),
+    setSize ? fill(t.aPriceSet, { n: setSize, total: rupiah(p.salePrice * setSize) }) : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const stockAnswer =
+    p.avail === "ready"
+      ? t.aStockReady
+      : p.avail === "preorder"
+      ? [t.aStockPre, p.cond ? fill(t.aStockPreEta, { eta: p.cond }) : "", t.aStockPreCta].filter(Boolean).join(" ")
+      : t.aStockSold;
+  const blindAnswer = p.isBlind ? [t.aBlindYes, setSize ? fill(t.aBlindSet, { n: setSize }) : ""].filter(Boolean).join(" ") : t.aBlindNo;
+  const info = [
+    { q: fill(t.qPrice, { name: p.name }), a: priceAnswer },
+    { q: fill(t.qStock, { name: p.name }), a: stockAnswer },
+    { q: fill(t.qBlind, { name: p.name }), a: blindAnswer },
+  ];
 
   return (
     <section className="container" style={{ padding: "26px 20px 10px" }}>
@@ -148,6 +173,18 @@ export default function ProductDetail({
           ))}
         </div>
       )}
+
+      <div style={{ marginTop: 46, maxWidth: "72ch" }}>
+        <h2 className="font-display" style={{ fontSize: 24, fontWeight: 800, margin: "0 0 6px" }}>
+          {t.infoTitle}
+        </h2>
+        {info.map((item) => (
+          <div key={item.q}>
+            <h3 style={{ fontSize: 16.5, fontWeight: 800, margin: "18px 0 6px", color: "var(--ink)" }}>{item.q}</h3>
+            <p style={{ margin: 0, fontSize: 15.5, lineHeight: 1.75, color: "var(--muted)" }}>{item.a}</p>
+          </div>
+        ))}
+      </div>
 
       {posts.length > 0 && (
         <div style={{ marginTop: 40 }}>
