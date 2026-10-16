@@ -5,6 +5,7 @@ import CatalogClient from "@/components/CatalogClient";
 import BlogTeaser from "@/components/BlogTeaser";
 import LocationSection from "@/components/LocationSection";
 import AboutSection from "@/components/AboutSection";
+import ReviewSection from "@/components/ReviewSection";
 import { getAllProducts } from "@/lib/products";
 import { getAllPosts } from "@/lib/posts";
 
@@ -23,6 +24,7 @@ export default async function HomePage() {
       <CatalogClient products={products} />
       <BlogTeaser posts={posts.slice(0, 3)} />
       <LocationSection />
+      <ReviewSection />
       <AboutSection />
     </div>
   );

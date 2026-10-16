@@ -71,6 +71,9 @@ export const T = {
     locShipTitle: "Kirim Paket",
     locShip:
       "Kirim ke seluruh Indonesia, termasuk luar pulau, lewat JNE, J&T, atau Lion Parcel. Barang dipacking dus tebal dan bubble wrap.",
+    reviewsTitle: "Kata pembeli di Shopee",
+    reviewsSub: "rating toko kami dari {count} ulasan pembeli di Shopee ({asOf}).",
+    reviewsCta: "Lihat semua ulasan di Shopee",
     aboutTitle: "Tentang ITGabut Toys",
     aboutBody1:
       "ITGabut Toys adalah toko figure di Tangerang yang fokus jual Blokees dan building block figure lain. Awalnya dari hobi ngoleksi, sekarang jadi tempat kolektor cari stok yang jelas dengan harga wajar.",
@@ -242,6 +245,9 @@ export const T = {
     locShipBadge: "SHIP",
     locShipTitle: "Ship Nationwide",
     locShip: "Shipped anywhere in Indonesia, outer islands included, via JNE, J&T, or Lion Parcel, packed in a thick box with bubble wrap.",
+    reviewsTitle: "What buyers say on Shopee",
+    reviewsSub: "store rating from {count} buyer reviews on Shopee ({asOf}).",
+    reviewsCta: "See all reviews on Shopee",
     aboutTitle: "About ITGabut Toys",
     aboutBody1:
       "ITGabut Toys is a figure store in Tangerang focused on Blokees and other building block figures. It started as a collecting hobby and is now where collectors come for reliable stock at fair prices.",

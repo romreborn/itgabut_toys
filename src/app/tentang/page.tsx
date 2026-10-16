@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import ReviewCards from "@/components/ReviewCards";
+import { SHOPEE_RATING, SHOPEE_REVIEWS, SHOPEE_REVIEW_SHOTS } from "@/lib/reviews";
 import { DEFAULT_OG_IMAGE, INSTAGRAM_HANDLE, INSTAGRAM_URL, MALLS, SHOPEE_URL, SITE_URL, WA_DISPLAY, WA_NUMBER } from "@/lib/constants";
 
 const TITLE = "Tentang & Kontak: Toko Blokees di Tangerang";
@@ -111,6 +113,29 @@ export default function AboutPage() {
         <h2 className="font-display" style={h2}>Area layanan</h2>
         <p style={body}>Citra Raya, Cikupa, Panongan, Alam Sutera, Gading Serpong, BSD, dan pengiriman ke seluruh Indonesia.</p>
 
+      </div>
+
+      <h2 className="font-display" style={h2}>Apa kata pembeli ITGabut Toys?</h2>
+      <p style={{ ...body, maxWidth: "72ch" }}>
+        Rating toko kami di Shopee {SHOPEE_RATING.score} dari 5, dari {SHOPEE_RATING.count} ulasan pembeli ({SHOPEE_RATING.asOf}). Ini
+        sebagian ulasannya, dengan nama pembeli disamarkan.
+      </p>
+      <ReviewCards reviews={SHOPEE_REVIEWS} />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(170px, 1fr))", gap: 12, margin: "18px 0 6px" }}>
+        {SHOPEE_REVIEW_SHOTS.map((src, i) => (
+          <a key={src} href={src} target="_blank" rel="noopener" className="card" style={{ position: "relative", display: "block", aspectRatio: "520/1050", overflow: "hidden", borderRadius: 14 }}>
+            <Image src={src} alt={`Screenshot ulasan pembeli ITGabut Toys di Shopee, bagian ${i + 1}`} fill sizes="(max-width: 640px) 50vw, 200px" style={{ objectFit: "cover" }} />
+          </a>
+        ))}
+      </div>
+      <p style={{ margin: "0 0 6px", fontSize: 12.5, color: "var(--muted-3)" }}>
+        Screenshot halaman ulasan toko Shopee kami. Nama dan foto profil pembeli diburamkan.{" "}
+        <a href={SHOPEE_URL} target="_blank" rel="noopener" style={{ fontWeight: 700 }}>
+          Lihat semua ulasan di Shopee
+        </a>
+      </p>
+
+      <div style={{ maxWidth: "72ch" }}>
         <h2 className="font-display" style={h2}>Kontak</h2>
         <ul style={list}>
           <li>
