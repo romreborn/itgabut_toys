@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug, collectFaqItems } from "@/lib/posts";
 import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/constants";
+import { fitTitle } from "@/lib/seo";
 import ProductImage from "@/components/ProductImage";
 import GalleryImage from "@/components/GalleryImage";
 import { LightboxProvider } from "@/components/Lightbox";
@@ -34,9 +35,14 @@ export async function generateMetadata({
       ? post.coverImageUrl
       : `${SITE_URL}${post.coverImageUrl}`
     : undefined;
+  // Search results get the short SEO title/description when set; the page and social cards keep the full headline.
+  const { title } = fitTitle([
+    { text: post.seoTitle || post.title, brand: true },
+    { text: post.seoTitle || post.title, brand: false },
+  ]);
   return {
-    title: post.title,
-    description: post.excerpt,
+    title,
+    description: post.seoDescription || post.excerpt,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,

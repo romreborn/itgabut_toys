@@ -4,6 +4,8 @@ export interface BlogFormValues {
   slug: string;
   title: string;
   excerpt: string;
+  seoTitle: string | null;
+  seoDescription: string | null;
   category: string;
   readTime: string;
   dateLabel: string;
@@ -15,6 +17,8 @@ const EMPTY: BlogFormValues = {
   slug: "",
   title: "",
   excerpt: "",
+  seoTitle: null,
+  seoDescription: null,
   category: "",
   readTime: "",
   dateLabel: "",
@@ -54,6 +58,12 @@ export default function BlogForm({
 
       <label style={s.label}>Ringkasan (excerpt)</label>
       <textarea name="excerpt" defaultValue={v.excerpt} rows={2} style={{ ...s.input, fontFamily: "inherit" }} />
+
+      <label style={s.label}>Judul SEO (opsional, maks. 45 karakter supaya muat dengan &quot;| ITGabut Toys&quot;)</label>
+      <input name="seoTitle" defaultValue={v.seoTitle ?? ""} maxLength={60} placeholder="Kosongkan untuk memakai judul artikel" style={s.input} />
+
+      <label style={s.label}>Deskripsi SEO (opsional, maks. 160 karakter)</label>
+      <textarea name="seoDescription" defaultValue={v.seoDescription ?? ""} rows={2} maxLength={160} placeholder="Kosongkan untuk memakai ringkasan" style={{ ...s.input, fontFamily: "inherit" }} />
 
       <div style={s.row}>
         <div style={s.col}>

@@ -24,6 +24,8 @@ function buildPayload(fd: FormData) {
   return {
     title: str(fd, "title"),
     excerpt: str(fd, "excerpt"),
+    seoTitle: str(fd, "seoTitle") || null,
+    seoDescription: str(fd, "seoDescription") || null,
     category: str(fd, "category"),
     readTime: str(fd, "readTime"),
     dateLabel: str(fd, "dateLabel"),

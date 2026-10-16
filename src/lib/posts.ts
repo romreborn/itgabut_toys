@@ -30,6 +30,9 @@ export interface Post {
   /** ISO timestamps for structured data; `date` is the human-readable label. */
   publishedAt: string;
   updatedAt: string;
+  /** Optional search-result overrides; fall back to title / excerpt. */
+  seoTitle: string | null;
+  seoDescription: string | null;
 }
 
 interface PostRow {
@@ -43,9 +46,11 @@ interface PostRow {
   coverImageUrl: string | null;
   publishedAt: string;
   updatedAt: string;
+  seoTitle: string | null;
+  seoDescription: string | null;
 }
 
-const POST_COLUMNS = "slug,category,dateLabel,readTime,title,excerpt,body,coverImageUrl,publishedAt,updatedAt";
+const POST_COLUMNS = "slug,category,dateLabel,readTime,title,excerpt,body,coverImageUrl,publishedAt,updatedAt,seoTitle,seoDescription";
 
 function fromRow(r: PostRow): Post {
   return {
@@ -59,6 +64,8 @@ function fromRow(r: PostRow): Post {
     coverImageUrl: r.coverImageUrl,
     publishedAt: r.publishedAt,
     updatedAt: r.updatedAt,
+    seoTitle: r.seoTitle,
+    seoDescription: r.seoDescription,
   };
 }
 

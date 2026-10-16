@@ -19,6 +19,7 @@ export interface ProductFormValues {
   sortOrder: number;
   imageUrl: string | null;
   description: string | null;
+  seoTitle: string | null;
 }
 
 const EMPTY: ProductFormValues = {
@@ -40,6 +41,7 @@ const EMPTY: ProductFormValues = {
   sortOrder: 0,
   imageUrl: null,
   description: null,
+  seoTitle: null,
 };
 
 export default function ProductForm({
@@ -159,6 +161,9 @@ export default function ProductForm({
           </label>
         </div>
       </div>
+
+      <label style={s.label}>Judul SEO (opsional, nama pendek untuk hasil Google kalau nama produk terlalu panjang)</label>
+      <input name="seoTitle" defaultValue={v.seoTitle ?? ""} maxLength={60} placeholder="Kosongkan untuk memakai nama produk" style={s.input} />
 
       <label style={s.label}>Deskripsi produk (opsional, tampil di halaman produk dan dipakai untuk SEO)</label>
       <textarea

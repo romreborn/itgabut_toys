@@ -12,7 +12,7 @@ export default async function EditBlogPostPage({ params }: { params: Promise<{ s
 
   const { data: post } = await supabaseAdmin
     .from("blog_posts")
-    .select("slug,title,excerpt,category,readTime,dateLabel,isPublished,body")
+    .select("slug,title,excerpt,seoTitle,seoDescription,category,readTime,dateLabel,isPublished,body")
     .eq("slug", slug)
     .maybeSingle();
 

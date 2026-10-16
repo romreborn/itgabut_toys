@@ -54,6 +54,7 @@ function buildPayload(fd: FormData) {
     isActive: fd.get("isActive") === "on",
     sortOrder: num(fd, "sortOrder"),
     description: str(fd, "description") || null,
+    seoTitle: str(fd, "seoTitle") || null,
   };
 }
 

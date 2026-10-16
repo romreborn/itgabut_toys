@@ -7,6 +7,7 @@ import { decorate, type DecoratedProduct } from "@/lib/decorate";
 import { DISCOUNT_RATE } from "@/lib/format";
 import { T } from "@/lib/i18n";
 import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/constants";
+import { fitTitle } from "@/lib/seo";
 import ProductDetail from "@/components/ProductDetail";
 
 // New products added in Supabase after the last build still render (ISR),
@@ -52,7 +53,16 @@ export async function generateMetadata({
   const product = await getProductBySlug(slug);
   if (!product) return {};
   const p = decorate(product, T.id);
-  const title = `${p.name} — ${p.avail === "preorder" ? "Pre-order " : ""}${p.priceLabel}`;
+  // Longest title that fits ~60 characters: keep the price before the brand, and use the
+  // product's short seoTitle (when set) in place of a very long catalog name.
+  const name = p.seoTitle || p.name;
+  const withPrice = `${name} — ${p.avail === "preorder" ? "Pre-order " : ""}${p.priceLabel}`;
+  const { title, text: titleText } = fitTitle([
+    { text: withPrice, brand: true },
+    { text: withPrice, brand: false },
+    { text: name, brand: true },
+    { text: name, brand: false },
+  ]);
   const description = metaDescription(p);
   const url = `${SITE_URL}/produk/${p.slug}`;
   // Products without a photo still get a share image so links never preview blank.
@@ -61,8 +71,8 @@ export async function generateMetadata({
     title,
     description,
     alternates: { canonical: `/produk/${p.slug}` },
-    openGraph: { title, description, url, type: "website", images: [{ url: image, alt: p.name }] },
-    twitter: { card: "summary_large_image", title, description, images: [image] },
+    openGraph: { title: titleText, description, url, type: "website", images: [{ url: image, alt: p.name }] },
+    twitter: { card: "summary_large_image", title: titleText, description, images: [image] },
   };
 }
 
