@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug, collectFaqItems } from "@/lib/posts";
-import { SITE_URL } from "@/lib/constants";
+import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/constants";
 import ProductImage from "@/components/ProductImage";
 import GalleryImage from "@/components/GalleryImage";
 import { LightboxProvider } from "@/components/Lightbox";
@@ -10,6 +10,11 @@ import PostBody from "@/components/PostBody";
 
 export const revalidate = 60;
 export const dynamicParams = true;
+
+/** DB timestamps are stored as UTC without an offset; schema.org needs a full ISO 8601 value. */
+function isoUtc(ts: string): string {
+  return /(Z|[+-]\d\d:\d\d)$/.test(ts) ? ts : `${ts}Z`;
+}
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -38,7 +43,9 @@ export async function generateMetadata({
       description: post.excerpt,
       url: `${SITE_URL}/blog/${post.slug}`,
       type: "article",
-      images: imageUrl ? [{ url: imageUrl }] : undefined,
+      images: [{ url: imageUrl ?? `${SITE_URL}${DEFAULT_OG_IMAGE}`, alt: post.title }],
+      publishedTime: isoUtc(post.publishedAt),
+      modifiedTime: isoUtc(post.updatedAt),
     },
   };
 }
@@ -52,16 +59,34 @@ export default async function PostPage({
   const post = await getPostBySlug(slug);
   if (!post) notFound();
 
+  const postUrl = `${SITE_URL}/blog/${post.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
-    datePublished: post.date,
-    author: { "@type": "Organization", name: "ITGabut Toys" },
-    ...(post.coverImageUrl && {
-      image: post.coverImageUrl.startsWith("http") ? post.coverImageUrl : `${SITE_URL}${post.coverImageUrl}`,
-    }),
+    datePublished: isoUtc(post.publishedAt),
+    dateModified: isoUtc(post.updatedAt),
+    mainEntityOfPage: postUrl,
+    articleSection: post.cat,
+    inLanguage: "id-ID",
+    author: { "@type": "Organization", name: "ITGabut Toys", url: SITE_URL },
+    publisher: { "@type": "Organization", name: "ITGabut Toys", url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` } },
+    image: post.coverImageUrl
+      ? post.coverImageUrl.startsWith("http")
+        ? post.coverImageUrl
+        : `${SITE_URL}${post.coverImageUrl}`
+      : `${SITE_URL}${DEFAULT_OG_IMAGE}`,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ITGabut Toys", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
+    ],
   };
 
   const faqItems = collectFaqItems(post.body);
@@ -81,6 +106,7 @@ export default async function PostPage({
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {faqJsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       )}

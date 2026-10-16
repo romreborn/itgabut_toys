@@ -7,7 +7,10 @@ export type PostBlock =
   | { t: "gallery"; caption?: string; images: { url: string; alt: string }[] }
   | { t: "products"; label: string; productSlugs: string[] }
   | { t: "link"; url: string; label: string }
-  | { t: "faq"; items: { q: string; a: string }[] };
+  | { t: "faq"; items: { q: string; a: string }[] }
+  /** Rendered as a real <ul>/<ol> so search engines can lift it as a list snippet. */
+  | { t: "list"; ordered?: boolean; items: string[] }
+  | { t: "table"; caption?: string; headers: string[]; rows: string[][] };
 
 /** Pulls out every FAQ item across all "faq" blocks in a post, for FAQPage JSON-LD. */
 export function collectFaqItems(body: PostBlock[]): { q: string; a: string }[] {
@@ -24,6 +27,9 @@ export interface Post {
   body: PostBlock[];
   /** Cover photo shown on blog cards (homepage teaser + /blog listing). */
   coverImageUrl: string | null;
+  /** ISO timestamps for structured data; `date` is the human-readable label. */
+  publishedAt: string;
+  updatedAt: string;
 }
 
 interface PostRow {
@@ -35,9 +41,11 @@ interface PostRow {
   excerpt: string;
   body: PostBlock[];
   coverImageUrl: string | null;
+  publishedAt: string;
+  updatedAt: string;
 }
 
-const POST_COLUMNS = "slug,category,dateLabel,readTime,title,excerpt,body,coverImageUrl";
+const POST_COLUMNS = "slug,category,dateLabel,readTime,title,excerpt,body,coverImageUrl,publishedAt,updatedAt";
 
 function fromRow(r: PostRow): Post {
   return {
@@ -49,6 +57,8 @@ function fromRow(r: PostRow): Post {
     excerpt: r.excerpt,
     body: r.body,
     coverImageUrl: r.coverImageUrl,
+    publishedAt: r.publishedAt,
+    updatedAt: r.updatedAt,
   };
 }
 

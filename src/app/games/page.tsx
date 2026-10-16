@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import GachaSpinner from "@/components/GachaSpinner";
-import { SITE_URL } from "@/lib/constants";
+import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Spinner Wheel Gratis & Tools Undian Online",
   description:
-    "Tools undian gratis: putar spinner wheel berisi angka atau nama, atau acak kotak 2x2 sampai 4x3. Tanpa daftar, tanpa install, langsung jalan di browser HP maupun laptop.",
+    "Tools undian gratis: putar spinner wheel berisi angka atau nama, atau acak kotak 2x2 sampai 4x3. Tanpa daftar dan tanpa install, langsung jalan di browser.",
   keywords: [
     "spinner wheel gratis",
     "free spinner wheel",
@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     description:
       "Putar roda angka atau nama, atau acak kotak. Gratis, tanpa daftar, langsung jalan di browser.",
     url: "/games",
+    images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
   },
 };
 

@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 import Toast from "@/components/Toast";
 import DisableRightClick from "@/components/DisableRightClick";
 import PageViewTracker from "@/components/PageViewTracker";
-import { SITE_URL, GA_MEASUREMENT_ID } from "@/lib/constants";
+import { DEFAULT_OG_IMAGE, INSTAGRAM_URL, SHOPEE_URL, SITE_URL, GA_MEASUREMENT_ID } from "@/lib/constants";
 
 const baloo = Baloo_2({
   subsets: ["latin"],
@@ -56,37 +56,72 @@ export const metadata: Metadata = {
     description:
       "Toko Blokees di Citra Raya, Tangerang. Ambil di toko, COD Alam Sutera dan Gading Serpong, atau kirim ke seluruh Indonesia sampai luar pulau.",
     url: SITE_URL,
+    images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: "ITGabut Toys, jual Blokees Tangerang" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Jual Blokees Tangerang, Figure & Blind Box | ITGabut Toys",
     description: "Toko Blokees di Citra Raya, Tangerang. Ambil di toko, COD Alam Sutera dan Gading Serpong, atau kirim ke seluruh Indonesia.",
+    images: [DEFAULT_OG_IMAGE],
   },
   alternates: {
     canonical: "/",
   },
   icons: {
-    icon: "/logo.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logo.png", type: "image/png" },
+    ],
     apple: "/logo.png",
   },
 };
 
+// One graph for the whole site: the website, the brand (with logo) and the physical store.
+// Every node links by @id so search and AI engines read them as a single entity.
+const ORG_ID = `${SITE_URL}/#organization`;
+const STORE_ID = `${SITE_URL}/#store`;
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "ToyStore",
-  name: "ITGabut Toys",
-  description:
-    "Toko Blokees dan action figure di Citra Raya, Tangerang. Ambil di toko, COD Alam Sutera dan Gading Serpong, atau kirim ke seluruh Indonesia termasuk luar pulau, dipacking dus tebal dan bubble wrap.",
-  telephone: "+6285111043518",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Perumahan Citra Raya",
-    addressLocality: "Tangerang",
-    addressRegion: "Banten",
-    addressCountry: "ID",
-  },
-  areaServed: ["Citra Raya", "Alam Sutera", "Gading Serpong", "Tangerang", "Indonesia"],
-  sameAs: ["https://instagram.com/itgabut.hobby", "https://shopee.co.id/itgabut"],
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "ITGabut Toys",
+      inLanguage: "id-ID",
+      publisher: { "@id": ORG_ID },
+    },
+    {
+      "@type": "Organization",
+      "@id": ORG_ID,
+      name: "ITGabut Toys",
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
+      sameAs: [INSTAGRAM_URL, SHOPEE_URL],
+    },
+    {
+      "@type": "ToyStore",
+      "@id": STORE_ID,
+      name: "ITGabut Toys",
+      url: SITE_URL,
+      logo: `${SITE_URL}/logo.png`,
+      image: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
+      description:
+        "Toko Blokees dan action figure di Citra Raya, Tangerang. Ambil di toko, COD Alam Sutera dan Gading Serpong, atau kirim ke seluruh Indonesia termasuk luar pulau, dipacking dus tebal dan bubble wrap.",
+      telephone: "+6285111043518",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Perumahan Citra Raya",
+        addressLocality: "Tangerang",
+        addressRegion: "Banten",
+        addressCountry: "ID",
+      },
+      hasMap: "https://www.google.com/maps/search/?api=1&query=Citra+Raya+Tangerang",
+      areaServed: ["Citra Raya", "Alam Sutera", "Gading Serpong", "Tangerang", "Indonesia"],
+      parentOrganization: { "@id": ORG_ID },
+      sameAs: [INSTAGRAM_URL, SHOPEE_URL],
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -173,6 +173,62 @@ export default async function PostBody({ blocks }: { blocks: PostBlock[] }) {
               </a>
             );
           }
+          if (b.t === "list") {
+            const ListTag = b.ordered ? "ol" : "ul";
+            return (
+              <ListTag key={n} style={{ margin: "0 0 22px", paddingLeft: 24, fontSize: 16.5, lineHeight: 1.7, color: "#3F2A1D" }}>
+                {b.items.map((item, i) => (
+                  <li key={i} style={{ marginBottom: 6 }}>
+                    {item}
+                  </li>
+                ))}
+              </ListTag>
+            );
+          }
+          if (b.t === "table") {
+            return (
+              <figure key={n} style={{ margin: "0 0 22px" }}>
+                <div className="card" style={{ borderRadius: 14, overflowX: "auto" }}>
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14.5, lineHeight: 1.5 }}>
+                    <thead>
+                      <tr>
+                        {b.headers.map((h, i) => (
+                          <th
+                            key={i}
+                            scope="col"
+                            style={{ textAlign: "left", padding: "11px 14px", background: "var(--ink)", color: "var(--bg)", fontWeight: 700 }}
+                          >
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {b.rows.map((row, ri) => (
+                        <tr key={ri} style={{ background: ri % 2 ? "var(--bg)" : "#fff" }}>
+                          {row.map((c, ci) => {
+                            const Cell = ci === 0 ? "th" : "td";
+                            return (
+                              <Cell
+                                key={ci}
+                                scope={ci === 0 ? "row" : undefined}
+                                style={{ textAlign: "left", padding: "10px 14px", borderTop: "1px solid var(--line)", fontWeight: ci === 0 ? 700 : 400, color: "#3F2A1D", verticalAlign: "top" }}
+                              >
+                                {c}
+                              </Cell>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {b.caption && (
+                  <figcaption style={{ marginTop: 9, fontSize: 12.5, fontWeight: 600, color: "var(--muted-3)" }}>{b.caption}</figcaption>
+                )}
+              </figure>
+            );
+          }
           if (b.t === "faq") {
             return (
               <div key={n} style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 22 }}>

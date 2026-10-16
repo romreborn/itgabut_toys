@@ -5,7 +5,7 @@ import { getPostsMentioningProduct } from "@/lib/posts";
 import { decorate, type DecoratedProduct } from "@/lib/decorate";
 import { DISCOUNT_RATE } from "@/lib/format";
 import { T } from "@/lib/i18n";
-import { SITE_URL } from "@/lib/constants";
+import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/constants";
 import ProductDetail from "@/components/ProductDetail";
 
 // New products added in Supabase after the last build still render (ISR),
@@ -54,13 +54,14 @@ export async function generateMetadata({
   const title = `${p.name} — ${p.avail === "preorder" ? "Pre-order " : ""}${p.priceLabel}`;
   const description = metaDescription(p);
   const url = `${SITE_URL}/produk/${p.slug}`;
-  const image = absoluteImage(p.imageUrl);
+  // Products without a photo still get a share image so links never preview blank.
+  const image = absoluteImage(p.imageUrl) ?? `${SITE_URL}${DEFAULT_OG_IMAGE}`;
   return {
     title,
     description,
     alternates: { canonical: `/produk/${p.slug}` },
-    openGraph: { title, description, url, type: "website", images: image ? [{ url: image, alt: p.name }] : undefined },
-    twitter: { card: image ? "summary_large_image" : "summary", title, description, images: image ? [image] : undefined },
+    openGraph: { title, description, url, type: "website", images: [{ url: image, alt: p.name }] },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }
 
