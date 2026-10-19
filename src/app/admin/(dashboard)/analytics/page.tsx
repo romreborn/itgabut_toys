@@ -4,7 +4,9 @@ import { adminStyles as s } from "../../adminStyles";
 
 export const dynamic = "force-dynamic";
 
-const PERIODS = [7, 30, 90];
+// 0 = "Hari ini": since midnight WIB (handled by admin_period_start in SQL), charted per hour.
+const PERIODS = [0, 7, 30, 90];
+const periodLabel = (p: number) => (p === 0 ? "Hari ini" : `${p} hari`);
 
 interface TopRow {
   path: string;
@@ -104,14 +106,15 @@ export default async function AdminAnalyticsPage({
   searchParams: Promise<{ days?: string }>;
 }) {
   const { days: daysRaw } = await searchParams;
-  const days = PERIODS.includes(Number(daysRaw)) ? Number(daysRaw) : 30;
+  const days = daysRaw && PERIODS.includes(Number(daysRaw)) ? Number(daysRaw) : 30;
+  const isToday = days === 0;
 
   const [summaryRes, productsRes, blogRes, pagesRes, dailyRes] = await Promise.all([
     supabaseAdmin.rpc("admin_views_summary", { p_days: days }),
     supabaseAdmin.rpc("admin_top_paths", { p_days: days, p_kind: "product", p_limit: 20 }),
     supabaseAdmin.rpc("admin_top_paths", { p_days: days, p_kind: "blog", p_limit: 20 }),
     supabaseAdmin.rpc("admin_top_paths", { p_days: days, p_kind: "page", p_limit: 20 }),
-    supabaseAdmin.rpc("admin_views_daily", { p_days: days }),
+    isToday ? supabaseAdmin.rpc("admin_views_hourly_today") : supabaseAdmin.rpc("admin_views_daily", { p_days: days }),
   ]);
 
   const error = summaryRes.error || productsRes.error || blogRes.error || pagesRes.error || dailyRes.error;
@@ -131,7 +134,12 @@ export default async function AdminAnalyticsPage({
   const products = (productsRes.data as TopRow[]) || [];
   const blogs = (blogRes.data as TopRow[]) || [];
   const pages = (pagesRes.data as TopRow[]) || [];
-  const daily = (dailyRes.data as { day: string; views: number }[]) || [];
+  const fmtDay = (d: string) => new Date(d).toLocaleDateString("id-ID", { day: "numeric", month: "short" });
+  const fmtHour = (h: number) => `${String(h).padStart(2, "0")}:00`;
+  // One bar list for both charts: hours of today, or days of the period.
+  const daily = isToday
+    ? ((dailyRes.data as { hour: number; views: number }[]) || []).map((r) => ({ key: String(r.hour), label: fmtHour(r.hour), views: r.views }))
+    : ((dailyRes.data as { day: string; views: number }[]) || []).map((r) => ({ key: r.day, label: fmtDay(r.day), views: r.views }));
 
   const [productLabels, blogLabels] = await Promise.all([
     labelsFor(products, "products", "name"),
@@ -155,7 +163,7 @@ export default async function AdminAnalyticsPage({
                 textDecoration: "none",
               }}
             >
-              {p} hari
+              {periodLabel(p)}
             </Link>
           ))}
         </div>
@@ -173,12 +181,14 @@ export default async function AdminAnalyticsPage({
 
       {daily.length > 0 && (
         <div style={{ ...s.card, padding: 18, marginBottom: 28 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 800, margin: "0 0 14px" }}>Pengunjung unik per hari</h2>
+          <h2 style={{ fontSize: 16, fontWeight: 800, margin: "0 0 14px" }}>
+            {isToday ? "Pengunjung unik per jam hari ini (WIB)" : "Pengunjung unik per hari"}
+          </h2>
           <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 120 }}>
             {daily.map((d) => (
               <div
-                key={d.day}
-                title={`${new Date(d.day).toLocaleDateString("id-ID", { day: "numeric", month: "short" })}: ${d.views}`}
+                key={d.key}
+                title={`${d.label}: ${d.views}`}
                 style={{
                   flex: 1,
                   minWidth: 3,
@@ -190,8 +200,9 @@ export default async function AdminAnalyticsPage({
             ))}
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8, fontSize: 11.5, color: "#8A7263" }}>
-            <span>{new Date(daily[0].day).toLocaleDateString("id-ID", { day: "numeric", month: "short" })}</span>
-            <span>{new Date(daily[daily.length - 1].day).toLocaleDateString("id-ID", { day: "numeric", month: "short" })}</span>
+            <span>{daily[0].label}</span>
+            {isToday && <span>{daily[12]?.label}</span>}
+            <span>{daily[daily.length - 1].label}</span>
           </div>
         </div>
       )}
