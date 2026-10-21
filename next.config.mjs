@@ -6,6 +6,16 @@ const nextConfig = {
     // the /admin/products/import Server Action.
     serverActions: { bodySizeLimit: "10mb" },
   },
+  // Renamed product slugs, so old links and indexed URLs keep working.
+  async redirects() {
+    return [
+      {
+        source: "/produk/jurassic-world-terraventure-ts01-1-set-carton-a-b-119",
+        destination: "/produk/jurassic-world-terraventure-ts01-119",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       // Product photos sourced from the official Blokees storefront.
