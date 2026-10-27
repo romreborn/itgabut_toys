@@ -1,0 +1,16 @@
+{
+  "name": "itgabut-telegram-agent",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Telegram bot (long polling) that forwards messages to a headless Claude Code agent and streams the reply back.",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "latest",
+    "dotenv": "latest",
+    "node-telegram-bot-api": "latest"
+  }
+}
