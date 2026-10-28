@@ -6,3 +6,9 @@ out
 npm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
+
+# Google service account keys / secrets (never commit)
+*JSON.json
+*service-account*.json
+*gsc-key*.json
+secrets/
