@@ -66,6 +66,7 @@ export default function Toast() {
         </div>
         <Link
           href="/keranjang"
+          prefetch={false}
           style={{
             display: "inline-block",
             padding: "7px 12px",

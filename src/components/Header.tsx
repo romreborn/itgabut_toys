@@ -81,7 +81,7 @@ export default function Header() {
             {t.navBlog}
           </Link>
           <Link
-            href="/games"
+            href="/games" prefetch={false}
             style={{ padding: "8px 11px", borderRadius: 9, fontSize: 13.5, fontWeight: 600, color: "var(--ink)" }}
           >
             {t.navGames}
@@ -153,8 +153,11 @@ export default function Header() {
               <circle cx="17.4" cy="6.6" r="1.2" fill="#2E1A10" stroke="none"></circle>
             </svg>
           </a>
+          {/* No prefetch: the cart page loads the Supabase SDK (~64 KiB), and prefetching it from the
+              header pulled that into every page load (PageSpeed: unused JavaScript). */}
           <Link
             href="/keranjang"
+            prefetch={false}
             title={t.cart}
             style={{
               position: "relative",
@@ -236,7 +239,7 @@ export default function Header() {
           <Link href="/blog" onClick={() => setMenuOpen(false)} style={{ padding: "10px 4px", fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>
             {t.navBlog}
           </Link>
-          <Link href="/games" onClick={() => setMenuOpen(false)} style={{ padding: "10px 4px", fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>
+          <Link href="/games" prefetch={false} onClick={() => setMenuOpen(false)} style={{ padding: "10px 4px", fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>
             {t.navGames}
           </Link>
           <Link href="/#lokasi" onClick={() => setMenuOpen(false)} style={{ padding: "10px 4px", fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Baloo_2, Plus_Jakarta_Sans } from "next/font/google";
-import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -11,6 +10,7 @@ import Footer from "@/components/Footer";
 import Toast from "@/components/Toast";
 import DisableRightClick from "@/components/DisableRightClick";
 import PageViewTracker from "@/components/PageViewTracker";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { DEFAULT_OG_IMAGE, INSTAGRAM_URL, SHOPEE_URL, SITE_URL, GA_MEASUREMENT_ID } from "@/lib/constants";
 
 const baloo = Baloo_2({
@@ -151,16 +151,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </LanguageProvider>
         <Analytics />
         <SpeedInsights />
-        {/* GA loads after the page is idle so its ~156 KiB script does not compete with first paint. */}
-        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="lazyOnload" />
-        <Script id="ga4-init" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
-          `}
-        </Script>
+        <GoogleAnalytics id={GA_MEASUREMENT_ID} />
       </body>
     </html>
   );
