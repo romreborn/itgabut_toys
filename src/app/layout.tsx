@@ -24,7 +24,11 @@ const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-jakarta",
-  display: "swap",
+  // Body text is the homepage LCP element. With "swap" the paragraph painted in the fallback font
+  // and then re-painted when Jakarta arrived (~2.5 s on slow 4G), which Chrome counted as a new LCP.
+  // "optional" keeps the fallback for that first view if the font is late; repeat visits use the
+  // cached font. Headings (Baloo 2) stay on "swap" for the brand look.
+  display: "optional",
 });
 
 export const metadata: Metadata = {
