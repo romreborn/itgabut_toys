@@ -167,7 +167,7 @@ export default function CheckoutClient() {
               border: "2px solid var(--ink)",
               borderRadius: 12,
               background: "var(--orange)",
-              color: "#fff",
+              color: "var(--ink)",
               fontWeight: 700,
               fontSize: 14,
               boxShadow: "3px 3px 0 var(--ink)",
@@ -284,7 +284,7 @@ export default function CheckoutClient() {
                           /* ignore */
                         }
                       }}
-                      style={{ border: 0, background: "none", padding: 0, fontSize: 12, fontWeight: 700, color: "var(--orange)", cursor: "pointer", textDecoration: "underline" }}
+                      style={{ border: 0, background: "none", padding: 0, fontSize: 12, fontWeight: 700, color: "var(--orange-dark)", cursor: "pointer", textDecoration: "underline" }}
                     >
                       {t.coAutofillClear}
                     </button>
@@ -395,7 +395,7 @@ export default function CheckoutClient() {
                   border: "2px solid var(--ink)",
                   borderRadius: 14,
                   background: "var(--orange)",
-                  color: "#fff",
+                  color: "var(--ink)",
                   fontSize: 15,
                   fontWeight: 700,
                   cursor: "pointer",
@@ -427,7 +427,7 @@ export default function CheckoutClient() {
             <div className="font-display" style={{ fontSize: 24, fontWeight: 800, marginBottom: 6 }}>
               {t.review}
             </div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--orange)", marginBottom: 18 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--orange-dark)", marginBottom: 18 }}>
               {t.methodLabel}: {methodText}
             </div>
             <div className="card" style={{ borderRadius: 16, overflow: "hidden", marginBottom: 18 }}>
@@ -462,7 +462,7 @@ export default function CheckoutClient() {
                   border: "2px solid var(--ink)",
                   borderRadius: 14,
                   background: "var(--orange)",
-                  color: "#fff",
+                  color: "var(--ink)",
                   fontSize: 15,
                   fontWeight: 700,
                   cursor: "pointer",

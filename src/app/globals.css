@@ -2,18 +2,20 @@
   --bg: #fbf3e7;
   --ink: #2e1a10;
   --orange: #ee6a26;
-  --orange-dark: #c9490f;
+  --orange-dark: #b7420e;
   --yellow: #ffc93c;
   --yellow-dark: #ffd966;
   --green: #7c9a6b;
   --green-dark: #3a5a2a;
   --green-bg: #dcebd2;
   --muted: #5c4636;
-  --muted-2: #8a7263;
-  --muted-3: #a08d7f;
+  --muted-2: #7a6558;
+  --muted-3: #74665c;
   --line: #eadccc;
   --line-2: #d6c6b8;
   --peach: #ffe7d6;
+  /* Muted text on the dark ink footer (muted-2/3 are tuned for light backgrounds). */
+  --muted-on-dark: #c4b0a1;
   --white: #ffffff;
   --font-display: var(--font-baloo), cursive;
   --font-body: var(--font-jakarta), system-ui, -apple-system, sans-serif;
@@ -37,11 +39,11 @@ body {
 }
 
 a {
-  color: var(--orange);
+  color: var(--orange-dark);
   text-decoration: none;
 }
 a:hover {
-  color: var(--orange-dark);
+  color: var(--ink);
 }
 
 input,
@@ -95,12 +97,13 @@ img {
   background: var(--ink);
   color: var(--bg);
 }
+/* Dark text on orange: white on #ee6a26 is only 3.1:1, ink is 5.3:1. */
 .btn-orange {
   background: var(--orange);
-  color: #fff;
+  color: var(--ink);
 }
 .btn-orange:hover {
-  color: #fff;
+  color: var(--ink);
 }
 .btn-yellow {
   background: var(--yellow);

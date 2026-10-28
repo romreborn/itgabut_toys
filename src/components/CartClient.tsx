@@ -44,7 +44,7 @@ export default function CartClient() {
               border: "2px solid var(--ink)",
               borderRadius: 12,
               background: "var(--orange)",
-              color: "#fff",
+              color: "var(--ink)",
               fontWeight: 700,
               fontSize: 14,
               boxShadow: "3px 3px 0 var(--ink)",
@@ -68,7 +68,7 @@ export default function CartClient() {
                   <ProductImage name={l.name} seed={`prod-${l.slug}`} imageUrl={l.imageUrl} />
                 </div>
                 <div style={{ flex: "1 1 220px", minWidth: 0 }}>
-                  <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: ".7px", color: "var(--orange)", textTransform: "uppercase", marginBottom: 4 }}>
+                  <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: ".7px", color: "var(--orange-dark)", textTransform: "uppercase", marginBottom: 4 }}>
                     {l.ip}
                   </div>
                   <div className="font-display" style={{ fontSize: 17, fontWeight: 700, lineHeight: 1.25, marginBottom: 4 }}>
@@ -214,7 +214,7 @@ export default function CartClient() {
                   border: "2px solid var(--ink)",
                   borderRadius: 14,
                   background: "var(--orange)",
-                  color: "#fff",
+                  color: "var(--ink)",
                   fontSize: 15,
                   fontWeight: 700,
                   boxShadow: "4px 4px 0 var(--ink)",

@@ -36,7 +36,7 @@ async function ProductsBlock({ label, productSlugs }: { label: string; productSl
           fontWeight: 800,
           letterSpacing: "1.1px",
           textTransform: "uppercase",
-          color: "var(--orange)",
+          color: "var(--orange-dark)",
           marginBottom: 12,
         }}
       >

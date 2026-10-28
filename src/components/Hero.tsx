@@ -38,7 +38,7 @@ export default function Hero() {
           }}
         >
           {t.h1a}
-          <span style={{ color: "var(--orange)" }}>{t.h1b}</span>
+          <span style={{ color: "var(--orange-dark)" }}>{t.h1b}</span>
         </h1>
         <p
           style={{

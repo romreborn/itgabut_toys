@@ -16,7 +16,7 @@ export default function LocationSection() {
       <p style={{ margin: "0 0 26px", fontSize: 15, color: "var(--muted)", maxWidth: "64ch" }}>{t.locSub}</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(258px, 1fr))", gap: 18 }}>
         <div className="card" style={{ padding: 24, boxShadow: "5px 5px 0 var(--orange)" }}>
-          <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "1.2px", color: "var(--orange)", marginBottom: 6 }}>
+          <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "1.2px", color: "var(--orange-dark)", marginBottom: 6 }}>
             {t.locMain}
           </div>
           <h3 className="font-display" style={{ fontSize: 22, fontWeight: 800, margin: "0 0 8px" }}>

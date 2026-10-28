@@ -34,6 +34,7 @@ export default function ProductCard({ p }: { p: DecoratedProduct }) {
                 border: "2px solid var(--ink)",
                 borderRadius: 999,
                 background: "#fff",
+                color: "var(--orange-dark)",
                 fontSize: 10,
                 fontWeight: 800,
                 pointerEvents: "none",
@@ -50,7 +51,7 @@ export default function ProductCard({ p }: { p: DecoratedProduct }) {
                 fontSize: 10,
                 fontWeight: 800,
                 letterSpacing: ".7px",
-                color: "var(--orange)",
+                color: "var(--orange-dark)",
                 textTransform: "uppercase",
               }}
             >

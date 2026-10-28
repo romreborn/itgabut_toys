@@ -151,8 +151,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </LanguageProvider>
         <Analytics />
         <SpeedInsights />
-        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
-        <Script id="ga4-init" strategy="afterInteractive">
+        {/* GA loads after the page is idle so its ~156 KiB script does not compete with first paint. */}
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="lazyOnload" />
+        <Script id="ga4-init" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

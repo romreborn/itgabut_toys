@@ -945,7 +945,7 @@ export default function GachaSpinner() {
             </div>
             <div
               className="font-display"
-              style={{ fontSize: 96, fontWeight: 800, lineHeight: 1, color: "var(--orange)", marginBottom: 6 }}
+              style={{ fontSize: 96, fontWeight: 800, lineHeight: 1, color: "var(--orange-dark)", marginBottom: 6 }}
             >
               {s.result}
             </div>

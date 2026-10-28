@@ -15,7 +15,7 @@ export default function UspSection() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 16 }}>
         {items.map((it) => (
           <div key={it.title} className="card" style={{ padding: 22 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "1.3px", color: "var(--orange)", marginBottom: 8 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "1.3px", color: "var(--orange-dark)", marginBottom: 8 }}>
               {it.kicker}
             </div>
             <div className="font-display" style={{ fontSize: 20, fontWeight: 700, lineHeight: 1.2, marginBottom: 8 }}>

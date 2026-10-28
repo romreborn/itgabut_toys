@@ -47,7 +47,7 @@ export default function AboutSection() {
                 border: "2px solid var(--ink)",
                 borderRadius: 13,
                 background: "var(--orange)",
-                color: "#fff",
+                color: "var(--ink)",
                 fontWeight: 700,
                 fontSize: 14,
               }}

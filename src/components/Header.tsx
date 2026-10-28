@@ -49,7 +49,7 @@ export default function Header() {
                 color: "var(--ink)",
               }}
             >
-              ITGabut <span style={{ color: "var(--orange)" }}>Toys</span>
+              ITGabut <span style={{ color: "var(--orange-dark)" }}>Toys</span>
             </span>
             <span
               style={{
@@ -187,7 +187,7 @@ export default function Header() {
               border: "2px solid var(--ink)",
               borderRadius: 10,
               background: "var(--orange)",
-              color: "#fff",
+              color: "var(--ink)",
               fontSize: 12.5,
               fontWeight: 700,
               whiteSpace: "nowrap",
@@ -248,7 +248,7 @@ export default function Header() {
           <a href={INSTAGRAM_URL} target="_blank" rel="noopener" style={{ padding: "10px 4px", fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>
             Instagram
           </a>
-          <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noopener" style={{ padding: "10px 4px", fontSize: 14, fontWeight: 700, color: "var(--orange)" }}>
+          <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noopener" style={{ padding: "10px 4px", fontSize: 14, fontWeight: 700, color: "var(--orange-dark)" }}>
             WhatsApp
           </a>
         </nav>

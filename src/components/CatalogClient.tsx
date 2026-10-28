@@ -145,8 +145,9 @@ export default function CatalogClient({ products }: { products: Product[] }) {
           <p style={{ margin: 0, fontSize: 15, color: "var(--muted)" }}>{t.catalogSub}</p>
         </div>
         <div style={{ display: "flex", gap: 9, alignItems: "center", flexWrap: "wrap" }}>
-          <label style={{ fontSize: 12.5, fontWeight: 700, color: "var(--muted-2)" }}>{t.sortBy}</label>
+          <label htmlFor="catalog-sort" style={{ fontSize: 12.5, fontWeight: 700, color: "var(--muted-2)" }}>{t.sortBy}</label>
           <select
+            id="catalog-sort"
             value={state.sort}
             onChange={(e) => setState((s) => ({ ...s, sort: e.target.value, page: 1 }))}
             style={{
@@ -360,7 +361,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
               border: "2px solid var(--ink)",
               borderRadius: 12,
               background: "var(--orange)",
-              color: "#fff",
+              color: "var(--ink)",
               fontSize: 13.5,
               fontWeight: 700,
               cursor: "pointer",
@@ -413,7 +414,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                   border: "2px solid var(--ink)",
                   borderRadius: 12,
                   background: "var(--orange)",
-                  color: "#fff",
+                  color: "var(--ink)",
                   fontWeight: 700,
                   fontSize: 14,
                   cursor: "pointer",

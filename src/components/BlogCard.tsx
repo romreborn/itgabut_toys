@@ -21,7 +21,7 @@ export default function BlogCard({ post }: { post: Post }) {
             {post.title}
           </h3>
           <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: "var(--muted)" }}>{post.excerpt}</p>
-          <div style={{ marginTop: "auto", paddingTop: 8, fontSize: 13, fontWeight: 800, color: "var(--orange)" }}>Baca →</div>
+          <div style={{ marginTop: "auto", paddingTop: 8, fontSize: 13, fontWeight: 800, color: "var(--orange-dark)" }}>Baca →</div>
         </div>
       </article>
     </Link>

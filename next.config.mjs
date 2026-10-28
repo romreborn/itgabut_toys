@@ -5,6 +5,9 @@ const nextConfig = {
     // Default 1MB is too small for the Excel restock sheets uploaded via
     // the /admin/products/import Server Action.
     serverActions: { bodySizeLimit: "10mb" },
+    // The whole stylesheet is ~3 KiB compressed: inline it in the HTML instead of a
+    // render-blocking request (PageSpeed: render-blocking requests).
+    inlineCss: true,
   },
   // Renamed product slugs, so old links and indexed URLs keep working.
   async redirects() {
@@ -17,6 +20,8 @@ const nextConfig = {
     ];
   },
   images: {
+    // AVIF first (typically 20-30% smaller than WebP); browsers without AVIF still get WebP.
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       // Product photos sourced from the official Blokees storefront.
       { protocol: "https", hostname: "cdn.shopify.com", pathname: "/**" },

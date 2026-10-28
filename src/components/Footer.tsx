@@ -45,12 +45,12 @@ export default function Footer() {
             <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noopener" style={{ color: "var(--bg)" }}>
               WhatsApp · {WA_DISPLAY}
             </a>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "var(--muted-2)" }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "var(--muted-on-dark)" }}>
               Toco.id{" "}
               <span
                 style={{
                   padding: "3px 8px",
-                  border: "1px solid var(--muted-2)",
+                  border: "1px solid var(--muted-on-dark)",
                   borderRadius: 999,
                   fontSize: 10.5,
                   fontWeight: 800,
@@ -82,7 +82,7 @@ export default function Footer() {
           <p style={{ margin: "0 0 12px", fontSize: 14, lineHeight: 1.7, color: "#C9B7A9" }}>
             Perumahan Citra Raya, Tangerang
           </p>
-          <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.7, color: "var(--muted-2)" }}>{t.footerArea}</p>
+          <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.7, color: "var(--muted-on-dark)" }}>{t.footerArea}</p>
         </div>
       </div>
       <div
@@ -91,7 +91,7 @@ export default function Footer() {
           padding: "16px 20px",
           textAlign: "center",
           fontSize: 12,
-          color: "var(--muted-2)",
+          color: "var(--muted-on-dark)",
         }}
       >
         © {year} ITGabut Toys · Citra Raya · Alam Sutera · Gading Serpong
