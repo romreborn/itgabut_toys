@@ -1,34 +1,10 @@
 import { supabase } from "@/lib/supabaseClient";
+import type { Availability, Product, ProductTag } from "@/lib/productShared";
 
-export type Availability = "ready" | "preorder" | "sold";
-export type ProductTag = "best" | "new" | "movie" | "";
-
-export interface Product {
-  slug: string;
-  name: string;
-  ip: string;
-  type: "Blind Box" | "Non Blind Box";
-  battery: boolean;
-  pack: string;
-  cond: string;
-  period: string;
-  pIdx: number;
-  avail: Availability;
-  tag: ProductTag;
-  price: number;
-  oldPrice: number;
-  year: number | null;
-  /** Real product photo URL, if one's been sourced/uploaded yet. */
-  imageUrl: string | null;
-  /** Catalog insertion order — higher means added more recently. */
-  sortOrder: number;
-  /** Optional long-form copy for the product page; paragraphs separated by blank lines. */
-  description: string | null;
-  /** Optional short name for the <title> when the catalog name is too long. */
-  seoTitle: string | null;
-  /** Optional Shopee product link (affiliate) for "Beli di Shopee"; falls back to the store page. */
-  shopeeUrl: string | null;
-}
+// Server-side data access. Client components must import types/constants from
+// "@/lib/productShared" instead, so the Supabase SDK stays out of the browser bundle.
+export type { Availability, Product, ProductTag };
+export { AVAIL_STYLE, PRICE_BUCKETS } from "@/lib/productShared";
 
 /** Raw shape of a row in Supabase's `products` table. */
 interface ProductRow {
@@ -141,16 +117,3 @@ export async function getProductsBySlugs(slugs: string[]): Promise<Product[]> {
   return slugs.map((s) => bySlug.get(s)).filter((p): p is Product => !!p);
 }
 
-export const AVAIL_STYLE: Record<Availability, { bg: string; fg: string }> = {
-  ready: { bg: "#DCEBD2", fg: "#3A5A2A" },
-  preorder: { bg: "#FFE7D6", fg: "#C9490F" },
-  sold: { bg: "#EFE6DE", fg: "#8A7263" },
-};
-
-export const PRICE_BUCKETS: Record<string, [number, number]> = {
-  "<50": [0, 50000],
-  "50-150": [50000, 150000],
-  "150-300": [150000, 300000],
-  "300-500": [300000, 500000],
-  ">500": [500000, 1e9],
-};

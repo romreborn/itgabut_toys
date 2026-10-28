@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Post } from "@/lib/posts";
+import type { Post } from "@/lib/posts";
 import ProductImage from "@/components/ProductImage";
 
 export default function BlogCard({ post }: { post: Post }) {

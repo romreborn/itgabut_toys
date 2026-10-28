@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
-import { Post } from "@/lib/posts";
+import type { Post } from "@/lib/posts";
 import BlogCard from "@/components/BlogCard";
 
 export default function BlogTeaser({ posts }: { posts: Post[] }) {

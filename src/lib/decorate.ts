@@ -1,4 +1,4 @@
-import { AVAIL_STYLE, Product } from "@/lib/products";
+import { AVAIL_STYLE, type Product } from "@/lib/productShared";
 import { DISCOUNT_LABEL, rupiah, salePrice } from "@/lib/format";
 import { waLink } from "@/lib/constants";
 import { Dict } from "@/lib/i18n";

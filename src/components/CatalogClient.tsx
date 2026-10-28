@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import { Product, PRICE_BUCKETS } from "@/lib/products";
+import { type Product, PRICE_BUCKETS } from "@/lib/productShared";
 import { decorate } from "@/lib/decorate";
 import ProductCard from "@/components/ProductCard";
 import { salePrice } from "@/lib/format";

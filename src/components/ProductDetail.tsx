@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { useCart } from "@/context/CartContext";
-import { Product } from "@/lib/products";
+import type { Product } from "@/lib/productShared";
 import { decorate } from "@/lib/decorate";
 import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
