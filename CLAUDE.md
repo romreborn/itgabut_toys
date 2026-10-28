@@ -66,6 +66,10 @@ dash, tanpa blok FAQ).
 - Jangan pakai kata "Carton"/"Carton A + B" di nama produk.
 - Kalau slug produk diganti, tambah redirect 308 di `next.config.mjs` supaya link lama
   tidak putus.
+- Tombol "Beli di Shopee" memakai kolom `shopeeUrl` (link **affiliate** milik owner,
+  biasanya `https://s.shopee.co.id/...`). Kalau owner memberi link Shopee untuk produk,
+  simpan di `shopeeUrl`, jangan di deskripsi. Kosong = tombol ke toko `shopee.co.id/itgabut`.
+  Bisa juga diisi lewat form admin produk.
 
 ## Pantangan (keamanan & kebijakan)
 

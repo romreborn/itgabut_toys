@@ -153,7 +153,14 @@ export default function ProductDetail({
             <a href={p.waOrderLink} target="_blank" rel="noopener" className="btn btn-orange" style={{ flex: "1 1 200px", textAlign: "center" }}>
               {t.orderWa}
             </a>
-            <a href={SHOPEE_URL} target="_blank" rel="noopener" className="btn btn-white" style={{ flex: "1 1 160px", textAlign: "center" }}>
+            {/* Per-product affiliate link when set (rel="sponsored" per Google's guidance for affiliate links), else the store page. */}
+            <a
+              href={p.shopeeUrl || SHOPEE_URL}
+              target="_blank"
+              rel={p.shopeeUrl ? "sponsored noopener" : "noopener"}
+              className="btn btn-white"
+              style={{ flex: "1 1 160px", textAlign: "center" }}
+            >
               {t.buyShopee}
             </a>
           </div>

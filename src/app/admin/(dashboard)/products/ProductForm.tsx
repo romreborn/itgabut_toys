@@ -20,6 +20,7 @@ export interface ProductFormValues {
   imageUrl: string | null;
   description: string | null;
   seoTitle: string | null;
+  shopeeUrl: string | null;
 }
 
 const EMPTY: ProductFormValues = {
@@ -42,6 +43,7 @@ const EMPTY: ProductFormValues = {
   imageUrl: null,
   description: null,
   seoTitle: null,
+  shopeeUrl: null,
 };
 
 export default function ProductForm({
@@ -172,6 +174,15 @@ export default function ProductForm({
         rows={7}
         placeholder="Lineup, tanggal rilis, isi set, dan info lain. Pisahkan paragraf dengan baris kosong."
         style={{ ...s.input, resize: "vertical", lineHeight: 1.6 }}
+      />
+
+      <label style={s.label}>Link Shopee affiliate (opsional, untuk tombol &quot;Beli di Shopee&quot;; kosongkan untuk ke toko ITGabut)</label>
+      <input
+        type="url"
+        name="shopeeUrl"
+        defaultValue={v.shopeeUrl ?? ""}
+        placeholder="https://s.shopee.co.id/…"
+        style={s.input}
       />
 
       <div style={s.row}>

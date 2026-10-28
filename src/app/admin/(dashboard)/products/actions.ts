@@ -55,7 +55,23 @@ function buildPayload(fd: FormData) {
     sortOrder: num(fd, "sortOrder"),
     description: str(fd, "description") || null,
     seoTitle: str(fd, "seoTitle") || null,
+    shopeeUrl: shopeeUrl(fd),
   };
+}
+
+/** Optional per-product Shopee (affiliate) link. Only https Shopee URLs are accepted. */
+function shopeeUrl(fd: FormData): string | null {
+  const v = str(fd, "shopeeUrl");
+  if (!v) return null;
+  let host = "";
+  try {
+    const u = new URL(v);
+    if (u.protocol === "https:") host = u.hostname;
+  } catch {}
+  if (host !== "shopee.co.id" && !host.endsWith(".shopee.co.id")) {
+    throw new Error("Link Shopee harus berupa URL https://shopee.co.id/... atau https://s.shopee.co.id/...");
+  }
+  return v;
 }
 
 export async function createProductAction(formData: FormData) {
