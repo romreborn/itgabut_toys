@@ -11,6 +11,6 @@
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "latest",
     "dotenv": "latest",
-    "node-telegram-bot-api": "latest"
+    "node-telegram-bot-api": "^0.66.0"
   }
 }

@@ -83,6 +83,10 @@ async function runTurn(chatId, prompt) {
       options: {
         cwd: PROJECT_DIR,
         ...(sessionId ? { resume: sessionId } : {}),
+        // Load the Claude Code system prompt plus CLAUDE.md and .claude/skills from
+        // PROJECT_DIR; the SDK loads none of these unless asked.
+        systemPrompt: { type: "preset", preset: "claude_code" },
+        settingSources: ["project"],
         includePartialMessages: true,
         // FULLY AUTONOMOUS: the agent runs bash, edits files, git push, etc. with no
         // approval prompts. That is the point of the bot, and the reason the allowlist

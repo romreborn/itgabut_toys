@@ -7,7 +7,7 @@ kanonik: `https://www.itgabuttoys.com` (apex redirect ke www). ISR `revalidate =
 ## Data (Supabase)
 
 Tiga tabel: `blog_posts`, `products`, `page_views`. Tidak ada ORM — baca/tulis lewat
-Supabase REST pakai **service-role key** yang ada di `frontend/.env.local` (TIDAK
+Supabase REST pakai **service-role key** yang ada di `.env.local` (root repo) (TIDAK
 di-commit). Pola kerja yang dipakai: tulis skrip `.cjs` kecil di folder scratchpad
 yang memanggil REST (`POST` untuk insert, `PATCH ...?slug=eq.<slug>` untuk update)
 dengan header `apikey` + `Authorization: Bearer <service key>` dan
@@ -31,6 +31,21 @@ Field wajib diisi eksplisit saat insert (NOT NULL): `id` (uuid), `createdAt`,
 **diskon 10% dicoret** (DISCOUNT_RATE / salePrice di `src/lib/format.ts`); keranjang
 tidak mendiskon lagi.
 
+## Standar penulisan (WAJIB untuk semua teks)
+
+Setiap teks yang tampil ke publik (artikel blog, deskripsi produk, `seoTitle`,
+`seoDescription`, `excerpt`, caption, copy halaman, llms.txt, pesan WhatsApp/sosmed)
+harus melewati dua skill di `.claude/skills/`:
+
+1. **seo-geo-aeo**: pakai saat menyusun (kata kunci, judul, jawaban di awal, heading
+   pertanyaan, fakta yang bisa dikutip AI, tautan internal) dan jalankan checklist-nya
+   sebelum publish.
+2. **humanizer**: pakai di akhir untuk membuang pola tulisan AI, tanpa mengubah fakta.
+
+Panggil keduanya lewat Skill tool, jangan cuma mengandalkan ingatan. Kalau skill
+bertabrakan dengan aturan di file ini, aturan di file ini yang menang (mis. tanpa
+dash, tanpa blok FAQ).
+
 ## Aturan menulis blog (penting, konsisten dengan seluruh situs)
 
 - Bahasa Indonesia, santai, seperti ngobrol.
@@ -39,7 +54,7 @@ tidak mendiskon lagi.
   pertanyaan di dalam isi artikel (untuk AEO), mis. "Kapan rilis dan berapa harganya?".
 - Judul SEO (`seoTitle`) ≤ 45 karakter, `seoDescription` ≤ 160. Helper `fitTitle`
   di `src/lib/seo.ts` menjaga judul ≤ 60 dan deskripsi ≤ 160.
-- Foto blog ditaruh di `frontend/public/blog/<Folder>/` dan **wajib di-commit + push**
+- Foto blog ditaruh di `public/blog/<Folder>/` dan **wajib di-commit + push**
   ke `main`, kalau tidak gambarnya 404 di produksi. Kompres ~1000px lebar, JPEG, pakai
   `sharp`. Ganti nama file acak jadi deskriptif.
 - Harga yang belum resmi tulis "belum diumumkan"/"TBC", jangan dikarang.
@@ -47,7 +62,7 @@ tidak mendiskon lagi.
 
 ## Produk & gambar
 
-- Foto produk: 1000×1000 webp di `frontend/public/products/<slug>.webp` via `sharp`.
+- Foto produk: 1000×1000 webp di `public/products/<slug>.webp` via `sharp`.
 - Jangan pakai kata "Carton"/"Carton A + B" di nama produk.
 - Kalau slug produk diganti, tambah redirect 308 di `next.config.mjs` supaya link lama
   tidak putus.
