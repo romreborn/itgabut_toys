@@ -32,6 +32,8 @@ interface ProductImageProps {
   style?: React.CSSProperties;
   /** Skip lazy-loading for above-the-fold images (e.g. the hero). */
   priority?: boolean;
+  /** Override the responsive `sizes` hint when the image is wider than a catalog card (e.g. the hero). */
+  sizes?: string;
 }
 
 /**
@@ -47,6 +49,7 @@ export default function ProductImage({
   className,
   style,
   priority,
+  sizes,
 }: ProductImageProps) {
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
@@ -61,13 +64,19 @@ export default function ProductImage({
         className={className}
         style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", ...style }}
       >
-        {!loaded && <div className="img-skeleton" aria-hidden />}
+        {/* Priority (above-the-fold) images render visible straight from the server HTML: hiding them
+            until React hydrates and fires onLoad delays Largest Contentful Paint by the whole JS load. */}
+        {!priority && !loaded && <div className="img-skeleton" aria-hidden />}
         <Image
           src={src}
           alt={name}
           fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1200px) 25vw, 300px"
-          style={{ objectFit: "cover", opacity: loaded ? 1 : 0, transition: "opacity .4s ease" }}
+          sizes={sizes ?? "(max-width: 640px) 50vw, (max-width: 1200px) 25vw, 300px"}
+          style={
+            priority
+              ? { objectFit: "cover" }
+              : { objectFit: "cover", opacity: loaded ? 1 : 0, transition: "opacity .4s ease" }
+          }
           loading={priority ? "eager" : "lazy"}
           priority={priority}
           onLoad={() => setLoaded(true)}

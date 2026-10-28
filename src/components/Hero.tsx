@@ -79,6 +79,8 @@ export default function Hero() {
               seed="hero-1"
               imageUrl="/tf-ae.jpg"
               priority
+              // Full width of the container on phones; roughly half the container on desktop.
+              sizes="(max-width: 820px) calc(100vw - 40px), 560px"
             />
           </div>
         </div>

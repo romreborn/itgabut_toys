@@ -44,7 +44,8 @@ export default async function HomePage() {
       <Hero />
       <Ticker />
       <UspSection />
-      <CatalogClient products={products} />
+      {/* The grid never shows long copy, so don't ship every product's description/links in the page payload. */}
+      <CatalogClient products={products.map((p) => ({ ...p, description: null, seoTitle: null, shopeeUrl: null }))} />
       <PriceGuideSection lines={lines} range={range} />
       <BlogTeaser posts={posts.slice(0, 3)} />
       <LocationSection />
