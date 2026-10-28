@@ -66,7 +66,11 @@ export async function createProductAction(formData: FormData) {
   const uploadedUrl = await uploadImageIfProvided(formData, slug);
   const imageUrl = uploadedUrl || str(formData, "imageUrl") || null;
 
-  const { error } = await supabaseAdmin.from("products").insert({ slug, ...payload, imageUrl });
+  // products.id and products.updatedAt have no database default, so set them here
+  // (same pattern as blog_posts and orders).
+  const { error } = await supabaseAdmin
+    .from("products")
+    .insert({ id: crypto.randomUUID(), slug, ...payload, imageUrl, updatedAt: new Date().toISOString() });
   if (error) throw new Error(`Gagal membuat produk: ${error.message}`);
 
   revalidatePath("/", "layout");

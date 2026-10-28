@@ -218,7 +218,15 @@ export async function importProductsAction(
     } else {
       const { error } = await supabaseAdmin
         .from("products")
-        .insert({ slug, sortOrder: nextSortOrder, tag: null, year: null, ...payload });
+        .insert({
+          id: crypto.randomUUID(),
+          slug,
+          sortOrder: nextSortOrder,
+          tag: null,
+          year: null,
+          ...payload,
+          updatedAt: new Date().toISOString(),
+        });
       if (error) {
         results.push({ row: rowNumber, name, status: "skipped", reason: error.message });
         skipped++;
