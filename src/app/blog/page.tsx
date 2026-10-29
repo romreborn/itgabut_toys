@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/posts";
 import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/constants";
-import BlogCard from "@/components/BlogCard";
+import BlogSearch, { type SearchablePost } from "@/components/BlogSearch";
 
 const TITLE = "Blog Blokees: Rilis, Bocoran & Panduan";
 const DESCRIPTION =
@@ -24,6 +24,25 @@ export const revalidate = 60;
 
 export default async function BlogListPage() {
   const posts = await getAllPosts();
+
+  // Slim, search-ready list for the client: card fields plus headings and linked product slugs
+  // (so "TS04" or "Gomora" finds the right post) without sending whole article bodies.
+  const searchable: SearchablePost[] = posts.map((p) => ({
+    slug: p.slug,
+    cat: p.cat,
+    date: p.date,
+    title: p.title,
+    excerpt: p.excerpt,
+    coverImageUrl: p.coverImageUrl,
+    keywords: [
+      p.seoTitle ?? "",
+      ...p.body.flatMap((b) =>
+        b.t === "h" ? [b.text] : b.t === "products" ? b.productSlugs.map((s) => s.replace(/-/g, " ")) : []
+      ),
+    ]
+      .join(" ")
+      .slice(0, 800),
+  }));
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -53,11 +72,7 @@ export default async function BlogListPage() {
       <p style={{ margin: "0 0 28px", fontSize: 15, color: "var(--muted)", maxWidth: "62ch" }}>
         Info rilis, bocoran lineup, dan panduan belanja Blokees dari toko kami di Citra Raya, Tangerang.
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 20 }}>
-        {posts.map((post) => (
-          <BlogCard key={post.slug} post={post} />
-        ))}
-      </div>
+      <BlogSearch posts={searchable} />
     </section>
   );
 }

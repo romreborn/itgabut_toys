@@ -2,7 +2,10 @@ import Link from "next/link";
 import type { Post } from "@/lib/posts";
 import ProductImage from "@/components/ProductImage";
 
-export default function BlogCard({ post }: { post: Post }) {
+/** Only what a card shows, so client lists (blog search) never ship post bodies. */
+export type BlogCardPost = Pick<Post, "slug" | "cat" | "date" | "title" | "excerpt" | "coverImageUrl">;
+
+export default function BlogCard({ post }: { post: BlogCardPost }) {
   return (
     <Link href={`/blog/${post.slug}`} style={{ display: "contents" }}>
       <article

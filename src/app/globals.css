@@ -296,3 +296,123 @@ body {
      symptom when a fixed/sticky-positioned element is wider than expected). */
   overflow-x: hidden;
 }
+
+/* Visually hidden but read by screen readers. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Blog search (/blog) ---- */
+.blog-search {
+  margin: 0 0 22px;
+}
+.blog-search-box {
+  position: relative;
+  max-width: 620px;
+}
+.blog-search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-2);
+  pointer-events: none;
+}
+.blog-search-box input {
+  width: 100%;
+  height: 52px;
+  padding: 0 48px 0 46px;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--white);
+  box-shadow: 4px 4px 0 var(--ink);
+  /* 16px keeps iOS Safari from zooming in on focus. */
+  font-size: 16px;
+  font-family: var(--font-body);
+  color: var(--ink);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.blog-search-box input::placeholder {
+  color: var(--muted-2);
+}
+.blog-search-box input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+.blog-search-box input:focus-visible {
+  outline: none;
+  box-shadow: 4px 4px 0 var(--orange);
+}
+.blog-search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--peach);
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.blog-search-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.blog-chip {
+  padding: 8px 14px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font-size: 13.5px;
+  font-weight: 700;
+  font-family: var(--font-body);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.blog-chip[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--white);
+}
+.blog-chip:focus-visible,
+.blog-search-clear:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 2px;
+}
+.blog-search-status {
+  margin: 12px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted-2);
+}
+@media (max-width: 640px) {
+  .blog-search-box {
+    max-width: none;
+  }
+  /* One swipeable row of chips instead of wrapping onto several lines. */
+  .blog-search > .blog-search-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 2px 20px 4px;
+    scrollbar-width: none;
+  }
+  .blog-search > .blog-search-chips::-webkit-scrollbar {
+    display: none;
+  }
+}
