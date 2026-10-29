@@ -25,6 +25,15 @@ function collectLightboxImages(blocks: PostBlock[]): { list: LightboxImage[]; in
   return { list, indexOf };
 }
 
+/** Hostname of an absolute URL; empty for relative links like "/blog/...". */
+function hostOf(url: string): string {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return "";
+  }
+}
+
 async function ProductsBlock({ label, productSlugs }: { label: string; productSlugs: string[] }) {
   const items = await getProductsBySlugs(productSlugs);
   if (items.length === 0) return null;
@@ -160,13 +169,16 @@ export default async function PostBody({ blocks }: { blocks: PostBlock[] }) {
             return <ProductsBlock key={n} label={b.label} productSlugs={b.productSlugs} />;
           }
           if (b.t === "link") {
+            // Shopee links are the owner's affiliate links: mark them rel="sponsored" (Google's rule
+            // for paid/affiliate links) and style them as the orange "buy" button.
+            const isShopee = /(^|\.)shopee\.co\.id$/.test(hostOf(b.url));
             return (
               <a
                 key={n}
                 href={b.url}
                 target="_blank"
-                rel="noopener"
-                className="btn btn-yellow"
+                rel={isShopee ? "sponsored noopener" : "noopener"}
+                className={isShopee ? "btn btn-orange" : "btn btn-yellow"}
                 style={{ marginBottom: 22, boxShadow: "3px 3px 0 var(--ink)" }}
               >
                 {b.label} ↗
