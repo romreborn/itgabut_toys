@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { supabase } from "@/lib/supabaseClient";
 import { SITE_URL } from "@/lib/constants";
+import { categorySlug } from "@/lib/categories";
 
 /** DB timestamps are UTC without an offset. */
 function utc(ts: string | null): Date | undefined {
@@ -13,10 +14,10 @@ export const revalidate = 600;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Queried directly (not via getAllProducts/getAllPosts) so <lastmod> can come from updatedAt.
   const [productsRes, postsRes] = await Promise.all([
-    supabase.from("products").select("slug,updatedAt").eq("isActive", true).order("sortOrder", { ascending: false }),
+    supabase.from("products").select("slug,ip,updatedAt").eq("isActive", true).order("sortOrder", { ascending: false }),
     supabase.from("blog_posts").select("slug,updatedAt").eq("isPublished", true).order("publishedAt", { ascending: false }),
   ]);
-  const products = (productsRes.data ?? []) as { slug: string; updatedAt: string | null }[];
+  const products = (productsRes.data ?? []) as { slug: string; ip: string; updatedAt: string | null }[];
   const posts = (postsRes.data ?? []) as { slug: string; updatedAt: string | null }[];
 
   const newest = (rows: { updatedAt: string | null }[]) =>
@@ -35,6 +36,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/games`, changeFrequency: "weekly", priority: 0.8 },
   ];
 
+  // One page per catalog category; lastmod = newest product update in that category.
+  const byCat = new Map<string, { slug: string; updatedAt: string | null }[]>();
+  for (const p of products) byCat.set(categorySlug(p.ip), [...(byCat.get(categorySlug(p.ip)) ?? []), p]);
+  const categoryRoutes: MetadataRoute.Sitemap = [
+    { url: `${SITE_URL}/katalog`, lastModified: latestProduct, changeFrequency: "daily", priority: 0.8 },
+    ...[...byCat.entries()].map(([slug, rows]) => ({
+      url: `${SITE_URL}/katalog/${slug}`,
+      lastModified: newest(rows),
+      changeFrequency: "daily" as const,
+      priority: 0.8,
+    })),
+  ];
+
   const productRoutes: MetadataRoute.Sitemap = products.map((p) => ({
     url: `${SITE_URL}/produk/${p.slug}`,
     lastModified: utc(p.updatedAt),
@@ -49,5 +63,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  return [...staticRoutes, ...productRoutes, ...postRoutes];
+  return [...staticRoutes, ...categoryRoutes, ...productRoutes, ...postRoutes];
 }

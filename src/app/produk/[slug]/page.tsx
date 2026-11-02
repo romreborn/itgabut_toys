@@ -9,6 +9,7 @@ import { T } from "@/lib/i18n";
 import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/constants";
 import { fitTitle } from "@/lib/seo";
 import ProductDetail from "@/components/ProductDetail";
+import { categoryLabel, categorySlug } from "@/lib/categories";
 
 // New products added in Supabase after the last build still render (ISR),
 // and existing pages pick up price/stock/photo edits within 60s.
@@ -141,7 +142,7 @@ export default async function ProductPage({
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "ITGabut Toys", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: product.ip, item: `${SITE_URL}/#katalog` },
+      { "@type": "ListItem", position: 2, name: categoryLabel(product.ip), item: `${SITE_URL}/katalog/${categorySlug(product.ip)}` },
       { "@type": "ListItem", position: 3, name: product.name, item: url },
     ],
   };

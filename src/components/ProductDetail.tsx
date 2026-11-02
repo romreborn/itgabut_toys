@@ -8,6 +8,7 @@ import { decorate } from "@/lib/decorate";
 import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
 import { SHOPEE_URL } from "@/lib/constants";
+import { categoryLabel, categorySlug } from "@/lib/categories";
 import { DISCOUNT_RATE, rupiah } from "@/lib/format";
 
 export default function ProductDetail({
@@ -70,6 +71,24 @@ export default function ProductDetail({
         }}
       >
         ← {t.back}
+      </Link>
+      <Link
+        href={`/katalog/${categorySlug(p.ip)}`}
+        style={{
+          display: "inline-block",
+          marginBottom: 18,
+          marginLeft: 10,
+          padding: "9px 15px",
+          border: "2px solid var(--ink)",
+          borderRadius: 11,
+          background: "var(--peach)",
+          fontSize: 13,
+          fontWeight: 700,
+          boxShadow: "3px 3px 0 var(--ink)",
+          color: "var(--ink)",
+        }}
+      >
+        Semua {categoryLabel(p.ip)}
       </Link>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 30, alignItems: "flex-start" }}>

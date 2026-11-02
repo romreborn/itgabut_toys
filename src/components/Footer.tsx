@@ -67,11 +67,15 @@ export default function Footer() {
             {t.footerCat}
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 9, fontSize: 14, fontWeight: 600 }}>
-            <Link href="/#katalog" style={{ color: "var(--bg)" }}>Blokees Transformers</Link>
-            <Link href="/#katalog" style={{ color: "var(--bg)" }}>Blokees Marvel</Link>
-            <Link href="/#katalog" style={{ color: "var(--bg)" }}>Blokees Ultraman</Link>
-            <Link href="/#katalog" style={{ color: "var(--bg)" }}>Pokemon &amp; Saint Seiya</Link>
-            <Link href="/#katalog" style={{ color: "var(--bg)" }}>Blokees Wheels · Blind Box</Link>
+            {/* Sitewide links to the crawlable category pages (/katalog/[seri]). */}
+            <Link href="/katalog/transformers" style={{ color: "var(--bg)" }}>Blokees Transformers</Link>
+            <Link href="/katalog/marvel" style={{ color: "var(--bg)" }}>Blokees Marvel</Link>
+            <Link href="/katalog/ultraman" style={{ color: "var(--bg)" }}>Blokees Ultraman</Link>
+            <Link href="/katalog/pokemon" style={{ color: "var(--bg)" }}>Blokees Pokemon</Link>
+            <Link href="/katalog/saint-seiya" style={{ color: "var(--bg)" }}>Blokees Saint Seiya</Link>
+            <Link href="/katalog/star-wars" style={{ color: "var(--bg)" }}>Blokees Star Wars</Link>
+            <Link href="/katalog/blokees-wheels" style={{ color: "var(--bg)" }}>Blokees Wheels</Link>
+            <Link href="/katalog" style={{ color: "var(--bg)" }}>Semua seri</Link>
             <Link href="/blog" style={{ color: "var(--bg)" }}>{t.navBlog}</Link>
           </div>
         </div>

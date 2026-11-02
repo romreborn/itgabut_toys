@@ -1,4 +1,6 @@
 import { getAllPosts } from "@/lib/posts";
+import { getAllProducts } from "@/lib/products";
+import { groupByCategory } from "@/lib/categories";
 import { SHOPEE_RATING } from "@/lib/reviews";
 import { INSTAGRAM_HANDLE, MALLS, SHOPEE_URL, SITE_URL, WA_DISPLAY } from "@/lib/constants";
 
@@ -7,7 +9,8 @@ import { INSTAGRAM_HANDLE, MALLS, SHOPEE_URL, SITE_URL, WA_DISPLAY } from "@/lib
 export const revalidate = 3600;
 
 export async function GET() {
-  const posts = await getAllPosts();
+  const [posts, products] = await Promise.all([getAllPosts(), getAllProducts()]);
+  const categories = groupByCategory(products);
   const lines = [
     "# ITGabut Toys",
     "",
@@ -28,6 +31,9 @@ export async function GET() {
     `- [Tentang & kontak](${SITE_URL}/tentang): profil toko, cara ambil, COD, dan pengiriman.`,
     `- [Blog](${SITE_URL}/blog): info rilis, bocoran lineup, dan panduan Blokees.`,
     `- [Spinner wheel](${SITE_URL}/games): tools undian gratis.`,
+    "",
+    "## Katalog per seri",
+    ...categories.map((c) => `- [${c.label}](${SITE_URL}/katalog/${c.slug}): ${c.products.length} produk.`),
     "",
     "## Artikel",
     ...posts.map((p) => `- [${p.title}](${SITE_URL}/blog/${p.slug}): ${p.excerpt}`),
