@@ -22,6 +22,85 @@ async function labelsFor(rows: TopRow[], table: "products" | "blog_posts", colum
   return new Map(((data as Record<string, string>[]) || []).map((r) => [r.slug, r[column]]));
 }
 
+type Badge = { tone: "yes" | "partial" | "no"; text: string };
+
+/** Product has an affiliate link when its shopeeUrl is set (the "Beli di Shopee" button uses it). */
+async function productAffiliate(rows: TopRow[]): Promise<Map<string, Badge>> {
+  const slugs = rows.map((r) => r.slug).filter((x): x is string => !!x);
+  if (slugs.length === 0) return new Map();
+  const { data } = await supabaseAdmin.from("products").select("slug,shopeeUrl").in("slug", slugs);
+  return new Map(
+    ((data as { slug: string; shopeeUrl: string | null }[]) || []).map((r) => [
+      r.slug,
+      r.shopeeUrl ? { tone: "yes", text: "Affiliate" } : { tone: "no", text: "Belum affiliate" },
+    ])
+  );
+}
+
+function isShopee(link: string | undefined): boolean {
+  try {
+    return /(^|\.)shopee\.co\.id$/.test(new URL(link ?? "").hostname);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * A post earns affiliate clicks either through its own Shopee link block (orange button), or through
+ * product cards whose products have a shopeeUrl (the visitor clicks through to the product page).
+ */
+async function blogAffiliate(rows: TopRow[]): Promise<Map<string, Badge>> {
+  const slugs = rows.map((r) => r.slug).filter((x): x is string => !!x);
+  if (slugs.length === 0) return new Map();
+  const { data } = await supabaseAdmin.from("blog_posts").select("slug,body").in("slug", slugs);
+  const posts = (data as { slug: string; body: { t: string; url?: string; productSlugs?: string[] }[] }[]) || [];
+  const linked = [...new Set(posts.flatMap((p) => p.body.flatMap((b) => (b.t === "products" ? b.productSlugs ?? [] : []))))];
+  const withLink = new Set<string>();
+  if (linked.length) {
+    const { data: prods } = await supabaseAdmin.from("products").select("slug").in("slug", linked).not("shopeeUrl", "is", null);
+    ((prods as { slug: string }[]) || []).forEach((p) => withLink.add(p.slug));
+  }
+  return new Map(
+    posts.map((p) => {
+      const direct = p.body.some((b) => b.t === "link" && isShopee(b.url));
+      const viaProducts = new Set(p.body.flatMap((b) => (b.t === "products" ? b.productSlugs ?? [] : [])).filter((x) => withLink.has(x))).size;
+      const badge: Badge = direct
+        ? { tone: "yes", text: viaProducts ? `Affiliate: tombol Shopee + ${viaProducts} produk` : "Affiliate: tombol Shopee" }
+        : viaProducts
+        ? { tone: "partial", text: `Affiliate via ${viaProducts} produk` }
+        : { tone: "no", text: "Belum affiliate" };
+      return [p.slug, badge];
+    })
+  );
+}
+
+const BADGE_STYLE: Record<Badge["tone"], React.CSSProperties> = {
+  yes: { background: "#DCEBD2", color: "#3A5A2A", borderColor: "#3A5A2A" },
+  partial: { background: "#FFF3C4", color: "#6B4E00", borderColor: "#B8860B" },
+  no: { background: "#F3ECE4", color: "#6E5A4E", borderColor: "#C9B8AA" },
+};
+
+function AffiliateBadge({ badge }: { badge: Badge }) {
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        marginLeft: 8,
+        padding: "2px 8px",
+        border: "1.5px solid",
+        borderRadius: 999,
+        fontSize: 11,
+        fontWeight: 800,
+        whiteSpace: "nowrap",
+        verticalAlign: "middle",
+        ...BADGE_STYLE[badge.tone],
+      }}
+    >
+      {badge.text}
+    </span>
+  );
+}
+
 function Cards({ label, value }: { label: string; value: number | string }) {
   return (
     <div style={{ ...s.card, padding: "16px 18px", flex: "1 1 160px", minWidth: 0 }}>
@@ -37,17 +116,28 @@ function Table({
   title,
   rows,
   labels,
+  badges,
   emptyText,
 }: {
   title: string;
   rows: TopRow[];
   labels?: Map<string, string>;
+  /** Affiliate status per slug; when given, a badge and a coverage count are shown. */
+  badges?: Map<string, Badge>;
   emptyText: string;
 }) {
   const max = rows.length ? rows[0].views : 0;
+  const covered = badges ? rows.filter((r) => r.slug && badges.get(r.slug)?.tone !== "no" && badges.has(r.slug)).length : 0;
   return (
     <div style={{ marginBottom: 28 }}>
-      <h2 style={{ fontSize: 16, fontWeight: 800, margin: "0 0 10px" }}>{title}</h2>
+      <h2 style={{ fontSize: 16, fontWeight: 800, margin: "0 0 10px" }}>
+        {title}
+        {badges && rows.length > 0 && (
+          <span style={{ marginLeft: 10, fontSize: 12.5, fontWeight: 700, color: "#6E5A4E" }}>
+            {covered} dari {rows.length} sudah affiliate
+          </span>
+        )}
+      </h2>
       <div style={{ ...s.card, padding: 0, overflowX: "auto" }}>
         <table style={s.table}>
           <thead>
@@ -59,12 +149,14 @@ function Table({
           <tbody>
             {rows.map((r) => {
               const label = r.slug ? labels?.get(r.slug) : null;
+              const badge = r.slug ? badges?.get(r.slug) : undefined;
               return (
                 <tr key={r.path}>
                   <td style={s.td}>
                     <Link href={r.path} target="_blank" style={{ fontWeight: 700, color: "var(--ink, #2E1A10)" }}>
                       {label || r.path}
                     </Link>
+                    {badge && <AffiliateBadge badge={badge} />}
                     {label && <div style={{ fontSize: 11.5, color: "#8A7263" }}>{r.path}</div>}
                   </td>
                   <td style={s.td}>
@@ -141,9 +233,11 @@ export default async function AdminAnalyticsPage({
     ? ((dailyRes.data as { hour: number; views: number }[]) || []).map((r) => ({ key: String(r.hour), label: fmtHour(r.hour), views: r.views }))
     : ((dailyRes.data as { day: string; views: number }[]) || []).map((r) => ({ key: r.day, label: fmtDay(r.day), views: r.views }));
 
-  const [productLabels, blogLabels] = await Promise.all([
+  const [productLabels, blogLabels, productBadges, blogBadges] = await Promise.all([
     labelsFor(products, "products", "name"),
     labelsFor(blogs, "blog_posts", "title"),
+    productAffiliate(products),
+    blogAffiliate(blogs),
   ]);
 
   const maxDaily = daily.reduce((m, d) => Math.max(m, Number(d.views)), 0);
@@ -211,9 +305,10 @@ export default async function AdminAnalyticsPage({
         title="Produk paling sering dilihat"
         rows={products}
         labels={productLabels}
+        badges={productBadges}
         emptyText="Belum ada data kunjungan produk."
       />
-      <Table title="Blog paling sering dibaca" rows={blogs} labels={blogLabels} emptyText="Belum ada data kunjungan blog." />
+      <Table title="Blog paling sering dibaca" rows={blogs} labels={blogLabels} badges={blogBadges} emptyText="Belum ada data kunjungan blog." />
       <Table title="Halaman lain" rows={pages} emptyText="Belum ada data." />
 
       <p style={{ fontSize: 12.5, color: "#8A7263", lineHeight: 1.7, marginTop: 4 }}>
