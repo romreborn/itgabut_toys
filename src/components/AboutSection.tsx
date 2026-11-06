@@ -23,7 +23,7 @@ export default function AboutSection() {
         }}
       >
         <div style={{ flex: "0 1 200px", minWidth: 150, display: "grid", placeItems: "center" }}>
-          <Image src="/logo.png" alt="ITGabut Toys" width={200} height={200} style={{ width: "100%", maxWidth: 200, height: "auto" }} />
+          <Image src="/logo-400.webp" alt="ITGabut Toys" width={200} height={200} style={{ width: "100%", maxWidth: 200, height: "auto" }} />
         </div>
         <div style={{ flex: "1 1 380px", minWidth: 0 }}>
           <h2

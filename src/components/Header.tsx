@@ -37,7 +37,7 @@ export default function Header() {
           href="/"
           style={{ display: "flex", alignItems: "center", gap: 10, flex: "0 0 auto" }}
         >
-          <Image src="/logo.png" alt="ITGabut Toys" width={48} height={48} style={{ objectFit: "contain" }} />
+          <Image src="/logo-96.webp" alt="ITGabut Toys" width={48} height={48} style={{ objectFit: "contain" }} />
           <span style={{ display: "block", lineHeight: 1.15 }}>
             <span
               className="font-display"

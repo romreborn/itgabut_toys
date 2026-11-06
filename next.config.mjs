@@ -20,8 +20,10 @@ const nextConfig = {
     ];
   },
   images: {
-    // AVIF first (typically 20-30% smaller than WebP); browsers without AVIF still get WebP.
-    formats: ["image/avif", "image/webp"],
+    // Bypass Vercel Image Optimization (Hobby quota exhausted -> 402 on uncached images).
+    // See src/lib/imageLoader.ts.
+    loader: "custom",
+    loaderFile: "./src/lib/imageLoader.ts",
     remotePatterns: [
       // Product photos sourced from the official Blokees storefront.
       { protocol: "https", hostname: "cdn.shopify.com", pathname: "/**" },

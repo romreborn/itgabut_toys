@@ -22,7 +22,7 @@ export default function Footer() {
       >
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-            <Image src="/logo.png" alt="ITGabut Toys" width={44} height={44} style={{ objectFit: "contain" }} />
+            <Image src="/logo-96.webp" alt="ITGabut Toys" width={44} height={44} style={{ objectFit: "contain" }} />
             <span className="font-display" style={{ fontSize: 21, fontWeight: 800 }}>
               ITGabut <span style={{ color: "var(--orange)" }}>Toys</span>
             </span>
