@@ -127,7 +127,7 @@ function PlaceholderTile({
       className={className}
       style={{ display: "block", width: "100%", height: "100%", ...style }}
       role="img"
-      aria-label={`${name} — foto segera hadir`}
+      aria-label={`${name}, foto segera hadir`}
     >
       <rect width="200" height="200" fill={bg} />
       <circle cx="100" cy="93" r="52" fill={fg} opacity="0.1" />

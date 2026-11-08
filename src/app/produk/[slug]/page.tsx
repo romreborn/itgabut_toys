@@ -57,7 +57,7 @@ export async function generateMetadata({
   // Longest title that fits ~60 characters: keep the price before the brand, and use the
   // product's short seoTitle (when set) in place of a very long catalog name.
   const name = p.seoTitle || p.name;
-  const withPrice = `${name} — ${p.avail === "preorder" ? "Pre-order " : ""}${p.priceLabel}`;
+  const withPrice = `${name}, ${p.avail === "preorder" ? "Pre-order " : ""}${p.priceLabel}`;
   const { title, text: titleText } = fitTitle([
     { text: withPrice, brand: true },
     { text: withPrice, brand: false },

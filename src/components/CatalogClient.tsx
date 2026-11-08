@@ -119,7 +119,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
   }
 
   const isEmpty = products.length > 0 && sorted.length === 0;
-  const rangeLabel = sorted.length ? `${start + 1}–${Math.min(start + PER_PAGE, sorted.length)}` : "0";
+  const rangeLabel = sorted.length ? `${start + 1}-${Math.min(start + PER_PAGE, sorted.length)}` : "0";
 
   const reset = () => setState(INITIAL);
 

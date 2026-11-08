@@ -43,7 +43,7 @@ export default function PriceGuideSection({ lines, range }: { lines: LineSummary
                 <td style={{ ...cell, color: "var(--muted)" }}>{fmt[l.format]}</td>
                 <td style={{ ...cell, color: "var(--muted)" }}>{l.count}</td>
                 <td style={{ ...cell, fontWeight: 700, color: "var(--orange-dark)", whiteSpace: "nowrap" }}>
-                  {l.min === l.max ? rupiah(l.min) : `${rupiah(l.min)} – ${rupiah(l.max)}`}
+                  {l.min === l.max ? rupiah(l.min) : `${rupiah(l.min)} - ${rupiah(l.max)}`}
                 </td>
               </tr>
             ))}

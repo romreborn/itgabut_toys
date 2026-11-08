@@ -719,7 +719,7 @@ export default function GachaSpinner() {
                         }}
                       >
                         <span style={{ fontSize: 14, fontWeight: 800 }}>{g}</span>
-                        <span style={{ fontSize: 10.5, fontWeight: 600, opacity: 0.8 }}>1–{gc * gr}</span>
+                        <span style={{ fontSize: 10.5, fontWeight: 600, opacity: 0.8 }}>1-{gc * gr}</span>
                       </button>
                     );
                   })}

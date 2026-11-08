@@ -60,7 +60,7 @@ export default function CheckoutClient() {
 
   const waMsg = useMemo(() => {
     const itemsText = lines
-      .map((l, n) => `${n + 1}. ${l.name} — ${parseInt(l.qty, 10) || 0} ${t.qtyUnit} (${l.variantLabel}) — ${l.lineLabel}`)
+      .map((l, n) => `${n + 1}. ${l.name}, ${parseInt(l.qty, 10) || 0} ${t.qtyUnit} (${l.variantLabel}), ${l.lineLabel}`)
       .join("\n");
     const header = [
       `${t.waIntro} (${methodText}).`,
