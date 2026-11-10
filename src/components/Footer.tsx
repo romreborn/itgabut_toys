@@ -77,6 +77,7 @@ export default function Footer() {
             <Link href="/katalog/blokees-wheels" style={{ color: "var(--bg)" }}>Blokees Wheels</Link>
             <Link href="/katalog" style={{ color: "var(--bg)" }}>Semua seri</Link>
             <Link href="/blog" style={{ color: "var(--bg)" }}>{t.navBlog}</Link>
+            <Link href="/jadwal-rilis" style={{ color: "var(--bg)" }}>{t.navReleases}</Link>
           </div>
         </div>
         <div>

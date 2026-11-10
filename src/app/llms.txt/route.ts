@@ -30,6 +30,7 @@ export async function GET() {
     `- [Katalog produk](${SITE_URL}/#katalog): stok, harga, status ready atau pre-order.`,
     `- [Tentang & kontak](${SITE_URL}/tentang): profil toko, cara ambil, COD, dan pengiriman.`,
     `- [Blog](${SITE_URL}/blog): info rilis, bocoran lineup, dan panduan Blokees.`,
+    `- [Jadwal rilis Blokees](${SITE_URL}/jadwal-rilis): kalender tanggal rilis produk baru, pameran, dan film terkait.`,
     `- [Spinner wheel](${SITE_URL}/games): tools undian gratis.`,
     "",
     "## Katalog per seri",

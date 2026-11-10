@@ -416,3 +416,145 @@ body {
     display: none;
   }
 }
+
+/* Release calendar (/jadwal-rilis): month grid on the left, event detail on the right. */
+.rc-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+.rc-cal {
+  padding: 18px;
+}
+.rc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.rc-nav {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--ink);
+  border-radius: 11px;
+  background: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+}
+.rc-nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.rc-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+}
+.rc-dow {
+  text-align: center;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted-2);
+  padding: 4px 0;
+}
+.rc-day {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1.5px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 0;
+}
+.rc-day.has {
+  background: #fff7ef;
+  border-color: var(--line, #e6d9cc);
+  cursor: pointer;
+}
+.rc-day.has:hover {
+  border-color: var(--ink);
+}
+.rc-day.today {
+  outline: 2px dashed var(--orange-dark);
+  outline-offset: -3px;
+}
+.rc-day.sel {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+.rc-dots {
+  display: flex;
+  gap: 3px;
+  height: 7px;
+}
+.rc-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.rc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted-2);
+}
+.rc-detail {
+  padding: 20px;
+}
+.rc-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.rc-prod {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border: 1.5px solid var(--ink);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+}
+.rc-upcoming {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .rc-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 400px) {
+  .rc-cal {
+    padding: 12px;
+  }
+  .rc-grid {
+    gap: 3px;
+  }
+  .rc-day {
+    font-size: 13px;
+    border-radius: 9px;
+  }
+}

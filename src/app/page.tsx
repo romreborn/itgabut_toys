@@ -4,6 +4,7 @@ import UspSection from "@/components/UspSection";
 import CatalogClient from "@/components/CatalogClient";
 import PriceGuideSection from "@/components/PriceGuideSection";
 import BlogTeaser from "@/components/BlogTeaser";
+import UpcomingReleases from "@/components/UpcomingReleases";
 import LocationSection from "@/components/LocationSection";
 import AboutSection from "@/components/AboutSection";
 import ReviewSection from "@/components/ReviewSection";
@@ -65,6 +66,7 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+      <UpcomingReleases products={products} />
       <PriceGuideSection lines={lines} range={range} />
       <BlogTeaser posts={posts.slice(0, 3)} />
       <LocationSection />

@@ -81,6 +81,12 @@ export default function Header() {
             {t.navBlog}
           </Link>
           <Link
+            href="/jadwal-rilis"
+            style={{ padding: "8px 11px", borderRadius: 9, fontSize: 13.5, fontWeight: 600, color: "var(--ink)" }}
+          >
+            {t.navReleases}
+          </Link>
+          <Link
             href="/games" prefetch={false}
             style={{ padding: "8px 11px", borderRadius: 9, fontSize: 13.5, fontWeight: 600, color: "var(--ink)" }}
           >
@@ -238,6 +244,9 @@ export default function Header() {
           </Link>
           <Link href="/blog" onClick={() => setMenuOpen(false)} style={{ padding: "10px 4px", fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>
             {t.navBlog}
+          </Link>
+          <Link href="/jadwal-rilis" onClick={() => setMenuOpen(false)} style={{ padding: "10px 4px", fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>
+            {t.navReleases}
           </Link>
           <Link href="/games" prefetch={false} onClick={() => setMenuOpen(false)} style={{ padding: "10px 4px", fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>
             {t.navGames}
