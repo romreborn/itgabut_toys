@@ -3,7 +3,6 @@ export type Lang = "id" | "en";
 export const T = {
   id: {
     navCatalog: "Katalog",
-    navLocation: "Lokasi",
     navAbout: "Tentang",
     navBlog: "Blog",
     navGames: "Games",
@@ -212,7 +211,6 @@ export const T = {
   },
   en: {
     navCatalog: "Catalog",
-    navLocation: "Locations",
     navAbout: "About",
     navBlog: "Blog",
     navGames: "Games",

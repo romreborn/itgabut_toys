@@ -93,12 +93,6 @@ export default function Header() {
             {t.navGames}
           </Link>
           <Link
-            href="/#lokasi"
-            style={{ padding: "8px 11px", borderRadius: 9, fontSize: 13.5, fontWeight: 600, color: "var(--ink)" }}
-          >
-            {t.navLocation}
-          </Link>
-          <Link
             href="/tentang"
             style={{ padding: "8px 11px", borderRadius: 9, fontSize: 13.5, fontWeight: 600, color: "var(--ink)" }}
           >
@@ -250,9 +244,6 @@ export default function Header() {
           </Link>
           <Link href="/games" prefetch={false} onClick={() => setMenuOpen(false)} style={{ padding: "10px 4px", fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>
             {t.navGames}
-          </Link>
-          <Link href="/#lokasi" onClick={() => setMenuOpen(false)} style={{ padding: "10px 4px", fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>
-            {t.navLocation}
           </Link>
           <Link href="/tentang" onClick={() => setMenuOpen(false)} style={{ padding: "10px 4px", fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>
             {t.navAbout}
