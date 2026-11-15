@@ -12,6 +12,12 @@ export type PostBlock =
   | { t: "list"; ordered?: boolean; items: string[] }
   | { t: "table"; caption?: string; headers: string[]; rows: string[][] };
 
+/** Cover plus every body photo (img + gallery), deduplicated, in reading order: for Article JSON-LD and the image sitemap. */
+export function collectPostImages(coverImageUrl: string | null, body: PostBlock[]): string[] {
+  const urls = body.flatMap((b) => (b.t === "img" ? (b.url ? [b.url] : []) : b.t === "gallery" ? b.images.map((i) => i.url) : []));
+  return [...new Set([coverImageUrl, ...urls].filter((u): u is string => !!u))];
+}
+
 /** Pulls out every FAQ item across all "faq" blocks in a post, for FAQPage JSON-LD. */
 export function collectFaqItems(body: PostBlock[]): { q: string; a: string }[] {
   return body.filter((b): b is Extract<PostBlock, { t: "faq" }> => b.t === "faq").flatMap((b) => b.items);

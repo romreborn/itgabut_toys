@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAllPosts, getPostBySlug, collectFaqItems } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, collectFaqItems, collectPostImages } from "@/lib/posts";
 import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/constants";
 import { fitTitle } from "@/lib/seo";
 import ProductImage from "@/components/ProductImage";
@@ -11,6 +11,8 @@ import PostBody from "@/components/PostBody";
 
 export const revalidate = 60;
 export const dynamicParams = true;
+
+const absolute = (u: string) => (u.startsWith("http") ? u : `${SITE_URL}${u}`);
 
 /** DB timestamps are stored as UTC without an offset; schema.org needs a full ISO 8601 value. */
 function isoUtc(ts: string): string {
@@ -30,11 +32,9 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return {};
-  const imageUrl = post.coverImageUrl
-    ? post.coverImageUrl.startsWith("http")
-      ? post.coverImageUrl
-      : `${SITE_URL}${post.coverImageUrl}`
-    : undefined;
+  const imageUrl = post.coverImageUrl ? absolute(post.coverImageUrl) : undefined;
+  // Cover first (the share card), then a few body photos so link previews and Google have more than one candidate.
+  const images = collectPostImages(post.coverImageUrl, post.body).slice(0, 4).map(absolute);
   // Search results get the short SEO title/description when set; the page and social cards keep the full headline.
   const { title } = fitTitle([
     { text: post.seoTitle || post.title, brand: true },
@@ -49,10 +49,11 @@ export async function generateMetadata({
       description: post.excerpt,
       url: `${SITE_URL}/blog/${post.slug}`,
       type: "article",
-      images: [{ url: imageUrl ?? `${SITE_URL}${DEFAULT_OG_IMAGE}`, alt: post.title }],
+      images: images.length ? images.map((url) => ({ url, alt: post.title })) : [{ url: imageUrl ?? `${SITE_URL}${DEFAULT_OG_IMAGE}`, alt: post.title }],
       publishedTime: isoUtc(post.publishedAt),
       modifiedTime: isoUtc(post.updatedAt),
     },
+    twitter: { card: "summary_large_image", title: post.title, description: post.excerpt, images: [imageUrl ?? `${SITE_URL}${DEFAULT_OG_IMAGE}`] },
   };
 }
 
@@ -68,7 +69,7 @@ export default async function PostPage({
   const postUrl = `${SITE_URL}/blog/${post.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
     datePublished: isoUtc(post.publishedAt),
@@ -78,11 +79,11 @@ export default async function PostPage({
     inLanguage: "id-ID",
     author: { "@type": "Organization", name: "ITGabut Toys", url: SITE_URL },
     publisher: { "@type": "Organization", name: "ITGabut Toys", url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` } },
-    image: post.coverImageUrl
-      ? post.coverImageUrl.startsWith("http")
-        ? post.coverImageUrl
-        : `${SITE_URL}${post.coverImageUrl}`
-      : `${SITE_URL}${DEFAULT_OG_IMAGE}`,
+    // Every photo in the post: Google picks the best one for the result thumbnail.
+    image: (() => {
+      const all = collectPostImages(post.coverImageUrl, post.body).map(absolute);
+      return all.length ? all : [`${SITE_URL}${DEFAULT_OG_IMAGE}`];
+    })(),
   };
 
   const breadcrumbJsonLd = {
