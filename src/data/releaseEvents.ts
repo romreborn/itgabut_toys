@@ -205,7 +205,7 @@ export const RELEASE_EVENTS: ReleaseEvent[] = [
     confirmed: false,
     note: "Rilis global dijadwalkan 16 November 2026, masih TBC.",
     productSlugs: ["marvel-champion-class-cc17-doctor-doom-avengers-doomsday", "marvel-champion-class-cc16-cyclops-avengers-doomsday"],
-    postSlug: "blokees-marvel-avengers-doomsday-champion-class-lite-03-04-china-toy-expo-2026",
+    postSlug: "blokees-marvel-champion-class-doctor-doom-cyclops-avengers-doomsday",
   },
   {
     id: "dc-legend-flash",
