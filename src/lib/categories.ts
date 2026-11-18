@@ -107,6 +107,12 @@ const COPY: Record<string, CategoryCopy> = {
       "Blokees Jurassic World Terraventure berisi dinosaurus dari Jurassic Park dan Jurassic World. Ada blind box TS berisi dinosaurus kecil, serta diorama TC seperti TC01 T-Rex dan TC02 Triceratops yang dijual satuan.",
     posts: /terraventure|jurassic/i,
   },
+  "Kamen Rider": {
+    label: "Blokees Kamen Rider",
+    intro:
+      "Blokees Kamen Rider adalah koleksi berlisensi resmi Ishimori Production dan Toei untuk serial tokusatsu Kamen Rider. Lini Kamen Rider Blokees resminya hanya dirilis di China. Di ITGabut Toys ada Hero Order, token relief 3D edisi ulang tahun ke 55 Kamen Rider dengan Zi-O, Decade, Geats, dan Saber.",
+    posts: /kamen\s?rider/i,
+  },
   "Toy Story": { label: "Blokees Toy Story", posts: /toy\s?story/i },
   Megaman: { label: "Blokees Mega Man", posts: /mega\s?man/i },
   "Astral Rally": { label: "Blokees Astral Rally", posts: /astral\s?rally/i },
