@@ -17,6 +17,11 @@ const nextConfig = {
         destination: "/produk/jurassic-world-terraventure-ts01-119",
         permanent: true,
       },
+      {
+        source: "/blog/blokees-jurassic-world-terraventure-ts05-quetzalcoatlus-therizinosaurus",
+        destination: "/blog/blokees-terraventure-ts05-lineup",
+        permanent: true,
+      },
     ];
   },
   images: {
