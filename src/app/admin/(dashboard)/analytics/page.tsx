@@ -74,6 +74,126 @@ async function blogAffiliate(rows: TopRow[]): Promise<Map<string, Badge>> {
   );
 }
 
+/** Same period start as admin_period_start() in SQL: 0 = since midnight WIB, else a rolling window. */
+function periodStart(days: number): Date {
+  if (days > 0) return new Date(Date.now() - days * 864e5);
+  const wib = new Date(Date.now() + 7 * 3600e3);
+  return new Date(Date.UTC(wib.getUTCFullYear(), wib.getUTCMonth(), wib.getUTCDate()) - 7 * 3600e3);
+}
+
+interface ClickRow {
+  key: string;
+  path: string;
+  /** Product name or post title of the page where the click happened. */
+  page: string;
+  /** Product the clicked Shopee link belongs to (matched on shopeeUrl), else the URL. */
+  target: string;
+  clickers: number;
+  clicks: number;
+}
+
+/**
+ * Shopee clicks are stored in page_views as kind "shopee": path = page clicked on,
+ * referrer = the Shopee URL. Aggregated here so no extra table or SQL function is needed.
+ */
+async function shopeeClicks(days: number): Promise<{ rows: ClickRow[]; total: number; clickers: number }> {
+  const { data } = await supabaseAdmin
+    .from("page_views")
+    .select("id,path,slug,referrer,visitorHash")
+    .eq("kind", "shopee")
+    .gte("createdAt", periodStart(days).toISOString())
+    .limit(20000);
+  const raw = (data as { id: number; path: string; slug: string | null; referrer: string | null; visitorHash: string | null }[]) || [];
+  if (raw.length === 0) return { rows: [], total: 0, clickers: 0 };
+
+  const productSlugs = [...new Set(raw.filter((r) => r.path.startsWith("/produk/") && r.slug).map((r) => r.slug as string))];
+  const postSlugs = [...new Set(raw.filter((r) => r.path.startsWith("/blog/") && r.slug).map((r) => r.slug as string))];
+  const targets = [...new Set(raw.map((r) => r.referrer).filter((x): x is string => !!x))];
+  const [prodRes, postRes, targetRes] = await Promise.all([
+    productSlugs.length ? supabaseAdmin.from("products").select("slug,name").in("slug", productSlugs) : Promise.resolve({ data: [] }),
+    postSlugs.length ? supabaseAdmin.from("blog_posts").select("slug,title").in("slug", postSlugs) : Promise.resolve({ data: [] }),
+    targets.length ? supabaseAdmin.from("products").select("name,shopeeUrl").in("shopeeUrl", targets) : Promise.resolve({ data: [] }),
+  ]);
+  const prodName = new Map(((prodRes.data as { slug: string; name: string }[]) || []).map((r) => [r.slug, r.name]));
+  const postTitle = new Map(((postRes.data as { slug: string; title: string }[]) || []).map((r) => [r.slug, r.title]));
+  const targetName = new Map<string, string>();
+  for (const r of (targetRes.data as { name: string; shopeeUrl: string }[]) || []) {
+    const prev = targetName.get(r.shopeeUrl);
+    targetName.set(r.shopeeUrl, prev ? `${prev}, ${r.name}` : r.name);
+  }
+
+  const visitor = (r: { id: number; visitorHash: string | null }) => r.visitorHash || `row:${r.id}`;
+  const groups = new Map<string, { path: string; slug: string | null; target: string; visitors: Set<string>; clicks: number }>();
+  for (const r of raw) {
+    const target = r.referrer || "";
+    const key = `${r.path}|${target}`;
+    const g = groups.get(key) || { path: r.path, slug: r.slug, target, visitors: new Set<string>(), clicks: 0 };
+    g.visitors.add(visitor(r));
+    g.clicks++;
+    groups.set(key, g);
+  }
+  const rows: ClickRow[] = [...groups.entries()].map(([key, g]) => ({
+    key,
+    path: g.path,
+    page: (g.slug && (prodName.get(g.slug) || postTitle.get(g.slug))) || g.path,
+    target: targetName.get(g.target) || (/(^|\/\/)(www\.)?shopee\.co\.id\/itgabut/.test(g.target) ? "Toko Shopee ITGabut" : g.target),
+    clickers: g.visitors.size,
+    clicks: g.clicks,
+  }));
+  rows.sort((a, b) => b.clickers - a.clickers || b.clicks - a.clicks);
+  return { rows, total: raw.length, clickers: new Set(raw.map(visitor)).size };
+}
+
+function ClicksTable({ rows }: { rows: ClickRow[] }) {
+  const max = rows.length ? rows[0].clickers : 0;
+  return (
+    <div style={{ marginBottom: 28 }}>
+      <h2 style={{ fontSize: 16, fontWeight: 800, margin: "0 0 10px" }}>Klik tombol Shopee (produk yang ingin dibeli)</h2>
+      <div style={{ ...s.card, padding: 0, overflowX: "auto" }}>
+        <table style={s.table}>
+          <thead>
+            <tr>
+              <th style={s.th}>Diklik di halaman</th>
+              <th style={s.th}>Link Shopee ke</th>
+              <th style={{ ...s.th, width: 170 }}>Orang yang klik</th>
+              <th style={{ ...s.th, width: 90 }}>Total klik</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.key}>
+                <td style={s.td}>
+                  <Link href={r.path} target="_blank" style={{ fontWeight: 700, color: "var(--ink, #2E1A10)" }}>
+                    {r.page}
+                  </Link>
+                  {r.page !== r.path && <div style={{ fontSize: 11.5, color: "#8A7263" }}>{r.path}</div>}
+                </td>
+                <td style={{ ...s.td, fontSize: 13, wordBreak: "break-all" }}>{r.target}</td>
+                <td style={s.td}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ flex: 1, height: 8, background: "#F3ECE4", borderRadius: 99, overflow: "hidden" }}>
+                      <div style={{ width: max ? `${Math.max(4, (r.clickers / max) * 100)}%` : "0%", height: "100%", background: "#EE6A26" }} />
+                    </div>
+                    <span style={{ fontWeight: 800, fontVariantNumeric: "tabular-nums", minWidth: 28, textAlign: "right" }}>{r.clickers}</span>
+                  </div>
+                </td>
+                <td style={{ ...s.td, fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{r.clicks}</td>
+              </tr>
+            ))}
+            {rows.length === 0 && (
+              <tr>
+                <td style={s.td} colSpan={4}>
+                  Belum ada klik Shopee di periode ini. Pencatatan klik dimulai 19 November 2026.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 const BADGE_STYLE: Record<Badge["tone"], React.CSSProperties> = {
   yes: { background: "#DCEBD2", color: "#3A5A2A", borderColor: "#3A5A2A" },
   partial: { background: "#FFF3C4", color: "#6B4E00", borderColor: "#B8860B" },
@@ -233,12 +353,15 @@ export default async function AdminAnalyticsPage({
     ? ((dailyRes.data as { hour: number; views: number }[]) || []).map((r) => ({ key: String(r.hour), label: fmtHour(r.hour), views: r.views }))
     : ((dailyRes.data as { day: string; views: number }[]) || []).map((r) => ({ key: r.day, label: fmtDay(r.day), views: r.views }));
 
-  const [productLabels, blogLabels, productBadges, blogBadges] = await Promise.all([
+  const [productLabels, blogLabels, productBadges, blogBadges, clicks] = await Promise.all([
     labelsFor(products, "products", "name"),
     labelsFor(blogs, "blog_posts", "title"),
     productAffiliate(products),
     blogAffiliate(blogs),
+    shopeeClicks(days),
   ]);
+  // Shopee clicks live in page_views too; keep them out of "Total dibuka" (page opens only).
+  const totalOpens = Math.max(0, Number(summary.total) - clicks.total);
 
   const maxDaily = daily.reduce((m, d) => Math.max(m, Number(d.views)), 0);
 
@@ -267,10 +390,11 @@ export default async function AdminAnalyticsPage({
 
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 26 }}>
         <Cards label="Pengunjung unik" value={Number(summary.unique_visitors).toLocaleString("id-ID")} />
-        <Cards label="Total dibuka (termasuk reload)" value={Number(summary.total).toLocaleString("id-ID")} />
+        <Cards label="Total dibuka (termasuk reload)" value={totalOpens.toLocaleString("id-ID")} />
         <Cards label="Halaman unik" value={Number(summary.unique_paths).toLocaleString("id-ID")} />
         <Cards label="Lihat produk" value={Number(summary.product_views).toLocaleString("id-ID")} />
         <Cards label="Baca blog" value={Number(summary.blog_views).toLocaleString("id-ID")} />
+        <Cards label="Klik Shopee (orang)" value={clicks.clickers.toLocaleString("id-ID")} />
       </div>
 
       {daily.length > 0 && (
@@ -278,20 +402,33 @@ export default async function AdminAnalyticsPage({
           <h2 style={{ fontSize: 16, fontWeight: 800, margin: "0 0 14px" }}>
             {isToday ? "Pengunjung unik per jam hari ini (WIB)" : "Pengunjung unik per hari"}
           </h2>
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 120 }}>
-            {daily.map((d) => (
-              <div
-                key={d.key}
-                title={`${d.label}: ${d.views}`}
-                style={{
-                  flex: 1,
-                  minWidth: 3,
-                  height: `${maxDaily ? Math.max(3, (Number(d.views) / maxDaily) * 100) : 3}%`,
-                  background: "#EE6A26",
-                  borderRadius: "3px 3px 0 0",
-                }}
-              />
-            ))}
+          {/* Each bar carries its number on top; with more than 31 bars (90 days) only non-zero bars are labelled. */}
+          <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 140 }}>
+            {daily.map((d) => {
+              const v = Number(d.views);
+              const showNum = daily.length <= 31 || v > 0;
+              return (
+                <div
+                  key={d.key}
+                  title={`${d.label}: ${v}`}
+                  style={{ flex: 1, minWidth: 3, height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-end", alignItems: "center" }}
+                >
+                  {showNum && (
+                    <span style={{ fontSize: daily.length > 31 ? 9 : 11, fontWeight: 800, color: v ? "#2E1A10" : "#B9A79A", fontVariantNumeric: "tabular-nums", marginBottom: 2 }}>
+                      {v}
+                    </span>
+                  )}
+                  <div
+                    style={{
+                      width: "100%",
+                      height: `${maxDaily ? Math.max(3, (v / maxDaily) * 82) : 3}%`,
+                      background: "#EE6A26",
+                      borderRadius: "3px 3px 0 0",
+                    }}
+                  />
+                </div>
+              );
+            })}
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8, fontSize: 11.5, color: "#8A7263" }}>
             <span>{daily[0].label}</span>
@@ -300,6 +437,8 @@ export default async function AdminAnalyticsPage({
           </div>
         </div>
       )}
+
+      <ClicksTable rows={clicks.rows} />
 
       <Table
         title="Produk paling sering dilihat"
@@ -315,7 +454,8 @@ export default async function AdminAnalyticsPage({
         Angka dihitung per pengunjung unik (IP + browser): kalau orang yang sama membuka atau me-reload halaman yang
         sama berkali-kali dalam periode ini, tetap terhitung 1. Hanya &quot;Total dibuka&quot; yang menghitung setiap reload.
         Bot dan crawler tidak ikut terhitung, dan halaman admin tidak dilacak. Data sebelum 7 Oktober 2026 belum punya
-        info pengunjung, jadi setiap kunjungan lama tetap dihitung satu per satu.
+        info pengunjung, jadi setiap kunjungan lama tetap dihitung satu per satu. Klik Shopee dicatat sejak 19 November
+        2026: &quot;Orang yang klik&quot; menghitung satu orang sekali per halaman dan link, &quot;Total klik&quot; menghitung setiap klik.
       </p>
     </div>
   );

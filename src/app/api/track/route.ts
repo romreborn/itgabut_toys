@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   const noContent = new NextResponse(null, { status: 204 });
 
   try {
-    const payload = (await request.json()) as { path?: unknown; referrer?: unknown };
+    const payload = (await request.json()) as { path?: unknown; referrer?: unknown; event?: unknown; target?: unknown };
     const raw = typeof payload.path === "string" ? payload.path : "";
     if (!raw.startsWith("/") || raw.length > 300) return noContent;
 
@@ -46,6 +46,22 @@ export async function POST(request: Request) {
       slug = path.slice("/blog/".length) || null;
     }
     if (slug && slug.length > 200) return noContent;
+
+    // A click on a Shopee link: stored as kind "shopee" on the page where it happened,
+    // with the clicked Shopee URL in `referrer` (no extra table needed). kind/slug of the
+    // page are kept in `slug` so clicks group per product or post.
+    if (payload.event === "shopee") {
+      const target = typeof payload.target === "string" ? payload.target.slice(0, 300) : "";
+      let host = "";
+      try {
+        host = new URL(target).hostname;
+      } catch {
+        return noContent;
+      }
+      if (!/(^|\.)shopee\.co\.id$/.test(host)) return noContent;
+      await supabaseAdmin.from("page_views").insert({ path, kind: "shopee", slug, referrer: target, visitorHash: visitorHash(request) });
+      return noContent;
+    }
 
     const referrerRaw = typeof payload.referrer === "string" ? payload.referrer : "";
     const referrer = referrerRaw.slice(0, 300) || null;

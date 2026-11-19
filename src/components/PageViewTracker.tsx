@@ -30,5 +30,24 @@ export default function PageViewTracker() {
     });
   }, [pathname]);
 
+  // Shopee clicks (product "Beli di Shopee", blog affiliate buttons, store links), so the
+  // admin can see which products people actually want to buy. One listener catches every
+  // Shopee link on the site, including ones rendered from blog JSON.
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      const a = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
+      if (!a || !/(^|\.)shopee\.co\.id$/.test(a.hostname)) return;
+      if (window.location.pathname.startsWith("/admin")) return;
+      fetch("/api/track", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ event: "shopee", path: window.location.pathname, target: a.href }),
+        keepalive: true,
+      }).catch(() => {});
+    }
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
+
   return null;
 }
