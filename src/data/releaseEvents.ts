@@ -226,6 +226,26 @@ export const RELEASE_EVENTS: ReleaseEvent[] = [
     productSlugs: ["blokees-wheels-transformers-ct04-ultra-magnus"],
     postSlug: "blokees-wheels-china-toy-expo-2026-transformers-c05-ct04-wheels-land",
   },
+  {
+    id: "terraventure-ts05",
+    date: "2026-11-25",
+    title: "Jurassic World Terraventure TS05",
+    kind: "rilis",
+    confirmed: true,
+    note: "Blind box dengan anggota baru Quetzalcoatlus dan Therizinosaurus, plus Carnotaurus, Baryonyx, Dimetrodon, dan Little Dinosaurs.",
+    productSlugs: ["jurassic-world-terraventure-ts05"],
+    postSlug: "blokees-terraventure-ts05-lineup",
+  },
+  {
+    id: "transformers-gv12",
+    date: "2026-11-27",
+    title: "Transformers Galaxy Version 12",
+    kind: "rilis",
+    confirmed: true,
+    note: "Blind box dengan debut Optimus Prime dan Megatron versi komik IDW, 1 set isi 9.",
+    productSlugs: ["transformers-galaxy-version-12"],
+    postSlug: "blokees-transformers-galaxy-version-12-optimus-megatron-idw",
+  },
 
   // Desember 2026
   {
