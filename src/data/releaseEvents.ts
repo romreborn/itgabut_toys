@@ -246,6 +246,16 @@ export const RELEASE_EVENTS: ReleaseEvent[] = [
     productSlugs: ["transformers-galaxy-version-12"],
     postSlug: "blokees-transformers-galaxy-version-12-optimus-megatron-idw",
   },
+  {
+    id: "kamen-rider-gvs02",
+    date: "2026-11-27",
+    title: "Kamen Rider Galaxy Version S 02",
+    kind: "rilis",
+    confirmed: false,
+    note: "Perkiraan rilis, tanggal resmi masih TBC. Debut Ohma Zi-O dan Zi-O.",
+    productSlugs: ["kamen-rider-galaxy-version-s-02"],
+    postSlug: "blokees-kamen-rider-galaxy-version-s02-ohma-zi-o-zi-o",
+  },
 
   // Desember 2026
   {
