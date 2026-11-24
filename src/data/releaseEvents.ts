@@ -242,7 +242,8 @@ export const RELEASE_EVENTS: ReleaseEvent[] = [
     title: "Kamen Rider Classic Version S 02: Kabuto dan Kabuto Extender",
     kind: "rilis",
     confirmed: true,
-    note: "Set Kamen Rider Kabuto Rider Form dengan motor Kabuto Extender, 99 yuan di China. Harga Indonesia belum dikonfirmasi.",
+    note: "Set Kamen Rider Kabuto Rider Form dengan motor Kabuto Extender, 99 yuan di China. Harga Indonesia masih estimasi.",
+    productSlugs: ["kamen-rider-classic-version-s-02-kabuto"],
     postSlug: "blokees-kamen-rider-kabuto-classic-version-s02-kabuto-extender",
   },
   {
