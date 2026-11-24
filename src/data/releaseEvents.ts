@@ -237,6 +237,15 @@ export const RELEASE_EVENTS: ReleaseEvent[] = [
     postSlug: "blokees-terraventure-ts05-lineup",
   },
   {
+    id: "kamen-rider-classic-s02-kabuto",
+    date: "2026-11-25",
+    title: "Kamen Rider Classic Version S 02: Kabuto dan Kabuto Extender",
+    kind: "rilis",
+    confirmed: true,
+    note: "Set Kamen Rider Kabuto Rider Form dengan motor Kabuto Extender, 99 yuan di China. Harga Indonesia belum dikonfirmasi.",
+    postSlug: "blokees-kamen-rider-kabuto-classic-version-s02-kabuto-extender",
+  },
+  {
     id: "transformers-gv12",
     date: "2026-11-27",
     title: "Transformers Galaxy Version 12",
