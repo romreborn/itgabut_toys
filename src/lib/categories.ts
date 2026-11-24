@@ -113,6 +113,12 @@ const COPY: Record<string, CategoryCopy> = {
       "Blokees Kamen Rider adalah koleksi berlisensi resmi Ishimori Production dan Toei untuk serial tokusatsu Kamen Rider. Lini Kamen Rider Blokees resminya hanya dirilis di China. Di ITGabut Toys ada Hero Order, token relief 3D edisi ulang tahun ke 55 Kamen Rider dengan Zi-O, Decade, Geats, dan Saber.",
     posts: /kamen\s?rider/i,
   },
+  "Honor of Kings": {
+    label: "Blokees Honor of Kings",
+    intro:
+      "Blokees Honor of Kings adalah figure rakit kolaborasi resmi Blokees dengan game MOBA Honor of Kings (王者荣耀) dari Tencent, dimulai dari Champion Class Ma Chao Prestige.",
+    posts: /honor\s?of\s?kings/i,
+  },
   "Toy Story": { label: "Blokees Toy Story", posts: /toy\s?story/i },
   Megaman: { label: "Blokees Mega Man", posts: /mega\s?man/i },
   "Astral Rally": { label: "Blokees Astral Rally", posts: /astral\s?rally/i },
