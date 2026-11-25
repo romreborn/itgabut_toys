@@ -242,8 +242,8 @@ export const RELEASE_EVENTS: ReleaseEvent[] = [
     title: "HeroSpire Armor Version Wave 18: Li Bai dan Yang Jian",
     kind: "rilis",
     confirmed: true,
-    note: "No.41 Li Bai dan No.42 Dharma Image Yang Jian. Yang Jian 49 yuan di China.",
-    productSlugs: ["herospire-armor-version-42-yang-jian-dharma-image"],
+    note: "No.42 Dharma Image Yang Jian dan No.43 Li Bai, masing masing 49 yuan di China.",
+    productSlugs: ["herospire-armor-version-42-yang-jian-dharma-image", "herospire-armor-version-43-li-bai-dharma-image"],
     postSlug: "blokees-herospire-armor-version-wave-18-li-bai-yang-jian",
   },
   {
