@@ -237,6 +237,15 @@ export const RELEASE_EVENTS: ReleaseEvent[] = [
     postSlug: "blokees-terraventure-ts05-lineup",
   },
   {
+    id: "herospire-armor-wave-18",
+    date: "2026-11-25",
+    title: "HeroSpire Armor Version Wave 18: Li Bai dan Yang Jian",
+    kind: "rilis",
+    confirmed: true,
+    note: "No.43 Li Bai dan No.44 Dharma Image Yang Jian. Harga belum diumumkan.",
+    postSlug: "blokees-herospire-armor-version-wave-18-li-bai-yang-jian",
+  },
+  {
     id: "kamen-rider-classic-s02-kabuto",
     date: "2026-11-25",
     title: "Kamen Rider Classic Version S 02: Kabuto dan Kabuto Extender",
