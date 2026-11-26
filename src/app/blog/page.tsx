@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 60;
+export const revalidate = 86400; // 1 day; content edits call /api/revalidate (ISR writes quota)
 
 export default async function BlogListPage() {
   const posts = await getAllPosts();

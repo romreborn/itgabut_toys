@@ -7,7 +7,7 @@ import { RELEASE_EVENTS } from "@/data/releaseEvents";
 import { KIND_STYLE, MONTHS_ID, allProductSlugs, formatEventDate, monthKey, sortedEvents, todayJakarta, upcomingEvents } from "@/lib/releases";
 import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/constants";
 
-export const revalidate = 60;
+export const revalidate = 86400; // 1 day; content edits call /api/revalidate (ISR writes quota)
 
 const TITLE = "Jadwal Rilis Blokees 2026";
 const DESCRIPTION =

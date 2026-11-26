@@ -15,7 +15,7 @@ function imageLoc(u: string): string {
   return encodeURI(u.startsWith("http") ? u : `${SITE_URL}${u}`).replace(/&/g, "&amp;");
 }
 
-export const revalidate = 600;
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Queried directly (not via getAllProducts/getAllPosts) so <lastmod> can come from updatedAt.

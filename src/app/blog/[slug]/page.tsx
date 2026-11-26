@@ -9,7 +9,7 @@ import GalleryImage from "@/components/GalleryImage";
 import { LightboxProvider } from "@/components/Lightbox";
 import PostBody from "@/components/PostBody";
 
-export const revalidate = 60;
+export const revalidate = 86400; // 1 day; content edits call /api/revalidate (ISR writes quota)
 export const dynamicParams = true;
 
 const absolute = (u: string) => (u.startsWith("http") ? u : `${SITE_URL}${u}`);

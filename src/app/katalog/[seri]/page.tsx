@@ -10,7 +10,7 @@ import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/constants";
 import { fitTitle } from "@/lib/seo";
 import CategoryGrid from "@/components/CategoryGrid";
 
-export const revalidate = 60;
+export const revalidate = 86400; // 1 day; content edits call /api/revalidate (ISR writes quota)
 
 async function load(seri: string): Promise<{ cat: Category; all: Category[] } | null> {
   const all = groupByCategory(await getAllProducts());

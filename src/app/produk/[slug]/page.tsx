@@ -13,7 +13,7 @@ import { categoryLabel, categorySlug } from "@/lib/categories";
 
 // New products added in Supabase after the last build still render (ISR),
 // and existing pages pick up price/stock/photo edits within 60s.
-export const revalidate = 60;
+export const revalidate = 86400; // 1 day; content edits call /api/revalidate (ISR writes quota)
 export const dynamicParams = true;
 
 export async function generateStaticParams() {

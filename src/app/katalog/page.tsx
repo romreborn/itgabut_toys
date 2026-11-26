@@ -6,7 +6,7 @@ import { rupiah, salePrice } from "@/lib/format";
 import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/constants";
 import ProductImage from "@/components/ProductImage";
 
-export const revalidate = 60;
+export const revalidate = 86400; // 1 day; content edits call /api/revalidate (ISR writes quota)
 
 const TITLE = "Katalog Blokees per Seri";
 const DESCRIPTION =

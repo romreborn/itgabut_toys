@@ -18,7 +18,7 @@ import Link from "next/link";
 
 // Re-fetch from Supabase at most once a minute — catalog/blog edits made in
 // the Supabase dashboard show up here without a full redeploy.
-export const revalidate = 60;
+export const revalidate = 86400; // 1 day; content edits call /api/revalidate (ISR writes quota)
 
 export default async function HomePage() {
   const [products, posts] = await Promise.all([getAllProducts(), getAllPosts()]);
