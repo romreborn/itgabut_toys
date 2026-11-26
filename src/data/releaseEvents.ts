@@ -267,6 +267,16 @@ export const RELEASE_EVENTS: ReleaseEvent[] = [
     postSlug: "blokees-transformers-galaxy-version-12-optimus-megatron-idw",
   },
   {
+    id: "ultraman-mebius-20th",
+    date: "2026-11-27",
+    title: "Ultraman Anniversary Version S: Ultraman Mebius 20th Anniversary",
+    kind: "rilis",
+    confirmed: true,
+    note: "Edisi terbatas 20 tahun Ultraman Mebius, 99 yuan di China.",
+    productSlugs: ["ultraman-anniversary-version-s-mebius-20th-anniversary"],
+    postSlug: "blokees-ultraman-mebius-20th-anniversary-version-s",
+  },
+  {
     id: "kamen-rider-gvs02",
     date: "2026-11-27",
     title: "Kamen Rider Galaxy Version S 02",
